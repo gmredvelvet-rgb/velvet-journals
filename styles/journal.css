@@ -1,0 +1,1121 @@
+/* ==========================================================================
+   Velvet Journals — sheet skin
+   Art direction: Belle Époque noir & gold, inspired by Clair Obscur:
+   Expedition 33. Trajan-style capitals, garalde body text, hairline gold
+   ornaments, painterly vignettes and slow cinematic reveals.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Cinzel";
+  src: url("../fonts/Cinzel-Variable.woff2") format("woff2");
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/CormorantGaramond-Variable.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/CormorantGaramond-Italic-Variable.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Italianno";
+  src: url("../fonts/Italianno-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* Legacy families kept for existing journal content authored with them */
+@font-face {
+  font-family: "Baloo 2";
+  src: url("../fonts/Baloo2-Variable.woff2") format("woff2");
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("../fonts/NunitoSans-Variable.woff2") format("woff2");
+  font-weight: 200 1000;
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   Tokens
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal,
+.application.velvet-config {
+  --osj-accent: #d3b06a;
+  --osj-accent-2: #8ea6bd;
+  --osj-deep: #0c0a10;
+  --osj-deep-2: #171320;
+  --osj-ink: #e4d8bd;
+  --osj-ink-strong: #f7eeda;
+  --osj-muted: #9b8e74;
+  --osj-line: rgba(211, 176, 106, 0.2);
+  --osj-line-strong: rgba(211, 176, 106, 0.38);
+  --osj-glass: rgba(13, 10, 17, 0.6);
+  --osj-glass-strong: rgba(9, 7, 12, 0.85);
+  --osj-btn-ink: #241a08;
+  --osj-ok: #a8c39a;
+  --osj-bad: #b0505a;
+  --osj-font-display: "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  --osj-font-body: "Cormorant Garamond", "Palatino Linotype", Georgia, serif;
+  --osj-font-script: "Italianno", "Segoe Script", cursive;
+  --osj-radius: 4px;
+  --osj-radius-sm: 3px;
+  --osj-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+  --osj-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --color-form-label: var(--osj-ink);
+  --color-form-label-hover: var(--osj-ink-strong);
+  --color-form-hint: var(--osj-muted);
+  --color-form-hint-hover: var(--osj-accent);
+}
+
+.application.velvet-journal.osj-light {
+  --osj-deep: #eae0c8;
+  --osj-deep-2: #f3ebd7;
+  --osj-ink: #37301f;
+  --osj-ink-strong: #211b0e;
+  --osj-muted: #7a6c4e;
+  --osj-line: rgba(107, 82, 34, 0.26);
+  --osj-line-strong: rgba(107, 82, 34, 0.45);
+  --osj-glass: rgba(248, 242, 226, 0.66);
+  --osj-glass-strong: rgba(248, 242, 226, 0.9);
+  --osj-shadow: 0 30px 80px rgba(52, 40, 16, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Window frame
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal {
+  position: absolute;
+  background: var(--osj-deep);
+  border: 1px solid var(--osj-line-strong);
+  border-radius: var(--osj-radius);
+  box-shadow: var(--osj-shadow), 0 0 0 1px rgba(0, 0, 0, 0.6);
+  font-family: var(--osj-font-body);
+  color: var(--osj-ink);
+  overflow: hidden;
+}
+
+/* Hairline inner frame, offset from the window edge like a mounted canvas */
+.application.velvet-journal::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  z-index: 3;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--osj-accent) 26%, transparent);
+  border-radius: 2px;
+}
+
+.application.velvet-journal.minimized::after {
+  display: none;
+}
+
+.application.velvet-journal > .window-header,
+.application.velvet-journal > .window-content {
+  position: relative;
+  z-index: 1;
+}
+
+.application.velvet-journal > .window-header {
+  background: linear-gradient(180deg, rgba(4, 3, 7, 0.7), rgba(4, 3, 7, 0));
+  border-bottom: none;
+  align-items: center;
+  --color-header-title: var(--osj-ink-strong);
+}
+
+.application.velvet-journal > .window-header .window-title {
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--osj-ink-strong);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.application.velvet-journal > .window-header [data-action] {
+  color: var(--osj-ink);
+  opacity: 0.75;
+  transition: opacity 0.25s var(--osj-ease), color 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal > .window-header [data-action]:hover {
+  color: var(--osj-accent);
+  opacity: 1;
+  box-shadow: none;
+}
+
+.application.velvet-journal > .window-content {
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Backdrop layer -------------------------------------------------------- */
+
+.application.velvet-journal > .osj-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(130% 100% at 50% 0%, var(--osj-deep-2) 0%, var(--osj-deep) 62%),
+    var(--osj-deep);
+}
+
+.application.velvet-journal > .osj-backdrop > .osj-backdrop-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: var(--osj-bg-fit, cover);
+  object-position: var(--osj-bg-pos, 50% 50%);
+  filter: blur(var(--osj-bg-blur, 0px)) brightness(var(--osj-bg-brightness, 70%));
+  transform: scale(1.02);
+}
+
+.application.velvet-journal > .osj-backdrop > .osj-backdrop-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--osj-overlay, var(--osj-deep)) 55%, transparent) 0%,
+      color-mix(in srgb, var(--osj-overlay, var(--osj-deep)) 92%, transparent) 100%);
+  opacity: var(--osj-overlay-alpha, 0.55);
+}
+
+/* Painterly vignette above the backdrop media */
+.application.velvet-journal > .osj-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.application.velvet-journal.osj-light > .osj-backdrop::before {
+  background: radial-gradient(120% 90% at 50% 40%, transparent 60%, rgba(63, 48, 18, 0.28) 100%);
+}
+
+/* Drifting gold dust, the expedition's falling motes */
+.application.velvet-journal > .osj-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: -60% 0 0 0;
+  z-index: 2;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, color-mix(in srgb, var(--osj-accent) 85%, #fff) 45%, transparent 55%),
+    radial-gradient(1px 1px at 34% 62%, var(--osj-accent) 45%, transparent 55%),
+    radial-gradient(2px 2px at 56% 34%, color-mix(in srgb, var(--osj-accent) 65%, transparent) 45%, transparent 55%),
+    radial-gradient(1px 1px at 71% 76%, var(--osj-accent) 45%, transparent 55%),
+    radial-gradient(1.5px 1.5px at 88% 22%, color-mix(in srgb, var(--osj-accent) 75%, #fff) 45%, transparent 55%),
+    radial-gradient(1px 1px at 22% 88%, color-mix(in srgb, var(--osj-accent) 60%, transparent) 45%, transparent 55%),
+    radial-gradient(1.5px 1.5px at 64% 92%, color-mix(in srgb, var(--osj-accent) 70%, transparent) 45%, transparent 55%),
+    radial-gradient(1px 1px at 44% 8%, var(--osj-accent) 45%, transparent 55%);
+  background-size: 520px 640px;
+  opacity: 0.5;
+  animation: osj-dust 70s linear infinite;
+}
+
+.application.velvet-journal.osj-no-anim > .osj-backdrop::after {
+  animation: none;
+  inset: 0;
+  opacity: 0.25;
+}
+
+.application.velvet-journal.minimized > .osj-backdrop > .osj-backdrop-media,
+.application.velvet-journal.minimized > .osj-backdrop::after {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal .journal-sidebar {
+  background: linear-gradient(180deg, rgba(6, 4, 9, 0.78), rgba(6, 4, 9, 0.55));
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border-right: 1px solid var(--osj-line);
+  gap: 0;
+}
+
+.application.velvet-journal.osj-light .journal-sidebar {
+  background: linear-gradient(180deg, rgba(243, 235, 215, 0.9), rgba(243, 235, 215, 0.7));
+}
+
+/* Brand strip */
+.application.velvet-journal .osj-side-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 14px 12px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.application.velvet-journal .osj-side-logo {
+  max-height: 34px;
+  max-width: 120px;
+  border: none;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.application.velvet-journal .osj-side-mark {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--osj-line-strong);
+  border-radius: 2px;
+  rotate: 45deg;
+  color: var(--osj-accent);
+  background: transparent;
+  font-size: 0.7rem;
+}
+
+.application.velvet-journal .osj-side-mark i {
+  rotate: -45deg;
+}
+
+.application.velvet-journal .osj-side-title {
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--osj-ink-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.application.velvet-journal:not(.expanded) .osj-side-brand .osj-side-title,
+.application.velvet-journal:not(.expanded) .osj-side-brand .osj-side-logo {
+  display: none;
+}
+
+.application.velvet-journal:not(.expanded) .osj-side-brand {
+  justify-content: center;
+  padding-inline: 6px;
+}
+
+/* Search row */
+.application.velvet-journal .journal-sidebar search {
+  margin: 0;
+  padding: 4px 10px 12px;
+  gap: 6px;
+  border-bottom: 1px solid var(--osj-line);
+  align-items: center;
+}
+
+.application.velvet-journal .journal-sidebar search input[type="search"] {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--osj-line);
+  border-radius: 2px;
+  color: var(--osj-ink);
+  font-family: var(--osj-font-body);
+  font-size: 1rem;
+  height: 30px;
+  padding-inline: 10px;
+  transition: border-color 0.25s var(--osj-ease), box-shadow 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal.osj-light .journal-sidebar search input[type="search"] {
+  background: rgba(63, 48, 18, 0.05);
+}
+
+.application.velvet-journal .journal-sidebar search input[type="search"]::placeholder {
+  color: var(--osj-muted);
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.application.velvet-journal .journal-sidebar search input[type="search"]:focus {
+  outline: none;
+  border-color: var(--osj-accent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--osj-accent) 25%, transparent);
+}
+
+.application.velvet-journal .journal-sidebar search button.inline-control {
+  color: var(--osj-muted);
+  transition: color 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal .journal-sidebar search button.inline-control:hover {
+  color: var(--osj-accent);
+  box-shadow: none;
+}
+
+/* Table of contents.
+   Selectors are prefixed with .journal-entry.application to outrank the
+   equally-specific core rules. */
+.application.velvet-journal .toc {
+  padding: 12px 8px;
+  scrollbar-gutter: stable;
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc li.category {
+  margin: 16px 10px 8px;
+  border: none;
+  position: relative;
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc li.category strong {
+  font-family: var(--osj-font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  line-height: 1.8;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--osj-accent);
+}
+
+.journal-entry.application.velvet-journal:not(.expanded) .journal-sidebar .toc li.category strong {
+  display: none;
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc li.page {
+  margin: 1px 2px;
+  line-height: normal;
+  border: none;
+  border-left: 1px solid transparent;
+  border-radius: 0;
+  transition: background-color 0.25s var(--osj-ease), border-color 0.25s var(--osj-ease);
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc li.page > .page-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  cursor: var(--cursor-pointer, pointer);
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc li.page:hover {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--osj-accent) 9%, transparent), transparent 75%);
+  border-left-color: color-mix(in srgb, var(--osj-accent) 45%, transparent);
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc li.page.active {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--osj-accent) 15%, transparent), transparent 85%);
+  border-left-color: var(--osj-accent);
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc .page-heading .page-index {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 22px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  padding-inline: 3px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--osj-line);
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.66rem;
+  color: var(--osj-muted);
+  transition: color 0.25s var(--osj-ease), border-color 0.25s var(--osj-ease);
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc li.page.active .page-heading .page-index {
+  color: var(--osj-accent);
+  border-bottom-color: var(--osj-accent);
+  background: transparent;
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc .page-heading .page-title {
+  font-family: var(--osj-font-body);
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--osj-ink);
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc li.page.active .page-heading .page-title {
+  color: var(--osj-ink-strong);
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc .page-heading .page-index:hover,
+.journal-entry.application.velvet-journal .journal-sidebar .toc .page-heading .page-title:hover {
+  text-shadow: none;
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc .page-heading .page-ownership {
+  color: var(--osj-muted);
+  font-size: 0.68rem;
+}
+
+/* Nested heading links */
+.journal-entry.application.velvet-journal .journal-sidebar .toc ol.headings {
+  margin: 0 4px 6px 30px;
+  border-left: 1px solid var(--osj-line);
+  padding-left: 10px;
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc ol.headings li {
+  height: auto;
+  line-height: 1.9;
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc .heading-link {
+  font-size: 0.86rem;
+  font-style: italic;
+  color: var(--osj-muted);
+  transition: color 0.2s var(--osj-ease);
+}
+
+.journal-entry.application.velvet-journal .journal-sidebar .toc .heading-link:hover {
+  color: var(--osj-accent);
+  text-shadow: none;
+}
+
+/* Sidebar footer */
+.application.velvet-journal .journal-sidebar footer.action-buttons {
+  padding: 10px;
+  gap: 8px;
+  border-top: 1px solid var(--osj-line);
+}
+
+.application.velvet-journal .journal-sidebar footer.action-buttons button {
+  background: transparent;
+  border: 1px solid var(--osj-line);
+  border-radius: 2px;
+  color: var(--osj-ink);
+  transition: border-color 0.25s var(--osj-ease), color 0.25s var(--osj-ease), background-color 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal .journal-sidebar footer.action-buttons button:hover:not(:disabled) {
+  border-color: var(--osj-accent);
+  color: var(--osj-accent);
+  box-shadow: none;
+}
+
+.application.velvet-journal .journal-sidebar footer.action-buttons button:disabled {
+  opacity: 0.3;
+}
+
+.application.velvet-journal .journal-sidebar footer.action-buttons button.create {
+  background: transparent;
+  border: 1px solid var(--osj-line-strong);
+  color: var(--osj-accent);
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  box-shadow: none;
+}
+
+.application.velvet-journal .journal-sidebar footer.action-buttons button.create:hover {
+  background: color-mix(in srgb, var(--osj-accent) 14%, transparent);
+  border-color: var(--osj-accent);
+  color: var(--osj-ink-strong);
+}
+
+/* --------------------------------------------------------------------------
+   Pages area
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal .journal-entry-content {
+  background: transparent;
+  container-type: inline-size;
+  container-name: osj;
+}
+
+.application.velvet-journal .journal-entry-pages {
+  margin: 0;
+  padding: 0 0 48px;
+  background: transparent;
+  scroll-behavior: smooth;
+}
+
+.application.velvet-journal .journal-entry-pages > [hidden] {
+  display: none !important;
+}
+
+/* Hero ------------------------------------------------------------------ */
+
+.application.velvet-journal .osj-hero {
+  position: relative;
+  min-height: clamp(250px, 48cqw, 440px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  margin-bottom: 34px;
+  isolation: isolate;
+}
+
+.application.velvet-journal .osj-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+
+.application.velvet-journal .osj-hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--osj-bg-pos, 50% 40%);
+  border: none;
+}
+
+.application.velvet-journal.osj-parallax .osj-hero-media img {
+  transform: translate3d(0, calc(var(--osj-scroll, 0) * 0.38px), 0) scale(1.12);
+  will-change: transform;
+}
+
+.application.velvet-journal .osj-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg,
+    rgba(5, 3, 8, 0.18) 0%,
+    rgba(5, 3, 8, 0.32) 45%,
+    color-mix(in srgb, var(--osj-deep) 90%, transparent) 88%,
+    var(--osj-deep) 100%);
+}
+
+.application.velvet-journal.osj-light .osj-hero-scrim {
+  background: linear-gradient(180deg,
+    rgba(234, 224, 200, 0) 0%,
+    rgba(234, 224, 200, 0.25) 55%,
+    color-mix(in srgb, var(--osj-deep) 90%, transparent) 90%,
+    var(--osj-deep) 100%);
+}
+
+.application.velvet-journal .osj-hero.osj-hero-plain {
+  min-height: clamp(200px, 32cqw, 300px);
+}
+
+.application.velvet-journal .osj-hero-body {
+  position: relative;
+  width: min(920px, 100% - clamp(32px, 8cqw, 96px));
+  margin-inline: auto;
+  padding: clamp(24px, 5cqw, 56px) 0 clamp(24px, 4cqw, 44px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Hairline rule with a lozenge, drawn under the hero body */
+.application.velvet-journal .osj-hero-body::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 9px;
+  background:
+    radial-gradient(4px 4px at 50% 50%, var(--osj-accent) 40%, transparent 60%),
+    linear-gradient(90deg, transparent, var(--osj-line-strong) 18%, var(--osj-line-strong) 82%, transparent) 50% 50% / 100% 1px no-repeat;
+}
+
+.application.velvet-journal .osj-hero-logo {
+  max-height: 56px;
+  max-width: 220px;
+  object-fit: contain;
+  border: none;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+}
+
+.application.velvet-journal .osj-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.application.velvet-journal .osj-crumb {
+  font-family: var(--osj-font-display);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--osj-muted);
+}
+
+.application.velvet-journal .osj-crumb + .osj-crumb::before {
+  content: "\2726";
+  margin-right: 7px;
+  font-size: 0.5rem;
+  color: var(--osj-accent);
+}
+
+.application.velvet-journal .osj-kicker {
+  margin: 0;
+  font-family: var(--osj-font-script);
+  font-size: clamp(1.5rem, 3.4cqw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  line-height: 1;
+  color: var(--osj-accent);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.application.velvet-journal input.title {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-align: left;
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--osj-ink-strong);
+  transition: box-shadow 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal .osj-hero input.title {
+  font-size: clamp(1.9rem, 5.6cqw, 3.2rem);
+  line-height: 1.12;
+  height: auto;
+  padding: 0;
+  text-shadow: 0 4px 22px rgba(0, 0, 0, 0.65);
+  animation: osj-reveal 0.9s var(--osj-ease) both;
+}
+
+.application.velvet-journal input.title:focus {
+  outline: none;
+  box-shadow: 0 1px 0 var(--osj-accent);
+}
+
+.application.velvet-journal input.title:disabled {
+  color: var(--osj-ink-strong);
+  opacity: 1;
+}
+
+.application.velvet-journal .osj-subtitle {
+  margin: 0;
+  max-width: 64ch;
+  font-family: var(--osj-font-body);
+  font-style: italic;
+  font-size: clamp(1.05rem, 2cqw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--osj-ink) 82%, var(--osj-accent));
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  animation: osj-reveal 0.9s 0.12s var(--osj-ease) both;
+}
+
+.application.velvet-journal .osj-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+  animation: osj-reveal 0.9s 0.22s var(--osj-ease) both;
+}
+
+.application.velvet-journal .osj-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  font-family: var(--osj-font-display);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--osj-ink);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+.application.velvet-journal .osj-meta-item i {
+  color: var(--osj-accent);
+  font-size: 0.62rem;
+}
+
+.application.velvet-journal .osj-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--osj-accent) 50%, transparent);
+  font-family: var(--osj-font-display);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--osj-accent);
+}
+
+/* Compact header --------------------------------------------------------- */
+
+.application.velvet-journal .osj-plain-header {
+  width: min(920px, 100% - clamp(32px, 8cqw, 96px));
+  margin: 32px auto 26px;
+  padding-bottom: 20px;
+  border-bottom: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.application.velvet-journal .osj-plain-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 9px;
+  background:
+    radial-gradient(4px 4px at 50% 50%, var(--osj-accent) 40%, transparent 60%),
+    linear-gradient(90deg, transparent, var(--osj-line-strong) 18%, var(--osj-line-strong) 82%, transparent) 50% 50% / 100% 1px no-repeat;
+}
+
+.application.velvet-journal .osj-plain-header input.title {
+  font-size: clamp(1.5rem, 3.8cqw, 2.2rem);
+  height: auto;
+  padding: 0;
+}
+
+/* Page panels ------------------------------------------------------------ */
+
+.application.velvet-journal .journal-entry-page {
+  position: relative;
+  width: min(920px, 100% - clamp(32px, 8cqw, 96px));
+  margin: 0 auto 30px;
+  padding: clamp(24px, 4.2cqw, 48px) clamp(24px, 4.8cqw, 56px);
+  background: var(--osj-glass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--osj-line);
+  border-radius: 2px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  color: var(--osj-ink);
+  font-size: 1.04rem;
+  line-height: 1.68;
+  animation: osj-rise 0.6s var(--osj-ease) both;
+}
+
+/* Inner hairline frame on each page panel */
+.application.velvet-journal .journal-entry-page::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--osj-accent) 16%, transparent);
+}
+
+.application.velvet-journal.osj-light .journal-entry-page {
+  box-shadow: 0 18px 50px rgba(52, 40, 16, 0.2);
+}
+
+.application.velvet-journal .journal-entry-page:is(.image, .video, .pdf) {
+  padding: 18px;
+}
+
+.application.velvet-journal .journal-entry-page.image img {
+  border: 1px solid var(--osj-line-strong);
+  outline: 1px solid color-mix(in srgb, var(--osj-accent) 20%, transparent);
+  outline-offset: 5px;
+  border-radius: 1px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  transition: transform 0.6s var(--osj-ease), box-shadow 0.6s var(--osj-ease);
+}
+
+.application.velvet-journal .journal-entry-page.image img:hover {
+  transform: scale(1.012);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.55);
+}
+
+.application.velvet-journal .journal-entry-page video {
+  border-radius: 2px;
+}
+
+/* Page inner header */
+.application.velvet-journal .journal-entry-page .journal-page-header :is(h1, h2, h3) {
+  border: none;
+}
+
+/* Edit button */
+.application.velvet-journal .journal-entry-page .edit-container button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--osj-glass-strong);
+  border: 1px solid var(--osj-line-strong);
+  color: var(--osj-accent);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  transition: background-color 0.25s var(--osj-ease), color 0.25s var(--osj-ease), border-color 0.25s var(--osj-ease), transform 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal .journal-entry-page .edit-container button:hover {
+  background: var(--osj-accent);
+  border-color: var(--osj-accent);
+  color: var(--osj-btn-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5), 0 0 20px color-mix(in srgb, var(--osj-accent) 40%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   Content typography
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal .journal-entry-page :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--osj-font-display);
+  color: var(--osj-ink-strong);
+  border-bottom: none;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+}
+
+.application.velvet-journal .journal-entry-page h1 { font-size: 1.9rem; font-weight: 600; }
+.application.velvet-journal .journal-entry-page h2 { font-size: 1.5rem; font-weight: 600; }
+.application.velvet-journal .journal-entry-page h3 { font-size: 1.2rem; font-weight: 600; }
+.application.velvet-journal .journal-entry-page h4 { font-size: 1rem; font-weight: 600; letter-spacing: 0.1em; }
+
+.application.velvet-journal .journal-entry-page a:not(.osj-btn) {
+  color: var(--osj-accent);
+}
+
+.application.velvet-journal .journal-entry-page a.content-link,
+.application.velvet-journal .journal-entry-page a.inline-roll {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--osj-accent) 45%, transparent);
+  border-radius: 0;
+  padding-inline: 1px;
+  color: var(--osj-ink-strong);
+  transition: border-color 0.2s var(--osj-ease), background-color 0.2s var(--osj-ease);
+}
+
+.application.velvet-journal .journal-entry-page a.content-link:hover,
+.application.velvet-journal .journal-entry-page a.inline-roll:hover {
+  background: color-mix(in srgb, var(--osj-accent) 14%, transparent);
+  border-bottom-color: var(--osj-accent);
+  text-shadow: none;
+}
+
+.application.velvet-journal .journal-entry-page a.content-link i,
+.application.velvet-journal .journal-entry-page a.inline-roll i {
+  color: var(--osj-accent);
+}
+
+.application.velvet-journal .journal-entry-page blockquote:not(.osj-quote) {
+  border-left: 1px solid var(--osj-accent);
+  background: transparent;
+  border-radius: 0;
+  padding: 6px 20px;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: color-mix(in srgb, var(--osj-ink) 85%, var(--osj-accent));
+}
+
+.application.velvet-journal .journal-entry-page hr:not(.osj-divider) {
+  border: none;
+  height: 9px;
+  background:
+    radial-gradient(3.5px 3.5px at 50% 50%, var(--osj-accent) 40%, transparent 60%),
+    linear-gradient(90deg, transparent, var(--osj-line-strong) 20%, var(--osj-line-strong) 80%, transparent) 50% 50% / 100% 1px no-repeat;
+}
+
+.application.velvet-journal .journal-entry-page table {
+  border: 1px solid var(--osj-line);
+  border-radius: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.application.velvet-journal.osj-light .journal-entry-page table {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.application.velvet-journal .journal-entry-page thead,
+.application.velvet-journal .journal-entry-page th {
+  background: rgba(0, 0, 0, 0.3);
+  font-family: var(--osj-font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--osj-accent);
+  border: none;
+  border-bottom: 1px solid var(--osj-line-strong);
+  text-shadow: none;
+}
+
+.application.velvet-journal.osj-light .journal-entry-page thead,
+.application.velvet-journal.osj-light .journal-entry-page th {
+  background: rgba(63, 48, 18, 0.1);
+}
+
+.application.velvet-journal .journal-entry-page td {
+  border: none;
+  border-top: 1px solid var(--osj-line);
+  padding: 8px 12px;
+}
+
+.application.velvet-journal .journal-entry-page img {
+  border-radius: 1px;
+  border-color: var(--osj-line);
+}
+
+/* Secret sections */
+.application.velvet-journal .journal-entry-page section.secret {
+  position: relative;
+  background: color-mix(in srgb, var(--osj-accent-2) 7%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--osj-accent-2) 45%, transparent);
+  border-radius: 0;
+  padding: 12px 16px;
+}
+
+.application.velvet-journal .journal-entry-page section.secret.revealed {
+  border-style: solid;
+}
+
+/* Footer ------------------------------------------------------------------ */
+
+.application.velvet-journal .osj-footer {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px 18px;
+  border-top: 1px solid var(--osj-line);
+  background: var(--osj-glass-strong);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.application.velvet-journal .osj-footer-brand {
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--osj-ink-strong);
+}
+
+.application.velvet-journal .osj-footer-text {
+  font-family: var(--osj-font-body);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--osj-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbars
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal :is(.journal-entry-pages, .toc) {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--osj-accent) 50%, transparent) transparent;
+}
+
+.application.velvet-journal ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.application.velvet-journal ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.application.velvet-journal ::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--osj-accent) 40%, transparent);
+  border-radius: 0;
+}
+
+.application.velvet-journal ::-webkit-scrollbar-thumb:hover {
+  background: var(--osj-accent);
+}
+
+/* --------------------------------------------------------------------------
+   Animations
+   -------------------------------------------------------------------------- */
+
+@keyframes osj-rise {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes osj-reveal {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); filter: blur(6px); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+}
+
+@keyframes osj-dust {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-40px, 62%, 0); }
+}
+
+@keyframes osj-shimmer {
+  from { background-position: -200% 50%; }
+  to { background-position: 200% 50%; }
+}
+
+@keyframes osj-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
+}
+
+.application.velvet-journal.osj-no-anim *,
+.application.velvet-journal.osj-no-anim *::before,
+.application.velvet-journal.osj-no-anim *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .application.velvet-journal *,
+  .application.velvet-journal *::before,
+  .application.velvet-journal *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive (window size, via container queries)
+   -------------------------------------------------------------------------- */
+
+@container osj (max-width: 620px) {
+  .application.velvet-journal .osj-hero-body,
+  .application.velvet-journal .journal-entry-page,
+  .application.velvet-journal .osj-plain-header {
+    width: calc(100% - 32px);
+  }
+
+  .application.velvet-journal .journal-entry-page {
+    padding: 22px 20px;
+  }
+
+  .application.velvet-journal .osj-meta {
+    gap: 10px;
+  }
+}

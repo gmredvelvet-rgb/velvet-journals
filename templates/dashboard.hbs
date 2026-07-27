@@ -1,0 +1,105 @@
+<section class="osj-panel osj-panel-dashboard">
+    <div class="osj-panel-scroll">
+
+        <header class="osj-panel-head">
+            <div class="osj-panel-head-text">
+                {{#if vjDash.kicker}}<p class="osj-kicker">{{ vjDash.kicker }}</p>{{/if}}
+                <h2 class="osj-panel-title">{{ vjDash.name }}</h2>
+                {{#if vjDash.subtitle}}<p class="osj-panel-sub">{{ vjDash.subtitle }}</p>{{/if}}
+            </div>
+            {{#if editable}}
+            <button type="button" class="osj-cta" data-action="vjCardAdd">
+                <i class="fa-solid fa-plus" inert></i>
+                <span>{{ localize "VJ.Dashboard.AddCard" }}</span>
+            </button>
+            {{/if}}
+        </header>
+
+        <div class="osj-dash-stats">
+            {{#each vjDash.stats}}
+            <button type="button" class="osj-dash-stat" data-action="vjTab" data-tab="{{ tab }}" style="--i: {{ @index }}">
+                <i class="{{ icon }}" inert></i>
+                <span class="osj-dash-stat-value">{{ value }}</span>
+                <span class="osj-dash-stat-label">{{ localize label }}</span>
+            </button>
+            {{/each}}
+        </div>
+
+        {{#if vjDash.cards.length}}
+        {{#each vjDash.sections}}
+        <div class="osj-dash-section">
+            {{#if name}}<h4 class="osj-dash-section-title">{{ name }}</h4>{{/if}}
+            <div class="osj-card-grid">
+                {{#each cards}}
+                <article class="osj-dcard size-{{ size }} {{#if hasTarget}}has-target{{/if}}"
+                         data-action="vjCardOpen" data-card-id="{{ id }}" draggable="{{ ../../editable }}"
+                         style="--i: {{ @index }}"
+                         {{#if target}}data-tooltip aria-label="{{ target.tooltip }}"{{/if}}>
+                    <div class="osj-dcard-media" aria-hidden="true">
+                        {{#if isVideo}}
+                        <video src="{{ media }}" muted loop autoplay playsinline disablepictureinpicture></video>
+                        {{else if media}}
+                        <img src="{{ media }}" alt="" loading="lazy" draggable="false">
+                        {{else}}
+                        <div class="osj-dcard-fallback"><i class="fa-solid fa-clapperboard" inert></i></div>
+                        {{/if}}
+                    </div>
+                    <div class="osj-dcard-scrim" aria-hidden="true"></div>
+                    <div class="osj-dcard-body">
+                        {{#if (or isVideo target)}}
+                        <div class="osj-dcard-chips">
+                            {{#if isVideo}}
+                            <span class="osj-dcard-chip"><i class="fa-solid fa-film" inert></i>{{ localize "VJ.Dashboard.Video" }}</span>
+                            {{/if}}
+                            {{#if target}}
+                            <span class="osj-dcard-chip"><i class="{{ target.icon }}" inert></i>{{ localize target.label }}</span>
+                            {{/if}}
+                        </div>
+                        {{/if}}
+                        <h3 class="osj-dcard-title">{{#if title}}{{ title }}{{else}}{{ localize "VJ.Cards.Untitled" }}{{/if}}</h3>
+                        {{#if subtitle}}
+                        <p class="osj-dcard-sub">{{ subtitle }}</p>
+                        {{else if target.name}}
+                        <p class="osj-dcard-sub osj-dcard-target-name">{{ target.name }}</p>
+                        {{/if}}
+                    </div>
+                    <div class="osj-dcard-tools">
+                        {{#if isVideo}}
+                        <button type="button" data-action="vjCardMute" data-tooltip
+                                aria-label="{{ localize "VJ.Dashboard.ToggleSound" }}">
+                            <i class="fa-solid fa-volume-xmark" inert></i>
+                        </button>
+                        {{/if}}
+                        {{#if ../../editable}}
+                        <button type="button" data-action="vjCardEdit" data-card-id="{{ id }}" data-tooltip
+                                aria-label="{{ localize "VJ.Cards.EditTitle" }}">
+                            <i class="fa-solid fa-pen" inert></i>
+                        </button>
+                        <button type="button" data-action="vjCardDelete" data-card-id="{{ id }}" data-tooltip
+                                aria-label="{{ localize "VJ.Dialog.DeleteTitle" }}">
+                            <i class="fa-solid fa-trash" inert></i>
+                        </button>
+                        {{/if}}
+                    </div>
+                    {{#if hasTarget}}<span class="osj-dcard-go" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>{{/if}}
+                </article>
+                {{/each}}
+            </div>
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="osj-empty">
+            <i class="fa-solid fa-clapperboard" inert></i>
+            <h3>{{ localize "VJ.Dashboard.Empty" }}</h3>
+            {{#if editable}}
+            <p>{{ localize "VJ.Dashboard.EmptyHint" }}</p>
+            <button type="button" class="osj-cta" data-action="vjCardAdd">
+                <i class="fa-solid fa-plus" inert></i>
+                <span>{{ localize "VJ.Dashboard.AddCard" }}</span>
+            </button>
+            {{/if}}
+        </div>
+        {{/if}}
+
+    </div>
+</section>

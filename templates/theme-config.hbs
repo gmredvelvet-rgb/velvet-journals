@@ -1,0 +1,222 @@
+<div class="osj-config-body">
+
+    <fieldset>
+        <legend><i class="fa-solid fa-panorama" inert></i> {{ localize "VJ.Config.Background" }}</legend>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.BackgroundFile" }}</label>
+            <div class="form-fields">
+                <file-picker name="{{ flagPath }}.background" type="imagevideo" value="{{ theme.background }}"
+                             placeholder="{{ localize "VJ.UrlPlaceholder" }}"></file-picker>
+            </div>
+            <p class="hint">{{ localize "VJ.Config.BackgroundFileHint" }} {{ localize "VJ.UrlHint" }}</p>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Fit" }}</label>
+            <div class="form-fields">
+                <select name="{{ flagPath }}.fit">
+                    {{ selectOptions options.fit selected=theme.fit localize=true }}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.PosX" }}</label>
+            <div class="form-fields">
+                <range-picker name="{{ flagPath }}.posX" value="{{ theme.posX }}" min="0" max="100" step="1"></range-picker>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.PosY" }}</label>
+            <div class="form-fields">
+                <range-picker name="{{ flagPath }}.posY" value="{{ theme.posY }}" min="0" max="100" step="1"></range-picker>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Blur" }}</label>
+            <div class="form-fields">
+                <range-picker name="{{ flagPath }}.blur" value="{{ theme.blur }}" min="0" max="40" step="1"></range-picker>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Brightness" }}</label>
+            <div class="form-fields">
+                <range-picker name="{{ flagPath }}.brightness" value="{{ theme.brightness }}" min="20" max="130" step="1"></range-picker>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Overlay" }}</label>
+            <div class="form-fields">
+                <color-picker name="{{ flagPath }}.overlay" value="{{ theme.overlay }}"></color-picker>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.OverlayOpacity" }}</label>
+            <div class="form-fields">
+                <range-picker name="{{ flagPath }}.overlayOpacity" value="{{ theme.overlayOpacity }}" min="0" max="100" step="1"></range-picker>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><i class="fa-solid fa-compass" inert></i> {{ localize "VJ.Config.Identity" }}</legend>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Banner" }}</label>
+            <div class="form-fields">
+                <file-picker name="{{ flagPath }}.banner" type="image" value="{{ theme.banner }}"
+                             placeholder="{{ localize "VJ.UrlPlaceholder" }}"></file-picker>
+            </div>
+            <p class="hint">{{ localize "VJ.Config.BannerHint" }} {{ localize "VJ.UrlHint" }}</p>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Logo" }}</label>
+            <div class="form-fields">
+                <file-picker name="{{ flagPath }}.logo" type="image" value="{{ theme.logo }}"
+                             placeholder="{{ localize "VJ.UrlPlaceholder" }}"></file-picker>
+            </div>
+            <p class="hint">{{ localize "VJ.UrlHint" }}</p>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Kicker" }}</label>
+            <div class="form-fields">
+                <input type="text" name="{{ flagPath }}.kicker" value="{{ theme.kicker }}"
+                       placeholder="{{ localize "VJ.Config.KickerPlaceholder" }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Subtitle" }}</label>
+            <div class="form-fields">
+                <input type="text" name="{{ flagPath }}.subtitle" value="{{ theme.subtitle }}"
+                       placeholder="{{ localize "VJ.Config.SubtitlePlaceholder" }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Author" }}</label>
+            <div class="form-fields">
+                <input type="text" name="{{ flagPath }}.author" value="{{ theme.author }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Tags" }}</label>
+            <div class="form-fields">
+                <input type="text" name="{{ flagPath }}.tags" value="{{ theme.tags }}"
+                       placeholder="{{ localize "VJ.Config.TagsPlaceholder" }}">
+            </div>
+            <p class="hint">{{ localize "VJ.Config.TagsHint" }}</p>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><i class="fa-solid fa-swatchbook" inert></i> {{ localize "VJ.Config.Appearance" }}</legend>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.ModeSelect" }}</label>
+            <div class="form-fields">
+                <select name="{{ flagPath }}.mode">
+                    {{ selectOptions options.mode selected=theme.mode localize=true }}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Accent" }}</label>
+            <div class="form-fields">
+                <color-picker name="{{ flagPath }}.accent" value="{{ theme.accent }}"></color-picker>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Accent2" }}</label>
+            <div class="form-fields">
+                <color-picker name="{{ flagPath }}.accent2" value="{{ theme.accent2 }}"></color-picker>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.ShowHero" }}</label>
+            <div class="form-fields">
+                <input type="checkbox" name="{{ flagPath }}.showHero" {{ checked theme.showHero }}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.ShowMeta" }}</label>
+            <div class="form-fields">
+                <input type="checkbox" name="{{ flagPath }}.showMeta" {{ checked theme.showMeta }}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.ShowFooter" }}</label>
+            <div class="form-fields">
+                <input type="checkbox" name="{{ flagPath }}.showFooter" {{ checked theme.showFooter }}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.FooterText" }}</label>
+            <div class="form-fields">
+                <input type="text" name="{{ flagPath }}.footerText" value="{{ theme.footerText }}">
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><i class="fa-solid fa-gamepad" inert></i> {{ localize "VJ.Config.Menu" }}</legend>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.ShowMenu" }}</label>
+            <div class="form-fields">
+                <input type="checkbox" name="{{ flagPath }}.showMenu" {{ checked theme.showMenu }}>
+            </div>
+            <p class="hint">{{ localize "VJ.Config.ShowMenuHint" }}</p>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.DefaultTab" }}</label>
+            <div class="form-fields">
+                <select name="{{ flagPath }}.defaultTab">
+                    {{ selectOptions options.defaultTab selected=theme.defaultTab localize=true }}
+                </select>
+            </div>
+            <p class="hint">{{ localize "VJ.Config.DefaultTabHint" }}</p>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><i class="fa-solid fa-wand-magic-sparkles" inert></i> {{ localize "VJ.Config.Effects" }}</legend>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Animations" }}</label>
+            <div class="form-fields">
+                <input type="checkbox" name="{{ flagPath }}.animations" {{ checked theme.animations }}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ localize "VJ.Config.Parallax" }}</label>
+            <div class="form-fields">
+                <input type="checkbox" name="{{ flagPath }}.parallax" {{ checked theme.parallax }}>
+            </div>
+        </div>
+    </fieldset>
+
+    <footer class="osj-config-footer">
+        <button type="button" data-action="osjResetTheme">
+            <i class="fa-solid fa-rotate-left" inert></i>
+            {{ localize "VJ.Config.Reset" }}
+        </button>
+    </footer>
+</div>

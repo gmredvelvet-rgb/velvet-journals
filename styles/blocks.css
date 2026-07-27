@@ -1,0 +1,540 @@
+/* ==========================================================================
+   Velvet content blocks
+   Global styles: blocks render identically inside the Velvet sheet,
+   the default journal sheet and the ProseMirror editor.
+   Belle Époque noir & gold, after Clair Obscur: Expedition 33.
+   ========================================================================== */
+
+:root {
+  --osjb-accent: #d3b06a;
+  --osjb-accent-2: #8ea6bd;
+  --osjb-ink: #e4d8bd;
+  --osjb-ink-strong: #f7eeda;
+  --osjb-panel: rgba(13, 10, 17, 0.55);
+  --osjb-line: rgba(211, 176, 106, 0.22);
+  --osjb-btn-ink: #241a08;
+  --osjb-display: "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  --osjb-body: "Cormorant Garamond", "Palatino Linotype", Georgia, serif;
+  --osjb-script: "Italianno", "Segoe Script", cursive;
+  --osjb-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Blocks used outside the Velvet skin (default parchment sheet / editor)
+   fall back to readable neutral surfaces. */
+[class^="osj-"],
+[class*=" osj-"] {
+  --osjb-local-panel: var(--osjb-panel);
+}
+
+/* Inherit sheet accent, fonts and panel surface when rendered inside a Velvet window,
+   so switching the module's theme setting reskins block content too. */
+.application.velvet-journal :is([class^="osj-"], [class*=" osj-"]) {
+  --osjb-accent: var(--osj-accent);
+  --osjb-accent-2: var(--osj-accent-2);
+  --osjb-ink: var(--osj-ink);
+  --osjb-ink-strong: var(--osj-ink-strong);
+  --osjb-line: var(--osj-line);
+  --osjb-panel: var(--osj-glass);
+  --osjb-display: var(--osj-font-display);
+  --osjb-body: var(--osj-font-body);
+  --osjb-script: var(--osj-font-script);
+}
+
+/* Light-surface contexts: the default journal sheet and the editor */
+:is(.journal-sheet:not(.velvet-journal), .journal-entry-page.text.edit, .prosemirror) :is([class^="osj-"], [class*=" osj-"]) {
+  --osjb-ink: #3a3122;
+  --osjb-ink-strong: #211b0e;
+  --osjb-panel: rgba(63, 48, 18, 0.06);
+  --osjb-line: rgba(107, 82, 34, 0.3);
+}
+
+.application.velvet-journal.osj-light :is([class^="osj-"], [class*=" osj-"]) {
+  --osjb-panel: rgba(63, 48, 18, 0.05);
+}
+
+/* --------------------------------------------------------------------------
+   Callout
+   -------------------------------------------------------------------------- */
+
+.osj-callout {
+  position: relative;
+  margin: 1em 0;
+  padding: 14px 18px 14px 46px;
+  border-radius: 2px;
+  background: var(--osjb-panel);
+  border: 1px solid var(--osjb-line);
+  border-left: 2px solid var(--osjb-accent);
+}
+
+.osj-callout::before {
+  font: var(--fa-font-solid, 900 1em / 1 "Font Awesome 6 Pro");
+  position: absolute;
+  left: 16px;
+  top: 17px;
+  color: var(--osjb-accent);
+}
+
+.osj-callout > h4 {
+  margin: 0 0 4px;
+  font-family: var(--osjb-display);
+  font-weight: 600;
+  font-size: 0.92em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--osjb-ink-strong);
+}
+
+.osj-callout > p:last-child {
+  margin-bottom: 0;
+}
+
+.osj-callout.note { border-left-color: var(--osjb-accent-2); }
+.osj-callout.note::before { content: "\f02e"; color: var(--osjb-accent-2); }
+.osj-callout.quest::before { content: "\f024"; }
+.osj-callout.loot { border-left-color: #d9b64a; }
+.osj-callout.loot::before { content: "\f51e"; color: #d9b64a; }
+.osj-callout.danger { border-left-color: #b0505a; }
+.osj-callout.danger::before { content: "\f071"; color: #b0505a; }
+
+/* --------------------------------------------------------------------------
+   Quote
+   -------------------------------------------------------------------------- */
+
+.osj-quote {
+  position: relative;
+  margin: 1.4em 0;
+  padding: 20px 26px 18px 60px;
+  border: 1px solid var(--osjb-line);
+  border-radius: 2px;
+  background: var(--osjb-panel);
+}
+
+.osj-quote::before {
+  content: "\201C";
+  position: absolute;
+  left: 16px;
+  top: -4px;
+  font-family: var(--osjb-script);
+  font-size: 4em;
+  line-height: 1.2;
+  color: var(--osjb-accent);
+}
+
+.osj-quote > p {
+  margin: 0;
+  font-family: var(--osjb-body);
+  font-style: italic;
+  font-size: 1.12em;
+  color: var(--osjb-ink-strong);
+}
+
+.osj-quote > cite {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--osjb-display);
+  font-style: normal;
+  font-size: 0.62em;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--osjb-accent);
+}
+
+.osj-quote > cite::before {
+  content: "\2014\00a0";
+  color: var(--osjb-accent-2);
+}
+
+/* --------------------------------------------------------------------------
+   Cards & columns
+   -------------------------------------------------------------------------- */
+
+.osj-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin: 1.2em 0;
+}
+
+.osj-card {
+  position: relative;
+  padding: 18px;
+  border-radius: 2px;
+  background: var(--osjb-panel);
+  border: 1px solid var(--osjb-line);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s var(--osjb-ease), border-color 0.3s var(--osjb-ease), box-shadow 0.3s var(--osjb-ease);
+}
+
+.osj-card::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--osjb-accent) 14%, transparent);
+  transition: border-color 0.3s var(--osjb-ease);
+}
+
+.osj-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--osjb-accent) 60%, transparent);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32);
+}
+
+.osj-card:hover::after {
+  border-color: color-mix(in srgb, var(--osjb-accent) 38%, transparent);
+}
+
+.osj-card > h4 {
+  margin: 0 0 6px;
+  font-family: var(--osjb-display);
+  font-weight: 600;
+  font-size: 0.95em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--osjb-ink-strong);
+}
+
+.osj-card > p {
+  margin: 0 0 8px;
+  font-size: 0.92em;
+}
+
+.osj-card-link {
+  font-family: var(--osjb-display);
+  font-size: 0.6em !important;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--osjb-accent);
+}
+
+.osj-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin: 1.2em 0;
+}
+
+.osj-column > h4 {
+  font-family: var(--osjb-display);
+  letter-spacing: 0.1em;
+  color: var(--osjb-ink-strong);
+}
+
+/* --------------------------------------------------------------------------
+   Gallery
+   -------------------------------------------------------------------------- */
+
+.osj-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 1.2em 0;
+}
+
+.osj-gallery figure {
+  position: relative;
+  margin: 0;
+  border-radius: 1px;
+  overflow: hidden;
+  border: 1px solid var(--osjb-line);
+  background: var(--osjb-panel);
+  transition: transform 0.35s var(--osjb-ease), box-shadow 0.35s var(--osjb-ease), border-color 0.35s var(--osjb-ease);
+}
+
+.osj-gallery figure:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--osjb-accent) 60%, transparent);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
+}
+
+.osj-gallery img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: none;
+  border-radius: 0;
+  cursor: var(--cursor-pointer, pointer);
+  transition: transform 0.7s var(--osjb-ease);
+}
+
+.osj-gallery figure:hover img {
+  transform: scale(1.06);
+}
+
+.osj-gallery figcaption {
+  padding: 8px 12px;
+  font-family: var(--osjb-body);
+  font-style: italic;
+  font-size: 0.9em;
+  color: var(--osjb-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Timeline
+   -------------------------------------------------------------------------- */
+
+.osj-timeline {
+  list-style: none;
+  margin: 1.2em 0;
+  padding: 0 0 0 26px;
+  position: relative;
+  counter-reset: osj-timeline;
+}
+
+.osj-timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--osjb-accent), color-mix(in srgb, var(--osjb-accent) 15%, transparent));
+}
+
+.osj-timeline > li {
+  position: relative;
+  padding-bottom: 18px;
+}
+
+.osj-timeline > li::before {
+  content: "";
+  position: absolute;
+  left: -23px;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  rotate: 45deg;
+  border-radius: 0;
+  background: var(--osjb-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--osjb-accent) 55%, transparent);
+}
+
+.osj-timeline > li > h4 {
+  margin: 0 0 4px;
+  font-family: var(--osjb-display);
+  font-weight: 600;
+  font-size: 0.92em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--osjb-ink-strong);
+}
+
+.osj-timeline > li > p {
+  margin: 0;
+  font-size: 0.92em;
+}
+
+/* --------------------------------------------------------------------------
+   NPC & location cards
+   -------------------------------------------------------------------------- */
+
+.osj-npc,
+.osj-location {
+  display: grid;
+  gap: 18px;
+  align-items: center;
+  margin: 1.2em 0;
+  padding: 18px;
+  border-radius: 2px;
+  background: var(--osjb-panel);
+  border: 1px solid var(--osjb-line);
+}
+
+.osj-npc { grid-template-columns: 92px 1fr; }
+.osj-location { grid-template-columns: 140px 1fr; }
+
+.osj-npc-portrait {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 1px;
+  border: 1px solid var(--osjb-line) !important;
+  outline: 1px solid color-mix(in srgb, var(--osjb-accent) 35%, transparent);
+  outline-offset: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.osj-location-image {
+  width: 140px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 1px;
+  border: 1px solid var(--osjb-line) !important;
+  outline: 1px solid color-mix(in srgb, var(--osjb-accent) 25%, transparent);
+  outline-offset: 3px;
+}
+
+.osj-npc-body > h4,
+.osj-location-body > h4 {
+  margin: 0;
+  font-family: var(--osjb-display);
+  font-size: 1.05em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--osjb-ink-strong);
+}
+
+.osj-npc-role {
+  margin: 0 0 8px !important;
+  font-family: var(--osjb-script);
+  font-size: 1.25em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--osjb-accent);
+}
+
+.osj-npc-body > p:last-child,
+.osj-location-body > p:last-child {
+  margin-bottom: 0;
+  font-size: 0.92em;
+}
+
+.osj-kicker-inline {
+  margin: 0 !important;
+  font-family: var(--osjb-display);
+  font-size: 0.58em;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--osjb-accent-2);
+}
+
+/* --------------------------------------------------------------------------
+   Stats panel
+   -------------------------------------------------------------------------- */
+
+.osj-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 12px;
+  margin: 1.2em 0;
+}
+
+.osj-stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 16px;
+  border-radius: 2px;
+  background: var(--osjb-panel);
+  border: 1px solid var(--osjb-line);
+}
+
+.osj-stat::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--osjb-accent) 12%, transparent);
+}
+
+.osj-stat-value {
+  font-family: var(--osjb-display);
+  font-size: 1.8em;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--osjb-accent);
+}
+
+.osj-stat-label {
+  font-family: var(--osjb-display);
+  font-size: 0.56em;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--osjb-ink);
+  opacity: 0.8;
+}
+
+/* --------------------------------------------------------------------------
+   Button
+   -------------------------------------------------------------------------- */
+
+.osj-btn-row {
+  margin: 1.2em 0;
+}
+
+a.osj-btn {
+  display: inline-block;
+  padding: 10px 28px;
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--osjb-accent) 60%, transparent);
+  color: var(--osjb-accent) !important;
+  font-family: var(--osjb-display);
+  font-weight: 600;
+  font-size: 0.78em;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: none;
+  transition: color 0.3s var(--osjb-ease), border-color 0.3s var(--osjb-ease), background-color 0.3s var(--osjb-ease), box-shadow 0.3s var(--osjb-ease);
+  cursor: var(--cursor-pointer, pointer);
+}
+
+a.osj-btn:hover {
+  color: var(--osjb-ink-strong) !important;
+  border-color: var(--osjb-accent);
+  background: color-mix(in srgb, var(--osjb-accent) 12%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--osjb-accent) 25%, transparent);
+  text-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Accordion & divider
+   -------------------------------------------------------------------------- */
+
+.osj-accordion {
+  margin: 1em 0;
+  border: 1px solid var(--osjb-line);
+  border-radius: 2px;
+  background: var(--osjb-panel);
+  overflow: hidden;
+}
+
+.osj-accordion > summary {
+  padding: 12px 18px;
+  font-family: var(--osjb-display);
+  font-weight: 600;
+  font-size: 0.88em;
+  letter-spacing: 0.1em;
+  color: var(--osjb-ink-strong);
+  cursor: var(--cursor-pointer, pointer);
+  transition: background-color 0.25s var(--osjb-ease);
+}
+
+.osj-accordion > summary:hover {
+  background: color-mix(in srgb, var(--osjb-accent) 9%, transparent);
+}
+
+.osj-accordion[open] > summary {
+  border-bottom: 1px solid var(--osjb-line);
+}
+
+.osj-accordion > :not(summary) {
+  margin: 10px 18px;
+}
+
+hr.osj-divider {
+  border: none;
+  height: 14px;
+  margin: 1.6em auto;
+  background:
+    radial-gradient(circle at 50% 50%, var(--osjb-accent) 3px, transparent 3.5px),
+    linear-gradient(90deg, transparent, var(--osjb-line) 20%, var(--osjb-line) 80%, transparent) 50% 50% / 100% 1px no-repeat;
+}
+
+/* --------------------------------------------------------------------------
+   Editor dropdown flourish
+   -------------------------------------------------------------------------- */
+
+#prosemirror-dropdown .velvet-blocks li[data-action^="osj-"] span {
+  font-weight: 600;
+}

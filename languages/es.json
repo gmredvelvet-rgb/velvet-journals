@@ -1,0 +1,360 @@
+{
+  "VJ": {
+    "SheetName": "Velvet Journals",
+    "Breadcrumb": "Ubicación",
+    "UrlPlaceholder": "ruta/al/archivo.ext o https://ejemplo.com/imagen.jpg",
+    "UrlHint": "También puedes pegar directamente la URL de una imagen o video (terminada en .jpg, .png, .webp, .gif, .webm, .mp4...) en lugar de buscar un archivo.",
+    "MD": {
+      "Heading": "Título",
+      "Bold": "Negrita",
+      "Italic": "Cursiva",
+      "Ul": "Lista",
+      "Ol": "Lista numerada",
+      "Quote": "Cita",
+      "Link": "Enlace",
+      "Hr": "Separador",
+      "Placeholder": "texto",
+      "LinkText": "texto del enlace"
+    },
+    "ThemeConfig": {
+      "Open": "Tema Velvet",
+      "Title": "Tema Velvet"
+    },
+    "Settings": {
+      "Theme": {
+        "Name": "Tema",
+        "Hint": "Elige la identidad visual usada en todos los diarios Velvet: ventana, colores, tipografía y estilo del menú. Cambiar esto recarga Foundry.",
+        "Classic": "Clásica — Belle Époque noir & dorado",
+        "Survival": "Survival — equipo de campo industrial",
+        "Cyber": "Cyber — interfaz holográfica de neón"
+      },
+      "License": {
+        "Name": "Licencia de Patreon",
+        "Label": "Gestionar licencia",
+        "Hint": "Conecta tu cuenta de Patreon para quitar el aviso de prueba gratuita, o libera la ranura de instalación para usarla en otro sitio. Solo el GM — el módulo funciona igual en ambos casos."
+      }
+    },
+    "License": {
+      "TrialBadge": "Prueba Gratuita",
+      "TrialIntro": "Estás usando Velvet Journals en modo Prueba Gratuita — todas las funciones están disponibles.",
+      "TrialPitch": "Únete a Patreon para apoyar el desarrollo, quitar este aviso y desbloquear este módulo y muchos más.",
+      "TrialIntroPlayer": "Tu GM está usando Velvet Journals en modo Prueba Gratuita.",
+      "TrialPlayerNote": "No tienes que hacer nada: la mesa tiene todas las funciones disponibles.",
+      "Connect": "Conectar con Patreon",
+      "Opening": "Abriendo Patreon…",
+      "HaveCode": "Tengo un código",
+      "Later": "Más tarde",
+      "Close": "Cerrar",
+      "Cancelled": "Autorización cancelada. Si la ventana emergente no se abrió, usa la opción «Tengo un código».",
+      "Connected": "Conectado como suscriptor {tier}. ¡Bienvenido!",
+      "CodeTitle": "Introducir código",
+      "CodeHint": "Pega el código que aparece tras conectar tu cuenta de Patreon.",
+      "Activate": "Activar",
+      "StatusActive": "Licencia activa — suscriptor {tier}. ¡Gracias por tu apoyo!",
+      "StatusTrusted": "Licencia verificada. Se revalida sola — no se te volverá a preguntar.",
+      "Released": "Ranura de instalación liberada.",
+      "Release": "Liberar instalación",
+      "ReleaseHint": "Libera la ranura si vas a usar tu suscripción en otro servidor o navegador.",
+      "ReleaseConfirm": "¿Liberar esta instalación? Velvet Journals seguirá funcionando, pero el aviso de prueba gratuita volverá hasta que vuelvas a conectar."
+    },
+    "Mode": {
+      "Dark": "Oscuro",
+      "Light": "Claro"
+    },
+    "Fit": {
+      "Cover": "Cubrir",
+      "Contain": "Contener"
+    },
+    "Menu": {
+      "Label": "Menú del diario"
+    },
+    "Hub": {
+      "Open": "Velvet Journal",
+      "SettingName": "Diario del menú Velvet",
+      "SettingHint": "Nombre del diario que se abre como menú de juego con la tecla J, el botón de la barra lateral o el control de escena. Si no existe, se crea automáticamente la primera vez que el GM lo abre.",
+      "NoJournal": "El GM todavía no configuró el menú Velvet.",
+      "NoPermission": "No tienes permiso para ver el menú Velvet. Pídele al GM que revise su configuración de permisos.",
+      "Created": "Se creó el diario «{name}» como menú Velvet.",
+      "Kicker": "Crónica de campaña",
+      "Subtitle": "Todo lo que la mesa necesita, en un solo lugar.",
+      "WelcomeTitle": "Bienvenida",
+      "WelcomeContent": "<p>Este diario es tu <strong>menú de campaña</strong>. Usa las pestañas de arriba:</p><ul><li><strong>Dashboard</strong> — crea tarjetas con imágenes o videos y enlázalas a escenas, actores, macros o páginas. También puedes arrastrar documentos directamente.</li><li><strong>PNJs</strong> — arrastra actores desde la barra lateral para armar la galería de retratos.</li><li><strong>Misiones</strong> — lleva el registro de misiones activas, completadas y falladas con objetivos y progreso.</li><li><strong>Páginas</strong> — el diario clásico, con toda la potencia de Foundry.</li></ul><p>Ábrelo en cualquier momento con la tecla <strong>J</strong>.</p>"
+    },
+    "Tabs": {
+      "Auto": "Automática",
+      "Dashboard": "Dashboard",
+      "Npcs": "PNJs",
+      "Quests": "Misiones",
+      "Atlas": "Atlas",
+      "Pages": "Páginas"
+    },
+    "Atlas": {
+      "Kicker": "Cartografía de la expedición",
+      "Untitled": "Sin nombre",
+      "NavTitle": "Mapas",
+      "None": "— Ninguno —",
+      "NewMap": "Nuevo mapa",
+      "EditMap": "Editar mapa",
+      "MapName": "Nombre",
+      "MapImage": "Imagen del mapa",
+      "MapImageHint": "PNG, JPG o WEBP. Por ejemplo, el plano de Phandalin o la región de la campaña.",
+      "MapParent": "Mapa padre",
+      "MapParentHint": "Si eliges un padre (una ciudad grande), este mapa aparecerá anidado bajo él en el índice.",
+      "MapDescription": "Descripción breve",
+      "NewPin": "Nuevo punto de interés",
+      "EditPin": "Editar punto de interés",
+      "PinName": "Nombre",
+      "PinType": "Tipo",
+      "PinTypePlaceholder": "Taberna · Tienda · Guarida…",
+      "PinColor": "Color del pin",
+      "PinMapLink": "Viajar a mapa",
+      "PinMapLinkHint": "Si eliges un mapa, hacer clic en este pin navega a él (por ejemplo, de la región a Phandalin) en lugar de abrir la ficha.",
+      "PinImage": "Imagen",
+      "PinDescription": "Descripción",
+      "PinHidden": "Oculto para jugadores",
+      "PinHiddenHint": "Los pines ocultos solo son visibles para el GM y los propietarios.",
+      "Color": {
+        "Gold": "Oro",
+        "Slate": "Pizarra",
+        "Crimson": "Carmesí",
+        "Sage": "Salvia"
+      },
+      "ZoomIn": "Acercar",
+      "ZoomOut": "Alejar",
+      "ResetView": "Restablecer vista",
+      "PlacePin": "Añadir punto de interés",
+      "Close": "Cerrar",
+      "Hint": "Pulsa el botón de pin (o doble clic en el mapa) para añadir un punto de interés · arrastra un pin para moverlo",
+      "ModalHint": "Arrastra actores u objetos (incluso de compendios) aquí para añadirlos como PNJs o mercancía.",
+      "People": "Gente del lugar",
+      "Shop": "Mercancía",
+      "MissingItem": "Objeto no encontrado",
+      "Duplicate": "Ese documento ya está vinculado a este lugar.",
+      "Empty": "El atlas está en blanco",
+      "EmptyHint": "Crea un mapa (una imagen de Phandalin, una región, un plano de taberna) y marca sus lugares con pines."
+    },
+    "Dashboard": {
+      "AddCard": "Nueva tarjeta",
+      "Video": "Video",
+      "ToggleSound": "Activar / silenciar sonido",
+      "Empty": "Tu portada está vacía",
+      "EmptyHint": "Crea tarjetas con imágenes o videos, o arrastra escenas, actores, macros y entradas de diario aquí para enlazarlas.",
+      "OpenMissing": "El documento enlazado ya no existe.",
+      "TargetScene": "Escena",
+      "TargetMacro": "Macro",
+      "TargetTable": "Tabla de tiradas",
+      "TargetPlaylist": "Lista de reproducción",
+      "TargetPage": "Página de diario",
+      "TargetJournal": "Diario",
+      "TargetActor": "Actor",
+      "TargetItem": "Objeto",
+      "TargetDoc": "Documento",
+      "TargetMissing": "Enlace roto",
+      "TargetLink": "Enlace web",
+      "TargetTooltip": "{type}: {name}",
+      "Uncategorized": "Sin categoría"
+    },
+    "Cards": {
+      "NewTitle": "Nueva tarjeta",
+      "EditTitle": "Editar tarjeta",
+      "Untitled": "Sin título",
+      "Title": "Título",
+      "Subtitle": "Subtítulo",
+      "Category": "Sección",
+      "CategoryPlaceholder": "Mapas, Reglas rápidas, Música...",
+      "CategoryHint": "Las tarjetas que comparten el mismo nombre de sección se agrupan juntas en el dashboard. Déjalo vacío para no asignar sección.",
+      "Media": "Imagen / Video",
+      "MediaHint": "PNG, JPG, WEBP, GIF, WEBM o MP4. Los videos se reproducen en bucle; el sonido se activa desde la tarjeta.",
+      "Size": "Tamaño",
+      "SizeMd": "Normal",
+      "SizeWide": "Ancha",
+      "SizeTall": "Alta",
+      "SizeHero": "Destacada (2×2)",
+      "Link": "Documento enlazado",
+      "LinkHint": "Arrastra una escena, actor, objeto, macro, tabla de tiradas, lista de reproducción o página aquí. Una escena se abre, una macro se ejecuta, una tabla tira, una lista reproduce/detiene, una página salta a ella, cualquier otra cosa abre su ficha.",
+      "Url": "Enlace externo",
+      "UrlHint": "Si se indica, la tarjeta abre esta URL en el navegador."
+    },
+    "Npcs": {
+      "Kicker": "Reparto",
+      "Hint": "Arrastra actores desde la barra lateral para añadirlos. Arrastra un retrato al canvas para colocar su token, o sobre otro para reordenar.",
+      "Empty": "Todavía no hay personajes",
+      "EmptyHint": "Arrastra actores desde la barra lateral o un compendio para crear su retrato.",
+      "Missing": "Actor no encontrado",
+      "Duplicate": "Ese actor ya está en la galería.",
+      "Role": "Rol / Facción",
+      "RolePlaceholder": "Capitana del puerto · Gremio del Faro",
+      "Location": "Ubicación",
+      "LocationHint": "Vincula este personaje a uno de tus mapas del Atlas para poder filtrarlo por lugar (ej. Vallaki, Barovia, Ravenloft).",
+      "EditTitle": "Editar PNJ",
+      "ToggleHidden": "Mostrar / ocultar a jugadores",
+      "HiddenTip": "Oculto para los jugadores",
+      "Portrait": "Retrato",
+      "PortraitHint": "Arte personalizado opcional para la ficha. Si se deja vacío, se usa la imagen propia del actor.",
+      "Bio": "Notas",
+      "BioHint": "Admite Markdown (títulos, **negrita**, listas...), HTML y enlaces @UUID[...] a documentos.",
+      "NoBioHint": "Todavía no hay notas. Pulsa Editar para escribir la ficha de este personaje.",
+      "OpenSheet": "Abrir hoja de personaje",
+      "NoViewPermission": "No tienes permiso para ver la hoja de ese personaje.",
+      "SearchPlaceholder": "Buscar PNJs...",
+      "LocationFilter": "Filtrar por ubicación",
+      "AllLocations": "Todas las ubicaciones",
+      "Unassigned": "Sin asignar",
+      "NoMatch": "Ningún PNJ coincide con tu búsqueda."
+    },
+    "Quests": {
+      "Kicker": "Registro de misiones",
+      "New": "Nueva misión",
+      "NewTitle": "Nueva misión",
+      "EditTitle": "Editar misión",
+      "Untitled": "Misión sin nombre",
+      "Name": "Nombre",
+      "Image": "Imagen",
+      "Summary": "Descripción",
+      "SummaryHint": "Admite Markdown (títulos, **negrita**, listas...), HTML y enlaces @UUID[...] a documentos.",
+      "StatusLabel": "Estado",
+      "Hidden": "Oculta para jugadores",
+      "HiddenHint": "Las misiones ocultas solo son visibles para el GM y los propietarios.",
+      "RewardsTitle": "Recompensas",
+      "RewardCurrency": "Dinero",
+      "RewardCurrencyPlaceholder": "150 po, 3 pp...",
+      "RewardCurrencyHint": "Texto libre, para que se ajuste a la moneda que use tu sistema.",
+      "RewardXp": "Experiencia",
+      "RewardOther": "Otras recompensas",
+      "RewardOtherPlaceholder": "Reputación con el Gremio del Faro +1...",
+      "RewardOtherHint": "Cualquier cosa que no sea dinero, PX o un objeto: títulos, favores, reputación...",
+      "Xp": "PX",
+      "RewardsDropHint": "Arrastra un Objeto aquí (desde un compendio, la barra lateral o la hoja de un actor) para añadirlo como recompensa.",
+      "RewardQtyInc": "Aumentar cantidad",
+      "RewardQtyDec": "Disminuir cantidad",
+      "Status": {
+        "Active": "Activa",
+        "Done": "Completada",
+        "Failed": "Fallada"
+      },
+      "Active": "Activas",
+      "Done": "Completadas",
+      "Failed": "Falladas",
+      "ObjectivePlaceholder": "Nuevo objetivo… (Enter para añadir)",
+      "AddObjective": "Añadir objetivo",
+      "ToggleObjective": "Marcar objetivo",
+      "MarkActive": "Reactivar",
+      "MarkDone": "Completar",
+      "MarkFailed": "Fallar",
+      "Show": "Mostrar",
+      "Hide": "Ocultar",
+      "Edit": "Editar",
+      "Delete": "Eliminar",
+      "ShowPlayers": "Mostrar a jugadores",
+      "EmptyActive": "No hay misiones activas",
+      "EmptyDone": "Todavía no se completó ninguna misión",
+      "EmptyFailed": "Ninguna misión fallada. De momento."
+    },
+    "Dialog": {
+      "Save": "Guardar",
+      "Cancel": "Cancelar",
+      "DeleteTitle": "Eliminar",
+      "DeleteConfirm": "¿Eliminar «{name}»? Esta acción no se puede deshacer."
+    },
+    "Config": {
+      "Background": "Fondo",
+      "BackgroundFile": "Imagen / Video",
+      "BackgroundFileHint": "PNG, JPG, WEBP, GIF, WEBM o MP4. Los videos se reproducen automáticamente, en bucle y sin sonido.",
+      "Fit": "Ajuste",
+      "PosX": "Posición horizontal",
+      "PosY": "Posición vertical",
+      "Blur": "Desenfoque",
+      "Brightness": "Brillo",
+      "Overlay": "Color de superposición",
+      "OverlayOpacity": "Opacidad de superposición",
+      "Identity": "Identidad",
+      "Banner": "Banner del héroe",
+      "BannerHint": "Imagen destacada de gran tamaño mostrada detrás del título.",
+      "Logo": "Logo",
+      "Kicker": "Antetítulo",
+      "KickerPlaceholder": "Un MMO social en una isla imposible",
+      "Subtitle": "Subtítulo",
+      "SubtitlePlaceholder": "Cada llegada deja una historia…",
+      "Author": "Autor",
+      "Tags": "Etiquetas",
+      "TagsPlaceholder": "exploración, isla, rareza",
+      "TagsHint": "Lista separada por comas, mostrada como chips en el héroe.",
+      "Appearance": "Apariencia",
+      "ModeSelect": "Modo del tema",
+      "Accent": "Color principal",
+      "Accent2": "Color secundario",
+      "ShowHero": "Mostrar héroe",
+      "ShowMeta": "Mostrar metadatos",
+      "ShowFooter": "Mostrar pie",
+      "FooterText": "Texto del pie",
+      "Menu": "Menú interactivo",
+      "ShowMenu": "Activar menú de pestañas",
+      "ShowMenuHint": "Muestra el Dashboard, PNJs y Misiones como un menú de juego. Al desactivarlo, el diario vuelve al modo clásico de páginas.",
+      "DefaultTab": "Pestaña inicial",
+      "DefaultTabHint": "«Automática» abre el Dashboard si tiene tarjetas; si no, las Páginas.",
+      "Effects": "Efectos",
+      "Animations": "Activar animaciones",
+      "Parallax": "Activar parallax",
+      "Reset": "Restaurar valores"
+    },
+    "Blocks": {
+      "Menu": "Velvet",
+      "Placeholder": "Escribí acá. Todo en la isla termina en un reporte tarde o temprano.",
+      "Callout": {
+        "Menu": "Aviso",
+        "Note": "Nota",
+        "Quest": "Misión",
+        "Loot": "Botín",
+        "Danger": "Peligro"
+      },
+      "Quote": {
+        "Menu": "Cita",
+        "Text": "La oficina del muelle todavía no garantiza que tu formulario no termine bajo una taza de café.",
+        "Cite": "Oficina de Pasaportes — Muelle Norte"
+      },
+      "Cards": {
+        "Menu": "Cuadrícula de tarjetas",
+        "Card": "Tarjeta",
+        "Link": "Leer registro"
+      },
+      "Columns": {
+        "Menu": "Dos columnas",
+        "Left": "Columna izquierda",
+        "Right": "Columna derecha"
+      },
+      "Gallery": {
+        "Menu": "Galería",
+        "Caption": "Descripción"
+      },
+      "Timeline": {
+        "Menu": "Línea de tiempo",
+        "Event": "Evento"
+      },
+      "NPC": {
+        "Menu": "Tarjeta de PNJ",
+        "Name": "Nombre del personaje",
+        "Role": "Rol · Facción"
+      },
+      "Location": {
+        "Menu": "Tarjeta de lugar",
+        "Kicker": "Registros de la isla",
+        "Name": "Nombre del lugar"
+      },
+      "Stats": {
+        "Menu": "Panel de estadísticas",
+        "Label": "Etiqueta"
+      },
+      "Button": {
+        "Menu": "Botón",
+        "Label": "Abrir la Bitácora"
+      },
+      "Accordion": {
+        "Menu": "Acordeón",
+        "Summary": "Algo raro apareció cerca del faro"
+      },
+      "Divider": {
+        "Menu": "Separador"
+      }
+    }
+  }
+}

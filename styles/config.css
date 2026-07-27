@@ -1,0 +1,191 @@
+/* ==========================================================================
+   Velvet Journals — theme configuration window & dialogs
+   Belle Époque noir & gold.
+   ========================================================================== */
+
+.application.velvet-config {
+  --osj-accent: #d3b06a;
+  background: linear-gradient(180deg, #171320, #0c0a10);
+  border: 1px solid rgba(211, 176, 106, 0.38);
+  border-radius: 4px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  color: #e4d8bd;
+  font-family: "Cormorant Garamond", "Palatino Linotype", Georgia, serif;
+  font-size: var(--font-size-15, 15px);
+}
+
+.application.velvet-config .window-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(211, 176, 106, 0.18);
+  --color-header-title: #f7eeda;
+}
+
+.application.velvet-config .window-header .window-title {
+  font-family: "Cinzel", "Times New Roman", serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.application.velvet-config .window-content {
+  background: transparent;
+  padding: 0;
+}
+
+.application.velvet-config .osj-config-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.application.velvet-config fieldset {
+  border: 1px solid rgba(211, 176, 106, 0.18);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 10px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.application.velvet-config legend {
+  font-family: "Cinzel", "Times New Roman", serif;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--osj-accent);
+  padding-inline: 8px;
+}
+
+.application.velvet-config legend i {
+  color: var(--osj-accent);
+  margin-right: 6px;
+  font-size: 0.62rem;
+}
+
+.application.velvet-config .form-group label {
+  color: #e4d8bd;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.application.velvet-config .form-group .hint {
+  color: #9b8e74;
+  font-style: italic;
+  font-size: 0.88rem;
+}
+
+.application.velvet-config :is(input[type="text"], textarea, select, file-picker input) {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(211, 176, 106, 0.22);
+  border-radius: 2px;
+  color: #e4d8bd;
+  font-family: inherit;
+}
+
+.application.velvet-config :is(input[type="text"], textarea, select, file-picker input):focus {
+  outline: none;
+  border-color: var(--osj-accent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--osj-accent) 25%, transparent);
+}
+
+.application.velvet-config select option {
+  background: #171320;
+}
+
+.application.velvet-config input[type="checkbox"] {
+  --checkbox-checked-color: var(--osj-accent);
+}
+
+.application.velvet-config range-picker input[type="range"] {
+  --range-thumb-background-color: var(--osj-accent);
+}
+
+/* Markdown mini-editor: formatting toolbar over a plain textarea. */
+.application.velvet-config .vj-md-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.application.velvet-config .vj-md-toolbar {
+  display: flex;
+  gap: 2px;
+  padding: 3px 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(211, 176, 106, 0.22);
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+}
+
+.application.velvet-config .vj-md-toolbar button {
+  width: 26px;
+  height: 24px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 2px;
+  box-shadow: none;
+  color: #9b8e74;
+  font-size: 0.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.application.velvet-config .vj-md-toolbar button:hover {
+  color: var(--osj-accent);
+  background: color-mix(in srgb, var(--osj-accent) 12%, transparent);
+  border: none;
+  box-shadow: none;
+}
+
+.application.velvet-config .vj-md-editor textarea {
+  margin: 0;
+  border-radius: 0 0 2px 2px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.application.velvet-config .osj-config-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 4px;
+}
+
+.application.velvet-config .osj-config-footer button,
+.application.velvet-config.velvet-dialog .form-footer button {
+  background: transparent;
+  border: 1px solid rgba(211, 176, 106, 0.35);
+  border-radius: 2px;
+  color: #e4d8bd;
+  font-family: "Cinzel", "Times New Roman", serif;
+  font-weight: 600;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.application.velvet-config .osj-config-footer button:hover,
+.application.velvet-config.velvet-dialog .form-footer button:hover {
+  border-color: var(--osj-accent);
+  color: var(--osj-accent);
+  background: color-mix(in srgb, var(--osj-accent) 8%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--osj-accent) 22%, transparent);
+}
+
+.application.velvet-config.velvet-dialog .form-footer button.default {
+  border-color: color-mix(in srgb, var(--osj-accent) 65%, transparent);
+  color: var(--osj-accent);
+}

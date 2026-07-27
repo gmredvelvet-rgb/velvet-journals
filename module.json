@@ -1,0 +1,50 @@
+{
+  "id": "velvet-journals",
+  "title": "Velvet Journals",
+  "description": "A game-menu Journal experience with the Velvet AAA visual identity: interactive tab bar, media dashboard with video cards, draggable NPC portrait gallery, quest tracker (active/completed/failed), atlas with map pins, Markdown-aware editors, cinematic hero headers, animated backgrounds, glass panels and a rich content block library. 100% native Foundry Journal functionality.",
+  "version": "3.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "GM RedVelvet",
+      "email": "gmredvelvet@gmail.com",
+      "url": "https://github.com/gmredvelvet-rgb",
+      "discord": "gmredvelvet"
+    }
+  ],
+  "url": "https://github.com/gmredvelvet-rgb/velvet-journals",
+  "manifest": "https://github.com/gmredvelvet-rgb/velvet-journals/releases/latest/download/module.json",
+  "download": "https://github.com/gmredvelvet-rgb/velvet-journals/releases/latest/download/module.zip",
+  "readme": "https://github.com/gmredvelvet-rgb/velvet-journals#readme",
+  "bugs": "https://github.com/gmredvelvet-rgb/velvet-journals/issues",
+  "changelog": "https://github.com/gmredvelvet-rgb/velvet-journals/blob/main/CHANGELOG.md",
+  "license": "SEE LICENSE IN LICENSE",
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/journal.css",
+    "styles/menu.css",
+    "styles/atlas.css",
+    "styles/blocks.css",
+    "styles/config.css",
+    "styles/themes.css",
+    "styles/license.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    },
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "languages/es.json"
+    }
+  ],
+  "flags": {}
+}

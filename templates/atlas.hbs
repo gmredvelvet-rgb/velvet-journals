@@ -1,0 +1,226 @@
+<section class="osj-panel osj-panel-atlas">
+    <div class="osj-atlas-body">
+
+        <header class="osj-panel-head">
+            <div class="osj-panel-head-text">
+                <p class="osj-kicker">{{ localize "VJ.Atlas.Kicker" }}</p>
+                <h2 class="osj-panel-title">{{ localize "VJ.Tabs.Atlas" }}</h2>
+            </div>
+        </header>
+
+        {{#if vjAtlas.tree.length}}
+        <div class="osj-atlas-layout">
+
+            <aside class="osj-atlas-nav">
+                <p class="osj-atlas-nav-title">{{ localize "VJ.Atlas.NavTitle" }}</p>
+                <ul class="osj-atlas-tree">
+                    {{#each vjAtlas.tree}}
+                    <li class="osj-atlas-node root {{#if active}}active{{/if}}">
+                        <div class="osj-atlas-node-row">
+                            <button type="button" class="osj-atlas-node-btn" data-action="vjMapSelect" data-map-id="{{ id }}">
+                                <span class="osj-atlas-node-name">{{ name }}</span>
+                                {{#if pinCount}}<span class="osj-atlas-node-count">{{ pinCount }}</span>{{/if}}
+                            </button>
+                            {{#if ../editable}}
+                            <span class="osj-atlas-node-tools">
+                                <button type="button" data-action="vjMapEdit" data-map-id="{{ id }}" data-tooltip
+                                        aria-label="{{ localize "VJ.Atlas.EditMap" }}"><i class="fa-solid fa-pen" inert></i></button>
+                                <button type="button" data-action="vjMapDelete" data-map-id="{{ id }}" data-tooltip
+                                        aria-label="{{ localize "VJ.Dialog.DeleteTitle" }}"><i class="fa-solid fa-trash" inert></i></button>
+                            </span>
+                            {{/if}}
+                        </div>
+                        {{#if children.length}}
+                        <ul class="osj-atlas-children">
+                            {{#each children}}
+                            <li class="osj-atlas-node child {{#if active}}active{{/if}}">
+                                <div class="osj-atlas-node-row">
+                                    <button type="button" class="osj-atlas-node-btn" data-action="vjMapSelect" data-map-id="{{ id }}">
+                                        <span class="osj-atlas-node-name">{{ name }}</span>
+                                        {{#if pinCount}}<span class="osj-atlas-node-count">{{ pinCount }}</span>{{/if}}
+                                    </button>
+                                    {{#if ../../editable}}
+                                    <span class="osj-atlas-node-tools">
+                                        <button type="button" data-action="vjMapEdit" data-map-id="{{ id }}" data-tooltip
+                                                aria-label="{{ localize "VJ.Atlas.EditMap" }}"><i class="fa-solid fa-pen" inert></i></button>
+                                        <button type="button" data-action="vjMapDelete" data-map-id="{{ id }}" data-tooltip
+                                                aria-label="{{ localize "VJ.Dialog.DeleteTitle" }}"><i class="fa-solid fa-trash" inert></i></button>
+                                    </span>
+                                    {{/if}}
+                                </div>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                </ul>
+                {{#if editable}}
+                <button type="button" class="osj-atlas-nav-add" data-action="vjMapAdd">
+                    <i class="fa-solid fa-plus" inert></i>
+                    <span>{{ localize "VJ.Atlas.NewMap" }}</span>
+                </button>
+                {{/if}}
+            </aside>
+
+            {{#if vjAtlas.map}}
+            <div class="osj-atlas-stage {{#if vjAtlas.placing}}placing{{/if}}">
+                <div class="osj-atlas-viewport">
+                    <div class="osj-atlas-canvas">
+                        <div class="osj-atlas-frame">
+                            {{#if vjAtlas.map.image}}
+                            <img src="{{ vjAtlas.map.image }}" alt="{{ vjAtlas.map.name }}" draggable="false">
+                            {{else}}
+                            <div class="osj-atlas-noimage"><i class="fa-solid fa-map" inert></i></div>
+                            {{/if}}
+                            {{#each vjAtlas.map.pins}}
+                            <button type="button" class="osj-pin color-{{ color }} {{#if hidden}}is-hidden{{/if}} {{#if mapLink}}has-link{{/if}}"
+                                    data-action="vjPinOpen" data-pin-id="{{ id }}"
+                                    style="left: {{ x }}%; top: {{ y }}%">
+                                <span class="osj-pin-dot" aria-hidden="true">{{#if mapLink}}<i class="fa-solid fa-arrow-right" inert></i>{{/if}}</span>
+                                <span class="osj-pin-label">{{ name }}</span>
+                            </button>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="osj-atlas-controls">
+                    {{#if editable}}
+                    <button type="button" class="osj-atlas-place-btn {{#if vjAtlas.placing}}active{{/if}}"
+                            data-action="vjPinPlace" data-tooltip aria-label="{{ localize "VJ.Atlas.PlacePin" }}">
+                        <i class="fa-solid fa-location-dot" inert></i>
+                    </button>
+                    {{/if}}
+                    <button type="button" data-action="vjAtlasZoomIn" data-tooltip aria-label="{{ localize "VJ.Atlas.ZoomIn" }}">
+                        <i class="fa-solid fa-plus" inert></i>
+                    </button>
+                    <span class="osj-atlas-zoom-label">100%</span>
+                    <button type="button" data-action="vjAtlasZoomOut" data-tooltip aria-label="{{ localize "VJ.Atlas.ZoomOut" }}">
+                        <i class="fa-solid fa-minus" inert></i>
+                    </button>
+                    <button type="button" data-action="vjAtlasReset" data-tooltip aria-label="{{ localize "VJ.Atlas.ResetView" }}">
+                        <i class="fa-solid fa-expand" inert></i>
+                    </button>
+                </div>
+
+                {{#if vjAtlas.map.description}}
+                <p class="osj-atlas-desc">{{ vjAtlas.map.description }}</p>
+                {{/if}}
+                {{#if editable}}
+                <p class="osj-atlas-hint">{{ localize "VJ.Atlas.Hint" }}</p>
+                {{/if}}
+
+                {{#if vjAtlas.openPin}}
+                <div class="osj-modal-backdrop" data-action="vjModalClose" aria-hidden="true"></div>
+                <article class="osj-modal-card" aria-label="{{ vjAtlas.openPin.name }}">
+                    <header class="osj-modal-media {{#unless vjAtlas.openPin.image}}no-image{{/unless}}">
+                        {{#if vjAtlas.openPin.image}}
+                        <img src="{{ vjAtlas.openPin.image }}" alt="" draggable="false">
+                        {{/if}}
+                        <div class="osj-modal-scrim" aria-hidden="true"></div>
+                        <button type="button" class="osj-modal-close" data-action="vjModalClose"
+                                data-tooltip aria-label="{{ localize "VJ.Atlas.Close" }}">
+                            <i class="fa-solid fa-xmark" inert></i>
+                        </button>
+                        <div class="osj-modal-heading">
+                            {{#if vjAtlas.openPin.type}}<p class="osj-modal-type">{{ vjAtlas.openPin.type }}</p>{{/if}}
+                            <h3 class="osj-modal-name">
+                                {{ vjAtlas.openPin.name }}
+                                {{#if vjAtlas.openPin.hidden}}<i class="fa-solid fa-eye-slash" inert></i>{{/if}}
+                            </h3>
+                        </div>
+                    </header>
+
+                    <div class="osj-modal-body">
+                        {{#if vjAtlas.openPin.descriptionHTML}}
+                        <div class="osj-modal-text">{{{ vjAtlas.openPin.descriptionHTML }}}</div>
+                        {{/if}}
+
+                        {{#if vjAtlas.openPin.npcs.length}}
+                        <h4 class="osj-modal-section">{{ localize "VJ.Atlas.People" }}</h4>
+                        <div class="osj-atlas-npcs">
+                            {{#each vjAtlas.openPin.npcs}}
+                            <div class="osj-atlas-npc {{#if missing}}is-missing{{/if}}" draggable="true"
+                                 data-ref-kind="npcs" data-ref-uuid="{{ uuid }}"
+                                 {{#if canView}}data-action="vjRefOpen"{{/if}}>
+                                <img src="{{ img }}" alt="" draggable="false">
+                                <span class="osj-atlas-npc-name">{{ name }}</span>
+                                {{#if ../editable}}
+                                <button type="button" class="osj-atlas-ref-remove" data-action="vjRefRemove"
+                                        data-ref-kind="npcs" data-ref-uuid="{{ uuid }}"
+                                        data-tooltip aria-label="{{ localize "VJ.Dialog.DeleteTitle" }}">
+                                    <i class="fa-solid fa-xmark" inert></i>
+                                </button>
+                                {{/if}}
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+
+                        {{#if vjAtlas.openPin.items.length}}
+                        <h4 class="osj-modal-section">{{ localize "VJ.Atlas.Shop" }}</h4>
+                        <ul class="osj-atlas-items">
+                            {{#each vjAtlas.openPin.items}}
+                            <li class="osj-atlas-item {{#if missing}}is-missing{{/if}}" draggable="true"
+                                data-ref-kind="items" data-ref-uuid="{{ uuid }}"
+                                {{#if canView}}data-action="vjRefOpen"{{/if}}>
+                                <img src="{{ img }}" alt="" draggable="false">
+                                <span class="osj-atlas-item-name">{{ name }}</span>
+                                {{#if price}}<span class="osj-atlas-item-price">{{ price }}</span>{{/if}}
+                                {{#if ../editable}}
+                                <button type="button" class="osj-atlas-ref-remove" data-action="vjRefRemove"
+                                        data-ref-kind="items" data-ref-uuid="{{ uuid }}"
+                                        data-tooltip aria-label="{{ localize "VJ.Dialog.DeleteTitle" }}">
+                                    <i class="fa-solid fa-xmark" inert></i>
+                                </button>
+                                {{/if}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+
+                        {{#if editable}}
+                        <p class="osj-modal-hint">{{ localize "VJ.Atlas.ModalHint" }}</p>
+                        <footer class="osj-modal-actions">
+                            {{#if vjAtlas.openPin.image}}
+                            <button type="button" class="osj-quest-btn osj-show-players" data-action="vjShowPlayers"
+                                    data-share-src="{{ vjAtlas.openPin.image }}" data-share-title="{{ vjAtlas.openPin.name }}">
+                                <i class="fa-solid fa-eye" inert></i>{{ localize "VJ.Quests.ShowPlayers" }}
+                            </button>
+                            {{/if}}
+                            <button type="button" class="osj-quest-btn" data-action="vjPinEdit">
+                                <i class="fa-solid fa-pen" inert></i>{{ localize "VJ.Quests.Edit" }}
+                            </button>
+                            <button type="button" class="osj-quest-btn" data-action="vjPinHide">
+                                <i class="fa-solid {{#if vjAtlas.openPin.hidden}}fa-eye{{else}}fa-eye-slash{{/if}}" inert></i>
+                                {{#if vjAtlas.openPin.hidden}}{{ localize "VJ.Quests.Show" }}{{else}}{{ localize "VJ.Quests.Hide" }}{{/if}}
+                            </button>
+                            <button type="button" class="osj-quest-btn danger" data-action="vjPinDelete">
+                                <i class="fa-solid fa-trash" inert></i>{{ localize "VJ.Quests.Delete" }}
+                            </button>
+                        </footer>
+                        {{/if}}
+                    </div>
+                </article>
+                {{/if}}
+            </div>
+            {{/if}}
+
+        </div>
+        {{else}}
+        <div class="osj-empty osj-atlas-empty">
+            <i class="fa-solid fa-map" inert></i>
+            <h3>{{ localize "VJ.Atlas.Empty" }}</h3>
+            {{#if editable}}
+            <p>{{ localize "VJ.Atlas.EmptyHint" }}</p>
+            <button type="button" class="osj-cta" data-action="vjMapAdd">
+                <i class="fa-solid fa-plus" inert></i>
+                <span>{{ localize "VJ.Atlas.NewMap" }}</span>
+            </button>
+            {{/if}}
+        </div>
+        {{/if}}
+
+    </div>
+</section>

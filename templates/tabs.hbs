@@ -1,0 +1,20 @@
+<nav class="osj-menu" aria-label="{{ localize "VJ.Menu.Label" }}">
+    <div class="osj-menu-brand">
+        {{#if vjMenu.logo}}
+        <img class="osj-menu-logo" src="{{ vjMenu.logo }}" alt="">
+        {{else}}
+        <span class="osj-menu-mark" aria-hidden="true"><i class="fa-solid fa-anchor"></i></span>
+        {{/if}}
+    </div>
+    <div class="osj-menu-tabs" role="tablist">
+        {{#each vjMenu.tabs}}
+        <button type="button" role="tab" class="osj-menu-tab {{#if active}}active{{/if}}"
+                data-action="vjTab" data-tab="{{ id }}" aria-selected="{{ active }}">
+            <i class="{{ icon }}" inert></i>
+            <span class="osj-menu-tab-label">{{ localize label }}</span>
+            {{#if badge}}<span class="osj-menu-badge">{{ badge }}</span>{{/if}}
+        </button>
+        {{/each}}
+    </div>
+    <span class="osj-menu-name">{{ vjMenu.name }}</span>
+</nav>

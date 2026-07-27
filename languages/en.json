@@ -1,0 +1,360 @@
+{
+  "VJ": {
+    "SheetName": "Velvet Journals",
+    "Breadcrumb": "Location",
+    "UrlPlaceholder": "path/to/file.ext or https://example.com/image.jpg",
+    "UrlHint": "You can also paste a direct image/video URL (ending in .jpg, .png, .webp, .gif, .webm, .mp4...) instead of browsing.",
+    "MD": {
+      "Heading": "Heading",
+      "Bold": "Bold",
+      "Italic": "Italic",
+      "Ul": "Bullet list",
+      "Ol": "Numbered list",
+      "Quote": "Quote",
+      "Link": "Link",
+      "Hr": "Divider",
+      "Placeholder": "text",
+      "LinkText": "link text"
+    },
+    "ThemeConfig": {
+      "Open": "Velvet Theme",
+      "Title": "Velvet Theme"
+    },
+    "Settings": {
+      "Theme": {
+        "Name": "Theme",
+        "Hint": "Chooses the visual identity used across every Velvet journal: window chrome, colors, typography and menu style. Changing this reloads Foundry.",
+        "Classic": "Classic — Belle Époque noir & gold",
+        "Survival": "Survival — industrial field gear",
+        "Cyber": "Cyber — neon holographic interface"
+      },
+      "License": {
+        "Name": "Patreon licence",
+        "Label": "Manage licence",
+        "Hint": "Connect your Patreon account to remove the free-trial reminder, or release the installation slot to use it elsewhere. GM only — every feature works either way."
+      }
+    },
+    "License": {
+      "TrialBadge": "Free Trial",
+      "TrialIntro": "You are using Velvet Journals in Free Trial mode — every feature is unlocked.",
+      "TrialPitch": "Join Patreon to support development, remove this reminder and unlock this module plus many more.",
+      "TrialIntroPlayer": "Your GM is using Velvet Journals in Free Trial mode.",
+      "TrialPlayerNote": "Nothing for you to do — the table has every feature available.",
+      "Connect": "Connect with Patreon",
+      "Opening": "Opening Patreon…",
+      "HaveCode": "I have a code",
+      "Later": "Later",
+      "Close": "Close",
+      "Cancelled": "Authorisation cancelled. If the popup did not open, use the \"I have a code\" option.",
+      "Connected": "Connected as a {tier} subscriber. Welcome!",
+      "CodeTitle": "Enter code",
+      "CodeHint": "Paste the code shown after connecting your Patreon account.",
+      "Activate": "Activate",
+      "StatusActive": "Licence active — {tier} subscriber. Thank you for your support!",
+      "StatusTrusted": "Licence verified. It revalidates on its own — you will not be asked again.",
+      "Released": "Installation slot released.",
+      "Release": "Release installation",
+      "ReleaseHint": "Release the slot if you are moving your subscription to another server or browser.",
+      "ReleaseConfirm": "Release this installation? Velvet Journals keeps working, but the free-trial reminder comes back until you connect again."
+    },
+    "Mode": {
+      "Dark": "Dark",
+      "Light": "Light"
+    },
+    "Fit": {
+      "Cover": "Cover",
+      "Contain": "Contain"
+    },
+    "Menu": {
+      "Label": "Journal menu"
+    },
+    "Hub": {
+      "Open": "Velvet Journal",
+      "SettingName": "Velvet Menu Journal",
+      "SettingHint": "Name of the journal opened as a game menu via the J key, the sidebar button or the scene control. If it doesn't exist, it's created automatically the first time the GM opens it.",
+      "NoJournal": "The GM hasn't configured the Velvet menu yet.",
+      "NoPermission": "You don't have permission to view the Velvet menu. Ask your GM to check its ownership settings.",
+      "Created": "Created the journal \"{name}\" as the Velvet menu.",
+      "Kicker": "Campaign Chronicle",
+      "Subtitle": "Everything the table needs, in one place.",
+      "WelcomeTitle": "Welcome",
+      "WelcomeContent": "<p>This journal is your <strong>campaign menu</strong>. Use the tabs above:</p><ul><li><strong>Dashboard</strong> — create cards with images or videos and link them to scenes, actors, macros or pages. You can also drag documents straight in.</li><li><strong>NPCs</strong> — drag actors from the sidebar to build the portrait gallery.</li><li><strong>Quests</strong> — track active, completed and failed quests with objectives and progress.</li><li><strong>Pages</strong> — the classic journal, with all of Foundry's power.</li></ul><p>Open it anytime with the <strong>J</strong> key.</p>"
+    },
+    "Tabs": {
+      "Auto": "Automatic",
+      "Dashboard": "Dashboard",
+      "Npcs": "NPCs",
+      "Quests": "Quests",
+      "Atlas": "Atlas",
+      "Pages": "Pages"
+    },
+    "Atlas": {
+      "Kicker": "Expedition Cartography",
+      "Untitled": "Untitled",
+      "NavTitle": "Maps",
+      "None": "— None —",
+      "NewMap": "New Map",
+      "EditMap": "Edit Map",
+      "MapName": "Name",
+      "MapImage": "Map Image",
+      "MapImageHint": "PNG, JPG or WEBP. For example, the Phandalin town plan or the campaign region.",
+      "MapParent": "Parent Map",
+      "MapParentHint": "If you pick a parent (a big city), this map is nested under it in the index.",
+      "MapDescription": "Short Description",
+      "NewPin": "New Point of Interest",
+      "EditPin": "Edit Point of Interest",
+      "PinName": "Name",
+      "PinType": "Type",
+      "PinTypePlaceholder": "Tavern · Shop · Lair…",
+      "PinColor": "Pin Color",
+      "PinMapLink": "Travel to Map",
+      "PinMapLinkHint": "If you pick a map, clicking this pin navigates to it (e.g. from the region to Phandalin) instead of opening the card.",
+      "PinImage": "Image",
+      "PinDescription": "Description",
+      "PinHidden": "Hidden from players",
+      "PinHiddenHint": "Hidden pins are only visible to the GM and owners.",
+      "Color": {
+        "Gold": "Gold",
+        "Slate": "Slate",
+        "Crimson": "Crimson",
+        "Sage": "Sage"
+      },
+      "ZoomIn": "Zoom in",
+      "ZoomOut": "Zoom out",
+      "ResetView": "Reset view",
+      "PlacePin": "Add point of interest",
+      "Close": "Close",
+      "Hint": "Press the pin button (or double-click the map) to add a point of interest · drag a pin to move it",
+      "ModalHint": "Drag actors or items (even from compendia) here to add them as NPCs or merchandise.",
+      "People": "Locals",
+      "Shop": "Merchandise",
+      "MissingItem": "Item not found",
+      "Duplicate": "That document is already linked to this place.",
+      "Empty": "The atlas is blank",
+      "EmptyHint": "Create a map (a Phandalin town plan, a region, a tavern floor plan) and mark its places with pins."
+    },
+    "Dashboard": {
+      "AddCard": "New Card",
+      "Video": "Video",
+      "ToggleSound": "Toggle sound",
+      "Empty": "Your landing page is empty",
+      "EmptyHint": "Create cards with images or videos, or drag scenes, actors, macros and journal entries here to link them.",
+      "OpenMissing": "The linked document no longer exists.",
+      "TargetScene": "Scene",
+      "TargetMacro": "Macro",
+      "TargetTable": "Roll Table",
+      "TargetPlaylist": "Playlist",
+      "TargetPage": "Journal Page",
+      "TargetJournal": "Journal",
+      "TargetActor": "Actor",
+      "TargetItem": "Item",
+      "TargetDoc": "Document",
+      "TargetMissing": "Broken Link",
+      "TargetLink": "Web Link",
+      "TargetTooltip": "{type}: {name}",
+      "Uncategorized": "Uncategorized"
+    },
+    "Cards": {
+      "NewTitle": "New Card",
+      "EditTitle": "Edit Card",
+      "Untitled": "Untitled",
+      "Title": "Title",
+      "Subtitle": "Subtitle",
+      "Category": "Section",
+      "CategoryPlaceholder": "Maps, Quick Rules, Music...",
+      "CategoryHint": "Cards sharing a section name are grouped together on the dashboard. Leave empty for no section.",
+      "Media": "Image / Video",
+      "MediaHint": "PNG, JPG, WEBP, GIF, WEBM or MP4. Videos loop; sound is toggled from the card.",
+      "Size": "Size",
+      "SizeMd": "Normal",
+      "SizeWide": "Wide",
+      "SizeTall": "Tall",
+      "SizeHero": "Featured (2×2)",
+      "Link": "Linked Document",
+      "LinkHint": "Drag a scene, actor, item, macro, roll table, playlist or page here. A scene opens, a macro runs, a roll table draws, a playlist plays/stops, a page jumps to it, anything else opens its sheet.",
+      "Url": "External Link",
+      "UrlHint": "If set, the card opens this URL in the browser."
+    },
+    "Npcs": {
+      "Kicker": "Cast",
+      "Hint": "Drag actors from the sidebar to add them. Drag a portrait onto the canvas to place its token, or over another to reorder.",
+      "Empty": "No characters yet",
+      "EmptyHint": "Drag actors from the sidebar or a compendium to create their portrait.",
+      "Missing": "Actor not found",
+      "Duplicate": "That actor is already in the gallery.",
+      "Role": "Role / Faction",
+      "RolePlaceholder": "Harbor Captain · Lighthouse Guild",
+      "Location": "Location",
+      "LocationHint": "Attach this character to one of your Atlas maps so they can be filtered by place (e.g. Vallaki, Barovia, Ravenloft).",
+      "EditTitle": "Edit NPC",
+      "ToggleHidden": "Show / hide from players",
+      "HiddenTip": "Hidden from players",
+      "Portrait": "Portrait",
+      "PortraitHint": "Optional custom art for the dossier card. Falls back to the actor's own image if left empty.",
+      "Bio": "Notes",
+      "BioHint": "Supports Markdown (headings, **bold**, lists...), HTML and @UUID[...] document links.",
+      "NoBioHint": "No notes yet. Click Edit to write this character's dossier.",
+      "OpenSheet": "Open Character Sheet",
+      "NoViewPermission": "You don't have permission to view that character's sheet.",
+      "SearchPlaceholder": "Search NPCs...",
+      "LocationFilter": "Filter by location",
+      "AllLocations": "All Locations",
+      "Unassigned": "Unassigned",
+      "NoMatch": "No NPCs match your search."
+    },
+    "Quests": {
+      "Kicker": "Quest Log",
+      "New": "New Quest",
+      "NewTitle": "New Quest",
+      "EditTitle": "Edit Quest",
+      "Untitled": "Unnamed quest",
+      "Name": "Name",
+      "Image": "Image",
+      "Summary": "Description",
+      "SummaryHint": "Supports Markdown (headings, **bold**, lists...), HTML and @UUID[...] document links.",
+      "StatusLabel": "Status",
+      "Hidden": "Hidden from players",
+      "HiddenHint": "Hidden quests are only visible to the GM and owners.",
+      "RewardsTitle": "Rewards",
+      "RewardCurrency": "Currency",
+      "RewardCurrencyPlaceholder": "150 gp, 3 pp...",
+      "RewardCurrencyHint": "Freeform, so it matches whatever currency your system uses.",
+      "RewardXp": "Experience",
+      "RewardOther": "Other Rewards",
+      "RewardOtherPlaceholder": "Reputation with the Lighthouse Guild +1...",
+      "RewardOtherHint": "Anything that isn't money, XP or an item: titles, favors, reputation...",
+      "Xp": "XP",
+      "RewardsDropHint": "Drag an Item here (from a compendium, the sidebar or an actor sheet) to add it as a reward.",
+      "RewardQtyInc": "Increase quantity",
+      "RewardQtyDec": "Decrease quantity",
+      "Status": {
+        "Active": "Active",
+        "Done": "Completed",
+        "Failed": "Failed"
+      },
+      "Active": "Active",
+      "Done": "Completed",
+      "Failed": "Failed",
+      "ObjectivePlaceholder": "New objective… (Enter to add)",
+      "AddObjective": "Add objective",
+      "ToggleObjective": "Toggle objective",
+      "MarkActive": "Reactivate",
+      "MarkDone": "Complete",
+      "MarkFailed": "Fail",
+      "Show": "Show",
+      "Hide": "Hide",
+      "Edit": "Edit",
+      "Delete": "Delete",
+      "ShowPlayers": "Show Players",
+      "EmptyActive": "No active quests",
+      "EmptyDone": "No quests completed yet",
+      "EmptyFailed": "No failed quests. For now."
+    },
+    "Dialog": {
+      "Save": "Save",
+      "Cancel": "Cancel",
+      "DeleteTitle": "Delete",
+      "DeleteConfirm": "Delete \"{name}\"? This cannot be undone."
+    },
+    "Config": {
+      "Background": "Background",
+      "BackgroundFile": "Image / Video",
+      "BackgroundFileHint": "PNG, JPG, WEBP, GIF, WEBM or MP4. Videos play automatically, muted and looping.",
+      "Fit": "Fit",
+      "PosX": "Horizontal Position",
+      "PosY": "Vertical Position",
+      "Blur": "Blur",
+      "Brightness": "Brightness",
+      "Overlay": "Overlay Color",
+      "OverlayOpacity": "Overlay Opacity",
+      "Identity": "Identity",
+      "Banner": "Hero Banner",
+      "BannerHint": "Large featured image displayed behind the title.",
+      "Logo": "Logo",
+      "Kicker": "Kicker",
+      "KickerPlaceholder": "A social MMO on an impossible island",
+      "Subtitle": "Subtitle",
+      "SubtitlePlaceholder": "Every arrival leaves a story…",
+      "Author": "Author",
+      "Tags": "Tags",
+      "TagsPlaceholder": "exploration, island, oddity",
+      "TagsHint": "Comma-separated list of tags shown as chips in the hero.",
+      "Appearance": "Appearance",
+      "ModeSelect": "Theme Mode",
+      "Accent": "Primary Color",
+      "Accent2": "Secondary Color",
+      "ShowHero": "Show Hero",
+      "ShowMeta": "Show Metadata",
+      "ShowFooter": "Show Footer",
+      "FooterText": "Footer Text",
+      "Menu": "Interactive Menu",
+      "ShowMenu": "Enable tab menu",
+      "ShowMenuHint": "Shows the Dashboard, NPCs and Quests as a game menu. Disabling it returns the journal to classic pages mode.",
+      "DefaultTab": "Initial Tab",
+      "DefaultTabHint": "\"Automatic\" opens the Dashboard when it has cards; otherwise, Pages.",
+      "Effects": "Effects",
+      "Animations": "Enable Animations",
+      "Parallax": "Enable Parallax",
+      "Reset": "Reset to Defaults"
+    },
+    "Blocks": {
+      "Menu": "Velvet",
+      "Placeholder": "Write here. Everything on the island ends up in a report sooner or later.",
+      "Callout": {
+        "Menu": "Callout",
+        "Note": "Note",
+        "Quest": "Quest",
+        "Loot": "Loot",
+        "Danger": "Danger"
+      },
+      "Quote": {
+        "Menu": "Quote",
+        "Text": "The dock office still does not guarantee your form won't end up under a cup of coffee.",
+        "Cite": "Passport Office — North Dock"
+      },
+      "Cards": {
+        "Menu": "Card Grid",
+        "Card": "Card",
+        "Link": "Read record"
+      },
+      "Columns": {
+        "Menu": "Two Columns",
+        "Left": "Left Column",
+        "Right": "Right Column"
+      },
+      "Gallery": {
+        "Menu": "Gallery",
+        "Caption": "Caption"
+      },
+      "Timeline": {
+        "Menu": "Timeline",
+        "Event": "Event"
+      },
+      "NPC": {
+        "Menu": "NPC Card",
+        "Name": "Character Name",
+        "Role": "Role · Faction"
+      },
+      "Location": {
+        "Menu": "Location Card",
+        "Kicker": "Island Records",
+        "Name": "Location Name"
+      },
+      "Stats": {
+        "Menu": "Stat Panel",
+        "Label": "Label"
+      },
+      "Button": {
+        "Menu": "Button",
+        "Label": "Open the Logbook"
+      },
+      "Accordion": {
+        "Menu": "Accordion",
+        "Summary": "Something odd appeared near the lighthouse"
+      },
+      "Divider": {
+        "Menu": "Divider"
+      }
+    }
+  }
+}

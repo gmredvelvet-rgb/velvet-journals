@@ -1,0 +1,115 @@
+<section class="osj-panel osj-panel-npcs">
+    <div class="osj-panel-scroll">
+
+        <header class="osj-panel-head">
+            <div class="osj-panel-head-text">
+                <p class="osj-kicker">{{ localize "VJ.Npcs.Kicker" }}</p>
+                <h2 class="osj-panel-title">{{ localize "VJ.Tabs.Npcs" }}</h2>
+                {{#if editable}}<p class="osj-panel-sub">{{ localize "VJ.Npcs.Hint" }}</p>{{/if}}
+            </div>
+        </header>
+
+        {{#if vjNpcs.list.length}}
+        <div class="osj-npc-toolbar">
+            <search class="osj-npc-search">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="search" class="osj-npc-search-input" value="{{ vjNpcs.search }}" autocomplete="off"
+                       placeholder="{{ localize "VJ.Npcs.SearchPlaceholder" }}"
+                       aria-label="{{ localize "VJ.Npcs.SearchPlaceholder" }}">
+            </search>
+            {{#if vjNpcs.locations.length}}
+            <select class="osj-npc-location-select" aria-label="{{ localize "VJ.Npcs.LocationFilter" }}">
+                <option value="all" {{#if (eq vjNpcs.mapFilter "all")}}selected{{/if}}>{{ localize "VJ.Npcs.AllLocations" }}</option>
+                {{#each vjNpcs.locations}}
+                <option value="{{ id }}" {{#if (eq ../vjNpcs.mapFilter id)}}selected{{/if}}>{{ name }} ({{ count }})</option>
+                {{/each}}
+            </select>
+            {{/if}}
+        </div>
+
+        <div class="osj-npc-grid">
+            {{#each vjNpcs.list}}
+            <article class="osj-npc-card {{#if hidden}}is-hidden{{/if}} {{#if missing}}is-missing{{/if}}"
+                     data-npc-id="{{ id }}" data-uuid="{{ uuid }}" data-map-id="{{ mapId }}"
+                     draggable="true" style="--i: {{ @index }}">
+                <div class="osj-npc-frame" data-action="vjNpcOpen" data-npc-id="{{ id }}">
+                    <img src="{{ img }}" alt="{{ name }}" loading="lazy" draggable="false">
+                    <div class="osj-npc-scrim" aria-hidden="true"></div>
+                    <div class="osj-npc-info">
+                        <h3 class="osj-npc-name">{{ name }}</h3>
+                        {{#if role}}<p class="osj-npc-role">{{ role }}</p>{{/if}}
+                        {{#if mapName}}<p class="osj-npc-location"><i class="fa-solid fa-location-dot" inert></i>{{ mapName }}</p>{{/if}}
+                    </div>
+                    {{#if hidden}}
+                    <span class="osj-npc-flag" data-tooltip aria-label="{{ localize "VJ.Npcs.HiddenTip" }}">
+                        <i class="fa-solid fa-eye-slash" inert></i>
+                    </span>
+                    {{/if}}
+                </div>
+            </article>
+            {{/each}}
+        </div>
+        <p class="osj-npc-no-match" hidden>{{ localize "VJ.Npcs.NoMatch" }}</p>
+        {{else}}
+        <div class="osj-empty osj-empty-drop">
+            <i class="fa-solid fa-users" inert></i>
+            <h3>{{ localize "VJ.Npcs.Empty" }}</h3>
+            {{#if editable}}<p>{{ localize "VJ.Npcs.EmptyHint" }}</p>{{/if}}
+        </div>
+        {{/if}}
+
+    </div>
+
+    {{#if vjNpcs.openNpc}}
+        <div class="osj-modal-backdrop" data-action="vjModalClose" aria-hidden="true"></div>
+        <article class="osj-modal-card" aria-label="{{ vjNpcs.openNpc.name }}">
+            <header class="osj-modal-media">
+                <img src="{{ vjNpcs.openNpc.img }}" alt="" draggable="false">
+                <div class="osj-modal-scrim" aria-hidden="true"></div>
+                <button type="button" class="osj-modal-close" data-action="vjModalClose"
+                        data-tooltip aria-label="{{ localize "VJ.Atlas.Close" }}">
+                    <i class="fa-solid fa-xmark" inert></i>
+                </button>
+                <div class="osj-modal-heading">
+                    {{#if vjNpcs.openNpc.role}}<p class="osj-modal-type">{{ vjNpcs.openNpc.role }}</p>{{/if}}
+                    <h3 class="osj-modal-name">
+                        {{ vjNpcs.openNpc.name }}
+                        {{#if vjNpcs.openNpc.hidden}}<i class="fa-solid fa-eye-slash" inert></i>{{/if}}
+                    </h3>
+                </div>
+            </header>
+
+            <div class="osj-modal-body">
+                {{#if vjNpcs.openNpc.bioHTML}}
+                <div class="osj-modal-text">{{{ vjNpcs.openNpc.bioHTML }}}</div>
+                {{else if editable}}
+                <p class="osj-modal-hint">{{ localize "VJ.Npcs.NoBioHint" }}</p>
+                {{/if}}
+
+                <footer class="osj-modal-actions">
+                    {{#if vjNpcs.openNpc.canView}}
+                    <button type="button" class="osj-quest-btn" data-action="vjRefOpen" data-ref-uuid="{{ vjNpcs.openNpc.uuid }}">
+                        <i class="fa-solid fa-address-card" inert></i>{{ localize "VJ.Npcs.OpenSheet" }}
+                    </button>
+                    {{/if}}
+                    {{#if editable}}
+                    <button type="button" class="osj-quest-btn osj-show-players" data-action="vjShowPlayers"
+                            data-share-src="{{ vjNpcs.openNpc.img }}" data-share-title="{{ vjNpcs.openNpc.name }}">
+                        <i class="fa-solid fa-eye" inert></i>{{ localize "VJ.Quests.ShowPlayers" }}
+                    </button>
+                    <button type="button" class="osj-quest-btn" data-action="vjNpcEdit" data-npc-id="{{ vjNpcs.openNpc.id }}">
+                        <i class="fa-solid fa-pen" inert></i>{{ localize "VJ.Quests.Edit" }}
+                    </button>
+                    <button type="button" class="osj-quest-btn" data-action="vjNpcHide" data-npc-id="{{ vjNpcs.openNpc.id }}">
+                        <i class="fa-solid {{#if vjNpcs.openNpc.hidden}}fa-eye{{else}}fa-eye-slash{{/if}}" inert></i>
+                        {{#if vjNpcs.openNpc.hidden}}{{ localize "VJ.Quests.Show" }}{{else}}{{ localize "VJ.Quests.Hide" }}{{/if}}
+                    </button>
+                    <button type="button" class="osj-quest-btn danger" data-action="vjNpcDelete" data-npc-id="{{ vjNpcs.openNpc.id }}">
+                        <i class="fa-solid fa-trash" inert></i>{{ localize "VJ.Quests.Delete" }}
+                    </button>
+                    {{/if}}
+                </footer>
+            </div>
+        </article>
+        {{/if}}
+</section>

@@ -1,0 +1,459 @@
+/* ==========================================================================
+   Velvet Journals — theme editions
+   Reskins the sheet purely through the existing --osj-* design tokens (see
+   styles/journal.css) plus the hardcoded chrome in styles/config.css, based
+   on the `data-osj-edition` attribute the sheet/config app set from the
+   "velvet-journals.theme" module setting. No new elements, no new behavior —
+   every rule below only repaints what journal.css/menu.css/atlas.css/
+   blocks.css/config.css already draw.
+
+   - Classic  (default): untouched, defined in journal.css.
+   - Survival: industrial field-gear look, carbon/olive/amber.
+   - Cyber:    neon holographic terminal, cyan/purple on near-black.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+/* --------------------------------------------------------------------------
+   Survival edition — carbon black, steel, military olive, amber
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal[data-osj-edition="survival"],
+.application.velvet-config[data-osj-edition="survival"] {
+  --osj-deep: #07090a;
+  --osj-deep-2: #12161a;
+  --osj-ink: #b9bfb6;
+  --osj-ink-strong: #e6e3d8;
+  --osj-muted: #78807a;
+  --osj-line: rgba(214, 222, 214, 0.1);
+  --osj-line-strong: rgba(214, 222, 214, 0.24);
+  --osj-glass: rgba(18, 22, 25, 0.82);
+  --osj-glass-strong: rgba(12, 15, 17, 0.92);
+  --osj-btn-ink: #0c0f11;
+  --osj-ok: #7d8f63;
+  --osj-bad: #c23b2e;
+  --osj-font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --osj-font-body: "Barlow", "Segoe UI", sans-serif;
+  --osj-font-script: "Share Tech Mono", "Consolas", monospace;
+  --osj-radius: 3px;
+  --osj-radius-sm: 2px;
+  --osj-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+.application.velvet-journal[data-osj-edition="survival"].osj-light {
+  --osj-deep: #d8d9d2;
+  --osj-deep-2: #e6e6df;
+  --osj-ink: #2c3129;
+  --osj-ink-strong: #14170f;
+  --osj-muted: #5c6156;
+  --osj-line: rgba(44, 49, 41, 0.18);
+  --osj-line-strong: rgba(44, 49, 41, 0.34);
+  --osj-glass: rgba(255, 255, 255, 0.55);
+  --osj-glass-strong: rgba(255, 255, 255, 0.82);
+  --osj-shadow: 0 20px 60px rgba(30, 32, 24, 0.35);
+}
+
+/* Squared-off steel plate, not a soft painterly frame */
+.application.velvet-journal[data-osj-edition="survival"] {
+  border-radius: 0;
+}
+
+/* Rivets at the four corners instead of a hairline gilded inset */
+.application.velvet-journal[data-osj-edition="survival"]::after {
+  border: 1px solid var(--osj-line-strong);
+  border-radius: 0;
+  background-image:
+    radial-gradient(circle 2.5px at 9px 9px, var(--osj-accent) 55%, transparent 60%),
+    radial-gradient(circle 2.5px at calc(100% - 9px) 9px, var(--osj-accent) 55%, transparent 60%),
+    radial-gradient(circle 2.5px at 9px calc(100% - 9px), var(--osj-accent) 55%, transparent 60%),
+    radial-gradient(circle 2.5px at calc(100% - 9px) calc(100% - 9px), var(--osj-accent) 55%, transparent 60%);
+  background-repeat: no-repeat;
+  opacity: 0.8;
+}
+
+/* Flat steel console instead of frosted glass */
+.application.velvet-journal[data-osj-edition="survival"] .osj-menu {
+  background: linear-gradient(180deg, var(--osj-deep-2), var(--osj-deep));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-bottom: 2px solid var(--osj-line-strong);
+}
+
+/* Stenciled decimal tags instead of roman numerals */
+.application.velvet-journal[data-osj-edition="survival"] .osj-menu-tab::before {
+  content: counter(vjtab, decimal-leading-zero);
+  font-family: var(--osj-font-script);
+  letter-spacing: 0;
+}
+
+.application.velvet-journal[data-osj-edition="survival"] .osj-menu-tab {
+  letter-spacing: 0.14em;
+}
+
+/* Hazard-stripe active indicator instead of the gilded lozenge rule */
+.application.velvet-journal[data-osj-edition="survival"] .osj-menu-tab::after {
+  height: 3px;
+  background: repeating-linear-gradient(-45deg, var(--osj-accent) 0 4px, var(--osj-deep) 4px 8px);
+}
+
+/* Squared insignia mark, not a rotated gold lozenge */
+.application.velvet-journal[data-osj-edition="survival"] .osj-menu-mark {
+  rotate: 0deg;
+  border-radius: 0;
+}
+
+.application.velvet-journal[data-osj-edition="survival"] .osj-menu-mark i {
+  rotate: 0deg;
+}
+
+.application.velvet-journal[data-osj-edition="survival"] .osj-crumb + .osj-crumb::before {
+  content: "//";
+  font-family: var(--osj-font-script);
+  font-size: 0.6rem;
+}
+
+/* Ruler-tick section rule instead of the gilded lozenge divider */
+.application.velvet-journal[data-osj-edition="survival"] .osj-panel-head::after,
+.application.velvet-journal[data-osj-edition="survival"] .osj-hero-body::after {
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--osj-line-strong) 0 2px, transparent 2px 12px);
+}
+
+.application.velvet-journal[data-osj-edition="survival"] .osj-panel-title,
+.application.velvet-journal[data-osj-edition="survival"] > .window-header .window-title {
+  letter-spacing: 0.16em;
+}
+
+/* Dashboard cards: squared, dashed inspection-tag frame + hazard corner flag */
+.application.velvet-journal[data-osj-edition="survival"] .osj-dcard {
+  border-radius: 0;
+}
+
+.application.velvet-journal[data-osj-edition="survival"] .osj-dcard::after {
+  border: 1px dashed color-mix(in srgb, var(--osj-accent) 35%, transparent);
+}
+
+.application.velvet-journal[data-osj-edition="survival"] .osj-dcard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(135deg, var(--osj-accent) 0 6px, var(--osj-deep) 6px 12px);
+  clip-path: polygon(0 0, 28px 0, 0 28px);
+  opacity: 0.55;
+}
+
+/* Static/grain texture over the backdrop instead of drifting gold dust */
+.application.velvet-journal[data-osj-edition="survival"] > .osj-backdrop > .osj-backdrop-overlay {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 2px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0 1px, transparent 1px 2px),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--osj-overlay, var(--osj-deep)) 55%, transparent) 0%,
+      color-mix(in srgb, var(--osj-overlay, var(--osj-deep)) 92%, transparent) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   Cyber edition — near-black void, cyan/purple neon holography
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal[data-osj-edition="cyber"],
+.application.velvet-config[data-osj-edition="cyber"] {
+  --osj-deep: #000a14;
+  --osj-deep-2: #00131f;
+  --osj-ink: #bfe9ff;
+  --osj-ink-strong: #eafcff;
+  --osj-muted: #5f8fa8;
+  --osj-line: rgba(0, 207, 255, 0.18);
+  --osj-line-strong: rgba(0, 207, 255, 0.4);
+  --osj-glass: rgba(0, 17, 30, 0.78);
+  --osj-glass-strong: rgba(0, 10, 20, 0.92);
+  --osj-btn-ink: #001019;
+  --osj-ok: #00ff88;
+  --osj-bad: #ff2244;
+  --osj-font-display: "Orbitron", "Rajdhani", "Arial Narrow", sans-serif;
+  --osj-font-body: "Rajdhani", "Segoe UI", sans-serif;
+  --osj-font-script: "Share Tech Mono", "Consolas", monospace;
+  --osj-radius: 2px;
+  --osj-radius-sm: 1px;
+  --osj-shadow: 0 0 50px rgba(0, 207, 255, 0.12), 0 30px 80px rgba(0, 0, 0, 0.75);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] {
+  box-shadow: var(--osj-shadow), 0 0 0 1px rgba(0, 207, 255, 0.22);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"].osj-light {
+  --osj-deep: #dff6ff;
+  --osj-deep-2: #eefcff;
+  --osj-ink: #023047;
+  --osj-ink-strong: #011623;
+  --osj-muted: #3d6a80;
+  --osj-line: rgba(0, 100, 130, 0.18);
+  --osj-line-strong: rgba(0, 100, 130, 0.34);
+  --osj-glass: rgba(255, 255, 255, 0.6);
+  --osj-glass-strong: rgba(255, 255, 255, 0.86);
+  --osj-shadow: 0 20px 60px rgba(0, 60, 80, 0.3);
+}
+
+/* Sharp terminal edges, not a soft painterly frame */
+.application.velvet-journal[data-osj-edition="cyber"],
+.application.velvet-journal[data-osj-edition="cyber"]::after {
+  border-radius: 0;
+}
+
+/* Glowing HUD corner brackets instead of a hairline gilded inset */
+.application.velvet-journal[data-osj-edition="cyber"]::after {
+  border: none;
+  background-image:
+    linear-gradient(to right, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to bottom, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to left, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to bottom, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to right, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to top, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to left, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to top, var(--osj-accent), var(--osj-accent));
+  background-size: 22px 2px, 2px 22px, 22px 2px, 2px 22px, 22px 2px, 2px 22px, 22px 2px, 2px 22px;
+  background-position: top left, top left, top right, top right, bottom left, bottom left, bottom right, bottom right;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--osj-accent) 65%, transparent));
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] > .window-header .window-title {
+  text-shadow: 0 0 10px color-mix(in srgb, var(--osj-accent) 60%, transparent);
+}
+
+/* Holographic grid drift instead of a painterly radial vignette */
+.application.velvet-journal[data-osj-edition="cyber"] > .osj-backdrop {
+  background:
+    linear-gradient(rgba(0, 207, 255, 0.05) 1px, transparent 1px) 0 0 / 46px 46px,
+    linear-gradient(90deg, rgba(0, 207, 255, 0.05) 1px, transparent 1px) 0 0 / 46px 46px,
+    radial-gradient(130% 100% at 50% 0%, var(--osj-deep-2) 0%, var(--osj-deep) 62%),
+    var(--osj-deep);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"]:not(.osj-no-anim) > .osj-backdrop {
+  animation: osjc-grid-drift 30s linear infinite;
+}
+
+@keyframes osjc-grid-drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0; }
+  to   { background-position: 46px 46px, 46px 46px, 0 0, 0 0; }
+}
+
+/* Scanline texture instead of drifting gold dust */
+.application.velvet-journal[data-osj-edition="cyber"] > .osj-backdrop > .osj-backdrop-overlay {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--osj-overlay, var(--osj-deep)) 55%, transparent) 0%,
+      color-mix(in srgb, var(--osj-overlay, var(--osj-deep)) 92%, transparent) 100%);
+}
+
+/* Flat HUD console instead of frosted glass */
+.application.velvet-journal[data-osj-edition="cyber"] .osj-menu {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--osj-deep-2) 90%, transparent),
+    color-mix(in srgb, var(--osj-deep) 70%, transparent));
+  border-bottom: 1px solid var(--osj-line-strong);
+  box-shadow: 0 1px 0 rgba(0, 207, 255, 0.15);
+}
+
+/* Hex-readout tags glowing like an active data channel */
+.application.velvet-journal[data-osj-edition="cyber"] .osj-menu-tab::before {
+  content: "0" counter(vjtab);
+  font-family: var(--osj-font-script);
+  text-shadow: 0 0 6px var(--osj-accent);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-menu-tab::after {
+  height: 2px;
+  background: var(--osj-accent);
+  box-shadow: 0 0 10px var(--osj-accent), 0 0 22px color-mix(in srgb, var(--osj-accent) 55%, transparent);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-menu-tab.active {
+  text-shadow: 0 0 12px var(--osj-accent), 0 0 26px color-mix(in srgb, var(--osj-accent) 45%, transparent);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-menu-mark {
+  rotate: 0deg;
+  border-radius: 0;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--osj-accent) 45%, transparent);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-menu-mark i {
+  rotate: 0deg;
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-crumb + .osj-crumb::before {
+  content: "\203A";
+  color: var(--osj-accent);
+  text-shadow: 0 0 6px var(--osj-accent);
+}
+
+/* Glowing gradient scan-bar instead of the gilded lozenge divider */
+.application.velvet-journal[data-osj-edition="cyber"] .osj-panel-head::after,
+.application.velvet-journal[data-osj-edition="cyber"] .osj-hero-body::after {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--osj-accent) 20%, var(--osj-accent-2) 50%, var(--osj-accent) 80%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--osj-accent) 50%, transparent);
+}
+
+/* Two-tone glowing gradient title text instead of solid gold */
+.application.velvet-journal[data-osj-edition="cyber"] .osj-kicker {
+  background: linear-gradient(90deg, var(--osj-accent), var(--osj-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--osj-accent) 55%, transparent));
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] input.title,
+.application.velvet-journal[data-osj-edition="cyber"] .osj-panel-title {
+  text-shadow: 0 0 16px color-mix(in srgb, var(--osj-accent) 45%, transparent);
+}
+
+/* Dashboard cards: sharp corners, HUD target-lock brackets on hover */
+.application.velvet-journal[data-osj-edition="cyber"] .osj-dcard {
+  border-radius: 0;
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-dcard::after {
+  border: none;
+  inset: 8px;
+  background-image:
+    linear-gradient(to right, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to bottom, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to left, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to bottom, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to right, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to top, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to left, var(--osj-accent), var(--osj-accent)),
+    linear-gradient(to top, var(--osj-accent), var(--osj-accent));
+  background-size: 12px 2px, 2px 12px, 12px 2px, 2px 12px, 12px 2px, 2px 12px, 12px 2px, 2px 12px;
+  background-position: top left, top left, top right, top right, bottom left, bottom left, bottom right, bottom right;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-dcard:hover::after {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--osj-accent) 60%, transparent));
+}
+
+/* Holographic ambience, shared by every card-type surface: dashboard cards,
+   NPC portraits, quest cards and the atlas/dossier modal card. Each one has
+   exactly one free pseudo-element slot (the other is already used by its own
+   frame/filament): a slow iridescent sheen plus a soft scanning light band,
+   both continuous and smooth — no hard cuts, no flash. */
+
+@keyframes osjc-holo-sheen {
+  0%   { background-position: 0% 50%, 0 -30%; }
+  100% { background-position: 200% 50%, 0 130%; }
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-dcard::before,
+.application.velvet-journal[data-osj-edition="cyber"] .osj-npc-frame::before,
+.application.velvet-journal[data-osj-edition="cyber"] .osj-quest-card::after,
+.application.velvet-journal[data-osj-edition="cyber"] .osj-modal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.41;
+  transition: opacity 0.5s ease;
+  background:
+    repeating-linear-gradient(115deg,
+      rgba(0, 207, 255, 0.17) 0%,
+      rgba(161, 0, 255, 0.15) 12%,
+      rgba(0, 255, 220, 0.12) 24%,
+      transparent 36%,
+      transparent 48%) 0% 50% / 260% 260%,
+    linear-gradient(180deg,
+      transparent 0%,
+      rgba(210, 240, 255, 0.26) 48%,
+      rgba(210, 240, 255, 0.38) 50%,
+      rgba(210, 240, 255, 0.26) 52%,
+      transparent 100%) 0 -30% / 100% 55%;
+  background-repeat: repeat, no-repeat;
+}
+
+.application.velvet-journal[data-osj-edition="cyber"]:not(.osj-no-anim) .osj-dcard::before,
+.application.velvet-journal[data-osj-edition="cyber"]:not(.osj-no-anim) .osj-npc-frame::before,
+.application.velvet-journal[data-osj-edition="cyber"]:not(.osj-no-anim) .osj-quest-card::after,
+.application.velvet-journal[data-osj-edition="cyber"]:not(.osj-no-anim) .osj-modal-card::before {
+  animation: osjc-holo-sheen 7s linear infinite alternate;
+  animation-delay: calc(var(--i, 0) * -1.1s);
+}
+
+/* A little brighter while it has your attention */
+.application.velvet-journal[data-osj-edition="cyber"] .osj-dcard:hover::before,
+.application.velvet-journal[data-osj-edition="cyber"] .osj-npc-card:hover .osj-npc-frame::before,
+.application.velvet-journal[data-osj-edition="cyber"] .osj-quest-card:hover::after {
+  opacity: 0.64;
+}
+
+/* Quest cards sit on a busier list background, so the sheen reads stronger there — dial it back further */
+.application.velvet-journal[data-osj-edition="cyber"] .osj-quest-card::after {
+  opacity: 0.22;
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-quest-card:hover::after {
+  opacity: 0.34;
+}
+
+/* --------------------------------------------------------------------------
+   Theme configuration dialog — reskin the chrome that styles/config.css
+   hardcodes outside the --osj-* tokens, for the two new editions only.
+   Classic is left byte-for-byte as config.css defines it.
+   -------------------------------------------------------------------------- */
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) {
+  background: linear-gradient(180deg, var(--osj-deep-2), var(--osj-deep));
+  border-color: var(--osj-line-strong);
+  color: var(--osj-ink);
+  font-family: var(--osj-font-body);
+}
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) .window-header {
+  border-bottom-color: var(--osj-line);
+  --color-header-title: var(--osj-ink-strong);
+}
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) .window-header .window-title {
+  font-family: var(--osj-font-display);
+}
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) fieldset {
+  border-color: var(--osj-line);
+  background: var(--osj-glass);
+}
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) legend {
+  font-family: var(--osj-font-display);
+}
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) .form-group label {
+  color: var(--osj-ink);
+}
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) .form-group .hint {
+  color: var(--osj-muted);
+}
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) :is(input[type="text"], textarea, select, file-picker input) {
+  background: var(--osj-glass);
+  border-color: var(--osj-line);
+  color: var(--osj-ink);
+}
+
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) select option {
+  background: var(--osj-deep-2);
+  color: var(--osj-ink);
+}

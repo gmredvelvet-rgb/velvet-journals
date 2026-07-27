@@ -1,0 +1,57 @@
+<section class="journal-entry-content flexcol">
+
+    <div class="journal-entry-pages scrollable {{ ifThen editable "editable" "locked" }}">
+
+        {{#if osj.theme.showHero}}
+        {{!-- Velvet hero header --}}
+        <header class="osj-hero {{#unless osj.theme.banner}}osj-hero-plain{{/unless}}">
+            <div class="osj-hero-media" aria-hidden="true">
+                {{#if osj.theme.banner}}<img src="{{ osj.theme.banner }}" alt="" loading="eager">{{/if}}
+            </div>
+            <div class="osj-hero-scrim" aria-hidden="true"></div>
+            <div class="osj-hero-body">
+                {{#if osj.theme.logo}}
+                <img class="osj-hero-logo" src="{{ osj.theme.logo }}" alt="">
+                {{/if}}
+                {{#if osj.breadcrumb.length}}
+                <nav class="osj-breadcrumb" aria-label="{{ localize "VJ.Breadcrumb" }}">
+                    {{#each osj.breadcrumb}}<span class="osj-crumb">{{ this }}</span>{{/each}}
+                </nav>
+                {{/if}}
+                {{#if osj.theme.kicker}}<p class="osj-kicker">{{ osj.theme.kicker }}</p>{{/if}}
+                <input class="title osj-title" name="name" type="text" value="{{ document.name }}"
+                       placeholder="{{ localize "JOURNAL.EntryTitle" }}" aria-label="{{ localize "JOURNAL.EntryTitle" }}">
+                {{#if osj.theme.subtitle}}<p class="osj-subtitle">{{ osj.theme.subtitle }}</p>{{/if}}
+                {{#if osj.theme.showMeta}}
+                <div class="osj-meta">
+                    {{#if osj.author}}
+                    <span class="osj-meta-item"><i class="fa-solid fa-feather-pointed" inert></i>{{ osj.author }}</span>
+                    {{/if}}
+                    {{#if osj.updated}}
+                    <span class="osj-meta-item"><i class="fa-regular fa-calendar" inert></i>{{ osj.updated }}</span>
+                    {{/if}}
+                    <span class="osj-meta-item"><i class="fa-regular fa-file-lines" inert></i>{{ osj.pageCount }}</span>
+                    {{#each osj.tags}}<span class="osj-tag">{{ this }}</span>{{/each}}
+                </div>
+                {{/if}}
+            </div>
+        </header>
+        {{else}}
+        {{!-- Compact header --}}
+        <header class="journal-header osj-plain-header">
+            {{#if osj.theme.kicker}}<p class="osj-kicker">{{ osj.theme.kicker }}</p>{{/if}}
+            <input class="title" name="name" type="text" value="{{ document.name }}"
+                   placeholder="{{ localize "JOURNAL.EntryTitle" }}" aria-label="{{ localize "JOURNAL.EntryTitle" }}">
+            {{#if osj.theme.subtitle}}<p class="osj-subtitle">{{ osj.theme.subtitle }}</p>{{/if}}
+        </header>
+        {{/if}}
+
+    </div>
+
+    {{#if osj.theme.showFooter}}
+    <footer class="osj-footer">
+        <span class="osj-footer-brand">{{ osj.name }}</span>
+        {{#if osj.theme.footerText}}<span class="osj-footer-text">{{ osj.theme.footerText }}</span>{{/if}}
+    </footer>
+    {{/if}}
+</section>
