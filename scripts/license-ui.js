@@ -137,11 +137,28 @@ export default class LicenseUI {
       </header>`;
   }
 
+  /**
+   * Transitional notice for patrons whose earlier activation stopped
+   * validating. Being asked to re-authorise out of the blue reads as a scam,
+   * so it states what changed and — just as important — what did not: same
+   * subscription, no new charge, same slots. Drop it once the migration has
+   * settled.
+   */
+  static migrationNotice() {
+    return `
+      <div style="margin-bottom:.6rem;padding:.5rem .6rem;border-radius:4px;
+                  border:1px solid rgba(200,155,60,.35);background:rgba(200,155,60,.08);
+                  font-size:.9em;line-height:1.45">
+        <strong>${L("MigrationTitle")}</strong><br/>${L("MigrationBody")}
+      </div>`;
+  }
+
   static #trialMarkupGM() {
     return `
       ${LicenseUI.#header(L("TrialBadge"))}
       <p class="vj-license-status">${L("TrialIntro")}</p>
       <p class="vj-license-note">${L("TrialPitch")}</p>
+      ${LicenseUI.migrationNotice()}
       <button type="button" data-action="connect" class="vj-license-primary">
         <i class="fa-brands fa-patreon" aria-hidden="true"></i> ${L("Connect")}
       </button>
@@ -244,6 +261,7 @@ export default class LicenseUI {
       window: { title: `${MODULE_TITLE} — ${L("CodeTitle")}` },
       classes: ["velvet-config", "velvet-dialog"],
       content: `${notice}
+        ${LicenseUI.migrationNotice()}
         <p style="margin-bottom:.5rem">${L("CodeHint")}</p>
         <input type="text" name="code" autocomplete="off" spellcheck="false" value="${escape(prefill)}"
                style="width:100%;font-family:monospace;font-size:16px">`,
