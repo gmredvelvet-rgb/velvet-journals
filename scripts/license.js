@@ -460,7 +460,23 @@ export default class LicenseClient {
   /*  Transport                                   */
   /* -------------------------------------------- */
 
+  /**
+   * Serialises token rotation. The server revokes the old refresh token the
+   * moment it is used and treats a second presentation as reuse — a critical
+   * SECURITY_VIOLATION that revokes the whole family. Two overlapping refreshes
+   * were enough to trigger it; the trust window then hid the damage, but the
+   * credentials were gone all the same.
+   * @type {Promise<void>|null}
+   */
+  #refreshInFlight = null;
+
   async #refresh() {
+    this.#refreshInFlight ??= this.#refreshOnce()
+      .finally(() => { this.#refreshInFlight = null; });
+    return this.#refreshInFlight;
+  }
+
+  async #refreshOnce() {
     const result = await this.#apiCall("/token/refresh", {
       refreshToken: this.#refreshToken,
       fingerprintHash: this.#fingerprint
