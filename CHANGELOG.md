@@ -3,6 +3,13 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.0.1] — 2026-08-01
+
+### Fixed
+- La rotacion del token de refresco se serializa. El servidor revoca el token al usarlo
+  y trata una segunda presentacion como reutilizacion, revocando la familia entera; dos
+  pestanas de Foundry comparten localStorage y bastaban para provocarlo.
+
 ## [3.0.0] — 2026-07-27
 
 First release verified on **Foundry VTT v14**, and the first to ship the
