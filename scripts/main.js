@@ -2,6 +2,7 @@ import { MODULE_ID, MODULE_TITLE } from "./constants.js";
 import VelvetJournalSheet from "./sheet.js";
 import { registerBlocks } from "./blocks.js";
 import { initializeHub } from "./hub.js";
+import { registerTravelSocket } from "./travel.js";
 import LicenseClient from "./license.js";
 import LicenseUI, { licenseMenuClass, isWorldLicensed } from "./license-ui.js";
 
@@ -74,6 +75,7 @@ Hooks.once("init", () => {
 
   registerBlocks();
   initializeHub();
+  registerTravelSocket();
 });
 
 /**

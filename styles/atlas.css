@@ -869,6 +869,155 @@
   border-top: 1px solid color-mix(in srgb, var(--osj-line) 60%, transparent);
 }
 
+/* Travel bar ---------------------------------------------------------------
+   The GM-only strip inside a pin's card: the Scene this place really is, plus
+   the controls that take the table there. */
+
+.application.velvet-journal .osj-travel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.application.velvet-journal .osj-travel-scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 10px 7px 7px;
+  border: 1px solid var(--osj-line);
+  border-left: 2px solid color-mix(in srgb, var(--osj-accent) 65%, transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--osj-accent) 9%, transparent), transparent 70%);
+}
+
+.application.velvet-journal .osj-travel-scene.is-missing {
+  border-left-color: var(--osj-bad);
+  background: none;
+  opacity: 0.7;
+}
+
+.application.velvet-journal .osj-travel-thumb {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 40px;
+  overflow: hidden;
+  border: 1px solid var(--osj-line-strong);
+  background: var(--osj-deep-2);
+  color: color-mix(in srgb, var(--osj-accent) 60%, var(--osj-muted));
+  font-size: 0.85rem;
+}
+
+.application.velvet-journal .osj-travel-thumb > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none;
+  border-radius: 0;
+}
+
+.application.velvet-journal .osj-travel-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.application.velvet-journal .osj-travel-name {
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--osj-ink-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.application.velvet-journal .osj-travel-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--osj-font-body);
+  font-style: italic;
+  font-size: 0.86rem;
+  color: var(--osj-muted);
+}
+
+.application.velvet-journal .osj-travel-meta i {
+  font-size: 0.6rem;
+  font-style: normal;
+  color: color-mix(in srgb, var(--osj-accent) 75%, transparent);
+}
+
+/* Nobody picked the landing spot: say so, rather than letting the fallback pass
+   for a decision. Same treatment on the button that fixes it. */
+.application.velvet-journal .osj-travel-meta.is-unset,
+.application.velvet-journal .osj-travel-meta.is-unset i {
+  color: color-mix(in srgb, var(--osj-bad) 70%, var(--osj-muted));
+}
+
+.application.velvet-journal .osj-quest-btn.osj-travel-arrival.is-unset {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--osj-accent) 65%, transparent);
+  color: var(--osj-accent);
+}
+
+.application.velvet-journal .osj-quest-btn.osj-travel-arrival.is-unset:hover {
+  border-style: solid;
+  background: var(--osj-accent);
+  border-color: var(--osj-accent);
+  color: var(--osj-btn-ink);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--osj-accent) 40%, transparent);
+}
+
+/* The scene the table is on right now */
+.application.velvet-journal .osj-travel-live {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in srgb, var(--osj-ok) 55%, transparent);
+  background: color-mix(in srgb, var(--osj-ok) 14%, transparent);
+  color: var(--osj-ok);
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.52rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.application.velvet-journal .osj-travel-scene:hover .osj-atlas-ref-remove {
+  opacity: 1;
+}
+
+.application.velvet-journal .osj-travel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Taking the party somewhere is the headline action of the whole card */
+.application.velvet-journal .osj-quest-btn.osj-travel-go {
+  background: color-mix(in srgb, var(--osj-accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--osj-accent) 60%, transparent);
+  color: var(--osj-accent);
+}
+
+.application.velvet-journal .osj-quest-btn.osj-travel-go:hover {
+  background: var(--osj-accent);
+  border-color: var(--osj-accent);
+  color: var(--osj-btn-ink);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--osj-accent) 40%, transparent);
+}
+
+.application.velvet-journal .osj-quest-btn.osj-travel-cinematic:hover {
+  color: var(--osj-accent-2);
+  border-color: var(--osj-accent-2);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--osj-accent-2) 25%, transparent);
+}
+
 /* Light mode adjustments --------------------------------------------------- */
 
 .application.velvet-journal.osj-light :is(.osj-atlas-controls, .osj-atlas-desc) {

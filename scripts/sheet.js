@@ -10,6 +10,7 @@ import {
   editCardDialog, editQuestDialog, editNpcDialog, confirmDeleteDialog,
   editMapDialog, editPinDialog
 } from "./editors.js";
+import { openTravelDialog, runPinCinematic, pickArrivalPoint, arrivalInfo } from "./travel.js";
 
 const { JournalEntrySheet } = foundry.applications.sheets.journal;
 
@@ -151,7 +152,13 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       vjModalClose: VelvetJournalSheet.#onModalClose,
       vjRefOpen: VelvetJournalSheet.#onRefOpen,
       vjRefRemove: VelvetJournalSheet.#onRefRemove,
-      vjShowPlayers: VelvetJournalSheet.#onShowPlayers
+      vjShowPlayers: VelvetJournalSheet.#onShowPlayers,
+      vjSceneView: VelvetJournalSheet.#onSceneView,
+      vjSceneActivate: VelvetJournalSheet.#onSceneActivate,
+      vjSceneArrival: VelvetJournalSheet.#onSceneArrival,
+      vjSceneUnlink: VelvetJournalSheet.#onSceneUnlink,
+      vjPartyTravel: VelvetJournalSheet.#onPartyTravel,
+      vjCinematicPlay: VelvetJournalSheet.#onCinematicPlay
     }
   };
 
@@ -680,6 +687,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
           ...pin,
           npcs,
           items,
+          travel: await this.#resolvePinTravel(pin),
           descriptionHTML: pin.description
             ? await TextEditor.enrichHTML(markdownToHTML(pin.description), { relativeTo: this.entry, secrets: isOwner })
             : ""
@@ -713,8 +721,48 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       .filter(m => !m.parent || !ids.has(m.parent) || m.parent === m.id)
       .map(root => ({ ...node(root), children: descendants(root.id).map(node) }));
 
-    context.vjAtlas = { tree, map, openPin, placing: this.#pinPlacing };
+    context.vjAtlas = { tree, map, openPin, placing: this.#pinPlacing, isGM: game.user.isGM };
     return context;
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Resolve a pin's travel setup — the Scene it stands for, where the party lands on
+   * it and whether a cinematic introduces the journey — for the pin card's travel bar.
+   * Only the GM can act on any of it, so nothing here is resolved for players.
+   * @param {object} pin
+   * @returns {Promise<object|null>}
+   */
+  async #resolvePinTravel(pin) {
+    if ( !game.user.isGM ) return null;
+    const hasCinematic = !!(pin.cinematicVideo || pin.cinematicMacro);
+    if ( !pin.sceneUuid && !hasCinematic ) return null;
+
+    let scene = null;
+    if ( pin.sceneUuid ) {
+      let doc = null;
+      try {
+        doc = await fromUuid(pin.sceneUuid);
+      }
+      catch ( err ) { /* Broken reference, rendered as missing */ }
+      // A Scene inside a compendium cannot be activated or populated with tokens.
+      const usable = (doc?.documentName === "Scene") && !doc.pack;
+      const arrival = usable ? arrivalInfo(doc, pin) : null;
+      scene = {
+        uuid: pin.sceneUuid,
+        name: doc?.name ?? game.i18n.localize("VJ.Travel.SceneMissing"),
+        thumb: doc?.thumb || doc?.background?.src || "",
+        active: !!doc?.active,
+        missing: !usable,
+        // Flagged on the card when nobody picked the landing spot, so a party is
+        // never dropped in the middle of a map by accident.
+        arrivalMarked: !!arrival?.marked,
+        arrivalKey: arrival?.key ?? "",
+        arrivalLabel: arrival?.label ?? ""
+      };
+    }
+    return { scene, hasCinematic };
   }
 
   /* -------------------------------------------- */
@@ -1207,12 +1255,20 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
   async #onDropAtlasModal(event) {
     if ( !this.isEditable || !this.#openPinId ) return;
     const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
-    if ( !data?.uuid || !["Actor", "Item"].includes(data.type) ) return;
+    if ( !data?.uuid || !["Actor", "Item", "Scene"].includes(data.type) ) return;
     event.preventDefault();
     event.stopPropagation();
     const maps = getMaps(this.entry);
     const pin = maps.find(m => m.id === this.#activeMapId)?.pins?.find(p => p.id === this.#openPinId);
     if ( !pin ) return;
+
+    // A dropped scene makes this place somewhere the party can actually be taken to.
+    if ( data.type === "Scene" ) {
+      pin.sceneUuid = data.uuid;
+      pin.arrival = null;
+      return setMaps(this.entry, maps);
+    }
+
     const key = data.type === "Actor" ? "npcs" : "items";
     pin[key] = Array.isArray(pin[key]) ? pin[key] : [];
     if ( pin[key].includes(data.uuid) ) return ui.notifications.info(game.i18n.localize("VJ.Atlas.Duplicate"));
@@ -1963,5 +2019,106 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     const { shareSrc: src, shareTitle: title } = target.dataset;
     if ( !src ) return;
     Journal.showImage(src, { title, showTitle: true });
+  }
+
+  /* -------------------------------------------- */
+  /*  Travel                                      */
+  /* -------------------------------------------- */
+
+  /**
+   * The open pin together with the world Scene it links, or null with a warning when
+   * the link is broken. Compendium scenes are refused: they cannot be activated, and
+   * tokens cannot be created on them.
+   * @returns {Promise<{pin: object, scene: Scene}|null>}
+   */
+  async #openPinTravel() {
+    const pin = getMaps(this.entry).find(m => m.id === this.#activeMapId)?.pins?.find(p => p.id === this.#openPinId);
+    if ( !pin?.sceneUuid ) return null;
+    let doc = null;
+    try {
+      doc = await fromUuid(pin.sceneUuid);
+    }
+    catch ( err ) { /* Handled as a broken link below */ }
+    if ( (doc?.documentName !== "Scene") || doc.pack ) {
+      ui.notifications.warn(game.i18n.localize("VJ.Travel.SceneMissing"));
+      return null;
+    }
+    return { pin, scene: doc };
+  }
+
+  /**
+   * Preview the pin's scene on the GM's own canvas, without pulling the players to it.
+   * @this {VelvetJournalSheet}
+   */
+  static async #onSceneView() {
+    if ( !game.user.isGM ) return;
+    const travel = await this.#openPinTravel();
+    await travel?.scene.view();
+  }
+
+  /**
+   * Activate the pin's scene, which moves every connected player onto it.
+   * @this {VelvetJournalSheet}
+   */
+  static async #onSceneActivate() {
+    if ( !game.user.isGM ) return;
+    const travel = await this.#openPinTravel();
+    await travel?.scene.activate();
+  }
+
+  /**
+   * Mark the exact spot the party arrives at, by clicking the target scene. The sheet
+   * steps out of the way for the pick and comes back once a point is chosen.
+   * @this {VelvetJournalSheet}
+   */
+  static async #onSceneArrival() {
+    if ( !game.user.isGM ) return;
+    const travel = await this.#openPinTravel();
+    if ( !travel ) return;
+    await this.minimize();
+    let point = null;
+    try {
+      point = await pickArrivalPoint(travel.scene);
+    }
+    finally {
+      await this.maximize();
+    }
+    if ( !point ) return;
+    await this.#updateOpenPin(pin => { pin.arrival = point; });
+  }
+
+  /**
+   * Forget the pin's scene link and its arrival point.
+   * @this {VelvetJournalSheet}
+   */
+  static async #onSceneUnlink() {
+    if ( !this.isEditable ) return;
+    await this.#updateOpenPin(pin => {
+      pin.sceneUuid = "";
+      pin.arrival = null;
+    });
+  }
+
+  /**
+   * Take the party to this place: pick who travels, then move their tokens onto the
+   * linked scene in formation.
+   * @this {VelvetJournalSheet}
+   */
+  static async #onPartyTravel() {
+    if ( !game.user.isGM ) return;
+    const travel = await this.#openPinTravel();
+    if ( !travel ) return;
+    await openTravelDialog(travel);
+  }
+
+  /**
+   * Play the pin's cinematic for everyone, without travelling anywhere.
+   * @this {VelvetJournalSheet}
+   */
+  static async #onCinematicPlay() {
+    if ( !game.user.isGM ) return;
+    const pin = getMaps(this.entry).find(m => m.id === this.#activeMapId)?.pins?.find(p => p.id === this.#openPinId);
+    if ( !pin ) return;
+    await runPinCinematic(pin);
   }
 }

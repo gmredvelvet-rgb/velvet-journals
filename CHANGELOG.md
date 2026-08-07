@@ -3,6 +3,41 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.1.0] — 2026-08-07
+
+### Added
+
+- **Atlas travel.** A point of interest can now be the scene it depicts. Drop a
+  Scene onto a pin's card (or paste its UUID in the pin editor) and the card
+  gains a travel bar, for the GM only:
+  - **Take the Party** — moves every selected character's token onto the linked
+    scene, arranged around the arrival point in a compact block, a marching line
+    or a circle. A character already on the target scene is repositioned; one
+    standing elsewhere is carried over with its full token data — an unlinked
+    token keeps its damage, effects and name — and removed from the map it left;
+    one with no token anywhere is placed from its prototype.
+  - **Activate** pulls every connected player onto the scene, **Preview** shows
+    it to the GM alone, and **Arrival Point** marks the exact landing spot with
+    one click on the scene itself. When no spot has been marked the party falls
+    back to the scene's initial view, or — if that is unset too — the middle of
+    the map; the card and the travel dialog both say which of the three is in
+    effect, and flag the last one instead of letting it pass for a decision.
+  - The roster is drawn from each player's assigned character plus any
+    player-owned token on the scene on screen, and shows where each one is
+    standing right now.
+- **Cinematic transitions.** A pin can carry a video and a macro. The video
+  plays full screen for every connected client, letterboxed and captioned in the
+  active edition's chrome, and the party moves the moment it ends. The macro runs
+  first, for whatever is already set up — Sequencer, FXMaster, weather, music.
+  Either can also be fired on its own from the card.
+
+### Changed
+
+- Editor dialogs (card, quest, NPC, map, pin) now follow the selected edition
+  instead of always painting in Classic.
+- Any link field in an editor dialog accepts a dropped document, not just the
+  dashboard card's.
+
 ## [3.0.1] — 2026-08-01
 
 ### Fixed

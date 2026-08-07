@@ -36,6 +36,9 @@ Then set a Journal Entry's sheet to **Velvet Journals** (right-click the entry
   progress bars and structured rewards.
 - **Atlas** — nested maps with coloured pins, each linking to NPCs, items or
   another map.
+- **Atlas travel** — link a Scene to a pin, then preview it, activate it, mark
+  the exact arrival point and move the whole party's tokens onto it in
+  formation, optionally behind a full-screen cinematic played for everyone.
 - **Markdown editors** — bios, quest summaries and pin descriptions take
   Markdown, with a formatting toolbar. Existing HTML and `@UUID[…]` links keep
   working.

@@ -1,0 +1,316 @@
+/* ==========================================================================
+   Velvet Journals — Atlas travel
+   The cinematic overlay and the travel dialog. Both live outside the journal
+   sheet (the overlay on <body>, the dialog in its own application), so neither
+   inherits the sheet's --osj-* tokens: the overlay declares its own per edition
+   from the `data-osj-edition` attribute travel.js stamps on it, and the dialog
+   reads the .velvet-config tokens with classic fallbacks.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Cinematic overlay
+   -------------------------------------------------------------------------- */
+
+.vj-cinematic {
+  --vjc-ink: #f7eeda;
+  --vjc-accent: #d3b06a;
+  --vjc-void: #040307;
+  --vjc-font-display: "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  --vjc-bar: 8vh;
+  --vjc-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: grid;
+  place-items: center;
+  background: var(--vjc-void);
+  animation: vjc-in 0.5s var(--vjc-ease) both;
+}
+
+.vj-cinematic.closing {
+  animation: vjc-out 0.4s var(--vjc-ease) both;
+}
+
+@keyframes vjc-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes vjc-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.vj-cinematic-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--vjc-void);
+}
+
+/* Letterbox bars, sliding shut over the video like a projector mask */
+.vj-cinematic-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--vjc-bar);
+  z-index: 2;
+  background: var(--vjc-void);
+  pointer-events: none;
+  animation: vjc-bar 0.7s var(--vjc-ease) both;
+}
+
+.vj-cinematic-bar.top {
+  top: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--vjc-accent) 40%, transparent);
+}
+
+.vj-cinematic-bar.bottom {
+  bottom: 0;
+  border-top: 1px solid color-mix(in srgb, var(--vjc-accent) 40%, transparent);
+}
+
+@keyframes vjc-bar {
+  from { height: 0; }
+  to { height: var(--vjc-bar); }
+}
+
+.vj-cinematic-title {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--vjc-bar) / 2);
+  translate: -50% 50%;
+  z-index: 3;
+  margin: 0;
+  padding: 0 24px;
+  max-width: 80vw;
+  color: var(--vjc-ink);
+  font-family: var(--vjc-font-display);
+  font-weight: 600;
+  font-size: clamp(0.8rem, 1.6vw, 1.15rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  animation: vjc-title 1.4s var(--vjc-ease) 0.5s both;
+}
+
+@keyframes vjc-title {
+  from { opacity: 0; letter-spacing: 0.6em; }
+  to { opacity: 1; letter-spacing: 0.34em; }
+}
+
+.vj-cinematic-skip {
+  position: absolute;
+  right: 26px;
+  bottom: calc(var(--vjc-bar) / 2);
+  translate: 0 50%;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: auto;
+  padding: 7px 16px;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--vjc-accent) 45%, transparent);
+  border-radius: 0;
+  color: color-mix(in srgb, var(--vjc-ink) 80%, transparent);
+  font-family: var(--vjc-font-display);
+  font-weight: 600;
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: var(--cursor-pointer, pointer);
+  opacity: 0.45;
+  transition: opacity 0.3s var(--vjc-ease), color 0.3s var(--vjc-ease), border-color 0.3s var(--vjc-ease);
+}
+
+.vj-cinematic-skip:hover {
+  opacity: 1;
+  color: var(--vjc-accent);
+  border-color: var(--vjc-accent);
+  box-shadow: none;
+}
+
+/* Survival: a field monitor — stencil type, hazard-striped mask edge ---------- */
+
+.vj-cinematic[data-osj-edition="survival"] {
+  --vjc-ink: #e6e3d8;
+  --vjc-accent: #d9a441;
+  --vjc-void: #07090a;
+  --vjc-font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+}
+
+.vj-cinematic[data-osj-edition="survival"] :is(.vj-cinematic-bar.top, .vj-cinematic-bar.bottom) {
+  border-width: 3px;
+  border-image: repeating-linear-gradient(-45deg, var(--vjc-accent) 0 6px, var(--vjc-void) 6px 12px) 3;
+}
+
+.vj-cinematic[data-osj-edition="survival"] .vj-cinematic-title {
+  letter-spacing: 0.2em;
+}
+
+.vj-cinematic[data-osj-edition="survival"] .vj-cinematic-title::before {
+  content: "▸ ";
+  color: var(--vjc-accent);
+}
+
+/* Cyber: a holographic feed — scanlines, glowing type ------------------------- */
+
+.vj-cinematic[data-osj-edition="cyber"] {
+  --vjc-ink: #eafcff;
+  --vjc-accent: #00cfff;
+  --vjc-void: #000a14;
+  --vjc-font-display: "Orbitron", "Rajdhani", "Arial Narrow", sans-serif;
+}
+
+.vj-cinematic[data-osj-edition="cyber"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+}
+
+.vj-cinematic[data-osj-edition="cyber"] :is(.vj-cinematic-bar.top, .vj-cinematic-bar.bottom) {
+  border-width: 2px;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--vjc-accent) 55%, transparent);
+}
+
+.vj-cinematic[data-osj-edition="cyber"] .vj-cinematic-title {
+  text-shadow: 0 0 14px var(--vjc-accent), 0 0 34px color-mix(in srgb, var(--vjc-accent) 50%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vj-cinematic,
+  .vj-cinematic-bar,
+  .vj-cinematic-title {
+    animation-duration: 0.01ms;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Arrival-point picking: the canvas is waiting for one click
+   -------------------------------------------------------------------------- */
+
+body.vj-picking-arrival #board {
+  cursor: crosshair;
+}
+
+/* --------------------------------------------------------------------------
+   Travel dialog
+   -------------------------------------------------------------------------- */
+
+.application.velvet-config.vj-travel-dialog .vj-travel-target {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--osj-line, rgba(211, 176, 106, 0.18));
+  color: var(--osj-accent);
+  font-family: var(--osj-font-display, "Cinzel", "Times New Roman", serif);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Where the party lands, and whether anyone actually chose it */
+.application.velvet-config.vj-travel-dialog .vj-travel-arrival {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 4px;
+  font-family: var(--osj-font-body, "Cormorant Garamond", Georgia, serif);
+  font-style: italic;
+  color: var(--osj-muted, #9a8a6a);
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-arrival i {
+  font-style: normal;
+  font-size: 0.7rem;
+  color: color-mix(in srgb, var(--osj-accent) 75%, transparent);
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-arrival.is-unset,
+.application.velvet-config.vj-travel-dialog .vj-travel-arrival.is-unset i {
+  color: var(--osj-bad, #b0505a);
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-arrival-hint {
+  margin: 0 0 10px;
+  padding-left: 24px;
+  font-family: var(--osj-font-body, "Cormorant Garamond", Georgia, serif);
+  font-size: 0.86rem;
+  color: var(--osj-muted, #9a8a6a);
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-roster {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  padding: 4px;
+  border: 1px solid var(--osj-line, rgba(211, 176, 106, 0.18));
+  background: var(--osj-glass, rgba(255, 255, 255, 0.02));
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--osj-accent) 50%, transparent) transparent;
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  cursor: var(--cursor-pointer, pointer);
+  transition: background-color 0.2s ease;
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-member:hover {
+  background: color-mix(in srgb, var(--osj-accent) 8%, transparent);
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-member input {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-member img {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border: 1px solid var(--osj-line-strong, rgba(211, 176, 106, 0.34));
+  border-radius: 50%;
+}
+
+.application.velvet-config.vj-travel-dialog .vj-travel-member-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--osj-font-body, "Cormorant Garamond", Georgia, serif);
+  font-weight: 600;
+  color: var(--osj-ink, #e4d8bd);
+}
+
+/* Where this character is standing right now */
+.application.velvet-config.vj-travel-dialog .vj-travel-member-scene {
+  flex: 0 0 auto;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--osj-font-body, "Cormorant Garamond", Georgia, serif);
+  font-style: italic;
+  font-size: 0.86rem;
+  color: var(--osj-muted, #9a8a6a);
+}

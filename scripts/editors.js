@@ -3,7 +3,7 @@
  * They return a plain data object on save, or null when cancelled/dismissed.
  */
 
-import { localize } from "./constants.js";
+import { getModuleTheme, localize } from "./constants.js";
 
 const L = (key, data) => localize(key, data);
 const esc = value => Handlebars.escapeExpression(value ?? "");
@@ -114,6 +114,9 @@ async function formDialog(title, icon, content) {
     ],
     render: (event, dialog) => {
       const root = dialog?.element ?? dialog;
+      // Dialogs are separate applications from the sheet, so they need the edition
+      // stamped on them too or styles/themes.css cannot repaint them.
+      if ( root ) root.dataset.osjEdition = getModuleTheme();
 
       // Wire up Markdown mini-editor toolbars.
       for ( const toolbar of root?.querySelectorAll?.(".vj-md-toolbar") ?? [] ) {
@@ -124,18 +127,18 @@ async function formDialog(title, icon, content) {
         });
       }
 
-      // Allow dropping any document onto the UUID field to link it.
-      const input = root?.querySelector?.("input[name='uuid']");
-      if ( !input ) return;
-      input.addEventListener("dragover", ev => ev.preventDefault());
-      input.addEventListener("drop", ev => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        try {
-          const data = JSON.parse(ev.dataTransfer.getData("text/plain"));
-          if ( data?.uuid ) input.value = data.uuid;
-        } catch ( err ) { /* Not a document drag */ }
-      });
+      // Allow dropping a document onto any link field to fill in its UUID.
+      for ( const input of root?.querySelectorAll?.("input[data-uuid-drop]") ?? [] ) {
+        input.addEventListener("dragover", ev => ev.preventDefault());
+        input.addEventListener("drop", ev => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          try {
+            const data = JSON.parse(ev.dataTransfer.getData("text/plain"));
+            if ( data?.uuid ) input.value = data.uuid;
+          } catch ( err ) { /* Not a document drag */ }
+        });
+      }
     }
   });
   return (result && typeof result === "object") ? result : null;
@@ -190,7 +193,7 @@ export function editCardDialog(card = {}, categories = []) {
     ${group("VJ.Cards.Category", `<input type="text" name="category" list="${listId}" value="${esc(card.category)}" placeholder="${L("VJ.Cards.CategoryPlaceholder")}">${datalist}`, "VJ.Cards.CategoryHint")}
     ${pickerGroup("VJ.Cards.Media", "media", card.media, "imagevideo", "VJ.Cards.MediaHint")}
     ${group("VJ.Cards.Size", `<select name="size">${sizes}</select>`)}
-    ${group("VJ.Cards.Link", `<input type="text" name="uuid" value="${esc(card.uuid)}" placeholder="Scene.abcd1234…">`, "VJ.Cards.LinkHint")}
+    ${group("VJ.Cards.Link", `<input type="text" name="uuid" data-uuid-drop value="${esc(card.uuid)}" placeholder="Scene.abcd1234…">`, "VJ.Cards.LinkHint")}
     ${group("VJ.Cards.Url", `<input type="text" name="url" value="${esc(card.url)}" placeholder="https://…">`, "VJ.Cards.UrlHint")}`;
   const title = card.id ? "VJ.Cards.EditTitle" : "VJ.Cards.NewTitle";
   return formDialog(L(title), "fa-solid fa-clapperboard", content);
@@ -293,7 +296,13 @@ export function editPinDialog(pin = {}, maps = []) {
     ${group("VJ.Atlas.PinMapLink", mapSelect("mapLink", maps, pin.mapLink ?? ""), "VJ.Atlas.PinMapLinkHint")}
     ${pickerGroup("VJ.Atlas.PinImage", "image", pin.image, "image")}
     ${group("VJ.Atlas.PinDescription", mdEditor("description", pin.description, 6), "VJ.Quests.SummaryHint")}
-    ${group("VJ.Atlas.PinHidden", `<input type="checkbox" name="hidden" ${pin.hidden ? "checked" : ""}>`, "VJ.Atlas.PinHiddenHint")}`;
+    ${group("VJ.Atlas.PinHidden", `<input type="checkbox" name="hidden" ${pin.hidden ? "checked" : ""}>`, "VJ.Atlas.PinHiddenHint")}
+    <fieldset class="vj-pin-travel">
+      <legend>${L("VJ.Travel.Legend")}</legend>
+      ${group("VJ.Travel.Scene", `<input type="text" name="sceneUuid" data-uuid-drop value="${esc(pin.sceneUuid)}" placeholder="Scene.abcd1234…">`, "VJ.Travel.SceneHint")}
+      ${pickerGroup("VJ.Travel.Video", "cinematicVideo", pin.cinematicVideo, "video", "VJ.Travel.VideoHint")}
+      ${group("VJ.Travel.Macro", `<input type="text" name="cinematicMacro" data-uuid-drop value="${esc(pin.cinematicMacro)}" placeholder="Macro.abcd1234…">`, "VJ.Travel.MacroHint")}
+    </fieldset>`;
   const title = pin.id ? "VJ.Atlas.EditPin" : "VJ.Atlas.NewPin";
   return formDialog(L(title), "fa-solid fa-location-dot", content);
 }

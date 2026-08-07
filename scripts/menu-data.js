@@ -171,6 +171,12 @@ export function createPin(x, y, data = {}) {
     description: "",
     hidden: false,
     mapLink: "",
+    // Travel: the Scene this place is, where the party lands on it, and the
+    // cinematic that introduces the journey.
+    sceneUuid: "",
+    arrival: null,
+    cinematicVideo: "",
+    cinematicMacro: "",
     npcs: [],
     items: [],
     ...data

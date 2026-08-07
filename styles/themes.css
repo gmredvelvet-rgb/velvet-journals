@@ -409,6 +409,52 @@
 }
 
 /* --------------------------------------------------------------------------
+   Atlas travel bar — the linked-scene strip inside a pin's card.
+   Classic keeps the gilded rule atlas.css draws; the other two editions read
+   it as equipment (survival) or as a routed data channel (cyber).
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal[data-osj-edition="survival"] .osj-travel-scene {
+  border-left: none;
+  padding-left: 13px;
+  background: none;
+}
+
+/* Hazard tape down the edge, the way a hatch is marked */
+.application.velvet-journal[data-osj-edition="survival"] .osj-travel-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: repeating-linear-gradient(-45deg, var(--osj-accent) 0 4px, var(--osj-deep) 4px 8px);
+  opacity: 0.75;
+}
+
+.application.velvet-journal[data-osj-edition="survival"] .osj-travel-thumb {
+  border-radius: 0;
+  filter: saturate(0.75) contrast(1.1);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-travel-scene {
+  border-left-width: 1px;
+  border-left-color: var(--osj-accent);
+  box-shadow: -6px 0 18px -6px color-mix(in srgb, var(--osj-accent) 70%, transparent);
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--osj-accent) 14%, transparent),
+    color-mix(in srgb, var(--osj-accent-2) 6%, transparent) 45%,
+    transparent 80%);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-travel-name {
+  text-shadow: 0 0 12px color-mix(in srgb, var(--osj-accent) 45%, transparent);
+}
+
+.application.velvet-journal[data-osj-edition="cyber"] .osj-travel-live {
+  box-shadow: 0 0 14px color-mix(in srgb, var(--osj-ok) 40%, transparent);
+  text-shadow: 0 0 8px var(--osj-ok);
+}
+
+/* --------------------------------------------------------------------------
    Theme configuration dialog — reskin the chrome that styles/config.css
    hardcodes outside the --osj-* tokens, for the two new editions only.
    Classic is left byte-for-byte as config.css defines it.

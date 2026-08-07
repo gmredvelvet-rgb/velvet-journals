@@ -137,6 +137,64 @@
                         <div class="osj-modal-text">{{{ vjAtlas.openPin.descriptionHTML }}}</div>
                         {{/if}}
 
+                        {{#with vjAtlas.openPin.travel}}
+                        <h4 class="osj-modal-section">{{ localize "VJ.Travel.Legend" }}</h4>
+                        <div class="osj-travel">
+                            {{#if scene}}
+                            <div class="osj-travel-scene {{#if scene.missing}}is-missing{{/if}}">
+                                <span class="osj-travel-thumb">
+                                    {{#if scene.thumb}}
+                                    <img src="{{ scene.thumb }}" alt="" draggable="false">
+                                    {{else}}
+                                    <i class="fa-solid fa-map" inert></i>
+                                    {{/if}}
+                                </span>
+                                <span class="osj-travel-text">
+                                    <span class="osj-travel-name">{{ scene.name }}</span>
+                                    {{#unless scene.missing}}
+                                    <span class="osj-travel-meta {{#unless scene.arrivalMarked}}is-unset{{/unless}}">
+                                        <i class="fa-solid fa-crosshairs" inert></i>
+                                        {{ localize scene.arrivalKey }} · {{ scene.arrivalLabel }}
+                                    </span>
+                                    {{/unless}}
+                                </span>
+                                {{#if scene.active}}
+                                <span class="osj-travel-live">{{ localize "VJ.Travel.Live" }}</span>
+                                {{/if}}
+                                <button type="button" class="osj-atlas-ref-remove" data-action="vjSceneUnlink"
+                                        data-tooltip aria-label="{{ localize "VJ.Travel.Unlink" }}">
+                                    <i class="fa-solid fa-link-slash" inert></i>
+                                </button>
+                            </div>
+                            {{/if}}
+
+                            <div class="osj-travel-actions">
+                                {{#if scene}}
+                                {{#unless scene.missing}}
+                                <button type="button" class="osj-quest-btn osj-travel-go" data-action="vjPartyTravel">
+                                    <i class="fa-solid fa-person-walking-arrow-right" inert></i>{{ localize "VJ.Travel.Party" }}
+                                </button>
+                                <button type="button" class="osj-quest-btn" data-action="vjSceneActivate">
+                                    <i class="fa-solid fa-bullseye" inert></i>{{ localize "VJ.Travel.Activate" }}
+                                </button>
+                                <button type="button" class="osj-quest-btn" data-action="vjSceneView">
+                                    <i class="fa-solid fa-eye" inert></i>{{ localize "VJ.Travel.View" }}
+                                </button>
+                                <button type="button" class="osj-quest-btn osj-travel-arrival {{#unless scene.arrivalMarked}}is-unset{{/unless}}"
+                                        data-action="vjSceneArrival">
+                                    <i class="fa-solid fa-crosshairs" inert></i>{{ localize "VJ.Travel.SetArrival" }}
+                                </button>
+                                {{/unless}}
+                                {{/if}}
+                                {{#if hasCinematic}}
+                                <button type="button" class="osj-quest-btn osj-travel-cinematic" data-action="vjCinematicPlay">
+                                    <i class="fa-solid fa-film" inert></i>{{ localize "VJ.Travel.Cinematic" }}
+                                </button>
+                                {{/if}}
+                            </div>
+                        </div>
+                        {{/with}}
+
                         {{#if vjAtlas.openPin.npcs.length}}
                         <h4 class="osj-modal-section">{{ localize "VJ.Atlas.People" }}</h4>
                         <div class="osj-atlas-npcs">

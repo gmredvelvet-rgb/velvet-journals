@@ -1710,7 +1710,7 @@
   box-shadow: 0 0 14px color-mix(in srgb, var(--osj-bad) 25%, transparent);
 }
 
-.application.velvet-journal .osj-quest-btn:hover:not(.status-active):not(.status-done):not(.status-failed):not(.danger) {
+.application.velvet-journal .osj-quest-btn:hover:not(.status-active):not(.status-done):not(.status-failed):not(.danger):not(.osj-travel-go):not(.osj-travel-cinematic):not(.osj-travel-arrival) {
   color: var(--osj-ink-strong);
   border-color: var(--osj-line-strong);
 }
