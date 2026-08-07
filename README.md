@@ -35,7 +35,7 @@ Then set a Journal Entry's sheet to **Velvet Journals** (right-click the entry
 - **Quest tracker** — active, completed and failed quests with objectives,
   progress bars and structured rewards.
 - **Atlas** — nested maps with coloured pins, each linking to NPCs, items or
-  another map.
+  another map. Maps and pins can be hidden from players while you prep them.
 - **Atlas travel** — link a Scene to a pin, then preview it, activate it, mark
   the exact arrival point and move the whole party's tokens onto it in
   formation, optionally behind a full-screen cinematic played for everyone.

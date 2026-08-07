@@ -15,16 +15,19 @@
                 <p class="osj-atlas-nav-title">{{ localize "VJ.Atlas.NavTitle" }}</p>
                 <ul class="osj-atlas-tree">
                     {{#each vjAtlas.tree}}
-                    <li class="osj-atlas-node root {{#if active}}active{{/if}}">
+                    <li class="osj-atlas-node root {{#if active}}active{{/if}} {{#if hidden}}is-hidden{{/if}}">
                         <div class="osj-atlas-node-row">
                             <button type="button" class="osj-atlas-node-btn" data-action="vjMapSelect" data-map-id="{{ id }}">
                                 <span class="osj-atlas-node-name">{{ name }}</span>
+                                {{#if hidden}}<i class="fa-solid fa-eye-slash osj-atlas-node-flag" inert></i>{{/if}}
                                 {{#if pinCount}}<span class="osj-atlas-node-count">{{ pinCount }}</span>{{/if}}
                             </button>
                             {{#if ../editable}}
                             <span class="osj-atlas-node-tools">
                                 <button type="button" data-action="vjMapEdit" data-map-id="{{ id }}" data-tooltip
                                         aria-label="{{ localize "VJ.Atlas.EditMap" }}"><i class="fa-solid fa-pen" inert></i></button>
+                                <button type="button" data-action="vjMapHide" data-map-id="{{ id }}" data-tooltip
+                                        aria-label="{{ localize "VJ.Atlas.ToggleMapHidden" }}"><i class="fa-solid {{#if hidden}}fa-eye{{else}}fa-eye-slash{{/if}}" inert></i></button>
                                 <button type="button" data-action="vjMapDelete" data-map-id="{{ id }}" data-tooltip
                                         aria-label="{{ localize "VJ.Dialog.DeleteTitle" }}"><i class="fa-solid fa-trash" inert></i></button>
                             </span>
@@ -33,16 +36,19 @@
                         {{#if children.length}}
                         <ul class="osj-atlas-children">
                             {{#each children}}
-                            <li class="osj-atlas-node child {{#if active}}active{{/if}}">
+                            <li class="osj-atlas-node child {{#if active}}active{{/if}} {{#if hidden}}is-hidden{{/if}}">
                                 <div class="osj-atlas-node-row">
                                     <button type="button" class="osj-atlas-node-btn" data-action="vjMapSelect" data-map-id="{{ id }}">
                                         <span class="osj-atlas-node-name">{{ name }}</span>
+                                        {{#if hidden}}<i class="fa-solid fa-eye-slash osj-atlas-node-flag" inert></i>{{/if}}
                                         {{#if pinCount}}<span class="osj-atlas-node-count">{{ pinCount }}</span>{{/if}}
                                     </button>
                                     {{#if ../../editable}}
                                     <span class="osj-atlas-node-tools">
                                         <button type="button" data-action="vjMapEdit" data-map-id="{{ id }}" data-tooltip
                                                 aria-label="{{ localize "VJ.Atlas.EditMap" }}"><i class="fa-solid fa-pen" inert></i></button>
+                                        <button type="button" data-action="vjMapHide" data-map-id="{{ id }}" data-tooltip
+                                                aria-label="{{ localize "VJ.Atlas.ToggleMapHidden" }}"><i class="fa-solid {{#if hidden}}fa-eye{{else}}fa-eye-slash{{/if}}" inert></i></button>
                                         <button type="button" data-action="vjMapDelete" data-map-id="{{ id }}" data-tooltip
                                                 aria-label="{{ localize "VJ.Dialog.DeleteTitle" }}"><i class="fa-solid fa-trash" inert></i></button>
                                     </span>

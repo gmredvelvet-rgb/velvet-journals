@@ -162,6 +162,21 @@
   letter-spacing: 0;
 }
 
+/* Maps kept back for prep: legible, plainly marked, never mistaken for live ones */
+.application.velvet-journal .osj-atlas-node.is-hidden > .osj-atlas-node-row .osj-atlas-node-btn {
+  opacity: 0.55;
+}
+
+.application.velvet-journal .osj-atlas-node.root.is-hidden > .osj-atlas-node-row .osj-atlas-node-btn::before {
+  border-style: dashed;
+}
+
+.application.velvet-journal .osj-atlas-node-flag {
+  flex: 0 0 auto;
+  font-size: 0.56rem;
+  color: var(--osj-muted);
+}
+
 .application.velvet-journal .osj-atlas-node-tools {
   flex: 0 0 auto;
   display: inline-flex;

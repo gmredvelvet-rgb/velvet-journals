@@ -147,6 +147,7 @@ export function createMap(data = {}) {
     image: "",
     description: "",
     parent: "",
+    hidden: false,
     pins: [],
     ...data
   };

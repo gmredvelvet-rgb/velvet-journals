@@ -3,6 +3,24 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.2.0] — 2026-08-07
+
+### Added
+
+- **Hidden maps.** An atlas map can now be kept from players, the way pins,
+  quests and NPCs already could — so a region can be drawn, pinned and wired to
+  its scenes long before the table is meant to know it exists. The checkbox is in
+  the map editor (on creation as well as later), and the index carries an
+  eye toggle next to each map for flipping it mid-session.
+  - Hiding cascades: putting a region away hides everything nested under it, so a
+    hidden parent never leaves its districts on display.
+  - A hidden map is withheld everywhere it would otherwise leak — the atlas
+    index, the tab's map count, and the NPC gallery's location filter, where a
+    character parked on one reads as unassigned rather than naming it.
+  - A pin that travels to a map the viewer cannot see opens its own card instead
+    of advertising a destination that is not there for them.
+  - The GM keeps seeing every map, dimmed and marked with an eye-slash.
+
 ## [3.1.1] — 2026-08-07
 
 ### Fixed

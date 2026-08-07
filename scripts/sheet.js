@@ -140,6 +140,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       vjMapAdd: VelvetJournalSheet.#onMapAdd,
       vjMapEdit: VelvetJournalSheet.#onMapEdit,
       vjMapDelete: VelvetJournalSheet.#onMapDelete,
+      vjMapHide: VelvetJournalSheet.#onMapHide,
       vjMapSelect: VelvetJournalSheet.#onMapSelect,
       vjAtlasZoomIn: VelvetJournalSheet.#onAtlasZoomIn,
       vjAtlasZoomOut: VelvetJournalSheet.#onAtlasZoomOut,
@@ -416,6 +417,31 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     return getNpcs(this.entry).filter(n => isOwner || !n.hidden);
   }
 
+  /**
+   * Atlas maps visible to the current user.
+   *
+   * Hiding cascades down the tree: a map is shown only when nothing above it is
+   * hidden, so a region put away for prep never leaves its districts on display.
+   * The walk guards against a parent cycle, which a hand-edited flag could create.
+   * @returns {object[]}
+   */
+  #visibleMaps() {
+    const maps = getMaps(this.entry);
+    if ( this.entry.isOwner ) return maps;
+    const byId = new Map(maps.map(m => [m.id, m]));
+    const shown = map => {
+      const seen = new Set();
+      let node = map;
+      while ( node && !seen.has(node.id) ) {
+        if ( node.hidden ) return false;
+        seen.add(node.id);
+        node = node.parent ? byId.get(node.parent) : null;
+      }
+      return true;
+    };
+    return maps.filter(shown);
+  }
+
   /* -------------------------------------------- */
 
   /** @inheritDoc */
@@ -444,7 +470,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     const badges = {
       npcs: this.#visibleNpcs().length,
       quests: this.#visibleQuests().filter(q => q.status === "active").length,
-      atlas: getMaps(this.entry).length,
+      atlas: this.#visibleMaps().length,
       pages: this.entry.pages.size
     };
     context.vjMenu = {
@@ -545,7 +571,8 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
   async _prepareNpcsContext(context) {
     const isOwner = this.entry.isOwner;
     const TextEditor = foundry.applications.ux.TextEditor.implementation;
-    const maps = getMaps(this.entry);
+    // A character parked on a hidden map reads as unassigned rather than naming it.
+    const maps = this.#visibleMaps();
     const untitled = game.i18n.localize("VJ.Atlas.Untitled");
     const list = [];
     let openNpc = null;
@@ -661,14 +688,19 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
   async _prepareAtlasContext(context) {
     const isOwner = this.entry.isOwner;
     const TextEditor = foundry.applications.ux.TextEditor.implementation;
-    const maps = getMaps(this.entry);
+    const maps = this.#visibleMaps();
+    const visibleIds = new Set(maps.map(m => m.id));
     const activeMap = maps.find(m => m.id === this.#activeMapId) ?? maps[0] ?? null;
     this.#activeMapId = activeMap?.id ?? null;
 
     let map = null;
     let openPin = null;
     if ( activeMap ) {
-      const pins = (activeMap.pins ?? []).filter(p => isOwner || !p.hidden);
+      // A pin leading somewhere the viewer cannot see opens its own card instead,
+      // rather than advertising a map that is not there for them.
+      const pins = (activeMap.pins ?? [])
+        .filter(p => isOwner || !p.hidden)
+        .map(p => (p.mapLink && !visibleIds.has(p.mapLink)) ? { ...p, mapLink: "" } : p);
       map = { ...activeMap, pins };
       const pin = this.#openPinId ? pins.find(p => p.id === this.#openPinId) : null;
       if ( !pin ) this.#openPinId = null;
@@ -697,11 +729,11 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
 
     // Navigation tree: root maps (big cities, regions) with their child maps.
     const untitled = game.i18n.localize("VJ.Atlas.Untitled");
-    const ids = new Set(maps.map(m => m.id));
     const node = m => ({
       id: m.id,
       name: m.name || untitled,
       active: m.id === this.#activeMapId,
+      hidden: !!m.hidden,
       pinCount: (m.pins ?? []).filter(p => isOwner || !p.hidden).length
     });
     const descendants = rootId => {
@@ -718,7 +750,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       return out;
     };
     const tree = maps
-      .filter(m => !m.parent || !ids.has(m.parent) || m.parent === m.id)
+      .filter(m => !m.parent || !visibleIds.has(m.parent) || m.parent === m.id)
       .map(root => ({ ...node(root), children: descendants(root.id).map(node) }));
 
     context.vjAtlas = { tree, map, openPin, placing: this.#pinPlacing, isGM: game.user.isGM };
@@ -1843,6 +1875,22 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
   /* -------------------------------------------- */
 
   /**
+   * Toggle player visibility of an atlas map, so a region can be drawn and pinned
+   * well before the table is meant to know it exists.
+   * @this {VelvetJournalSheet}
+   */
+  static async #onMapHide(event, target) {
+    if ( !this.isEditable ) return;
+    const maps = getMaps(this.entry);
+    const map = maps.find(m => m.id === (target.dataset.mapId || this.#activeMapId));
+    if ( !map ) return;
+    map.hidden = !map.hidden;
+    await setMaps(this.entry, maps);
+  }
+
+  /* -------------------------------------------- */
+
+  /**
    * Display another atlas map.
    * @this {VelvetJournalSheet}
    */
@@ -1901,7 +1949,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
    * @this {VelvetJournalSheet}
    */
   static #onPinOpen(event, target) {
-    const maps = getMaps(this.entry);
+    const maps = this.#visibleMaps();
     const pin = maps.find(m => m.id === this.#activeMapId)?.pins?.find(p => p.id === target.dataset.pinId);
     if ( pin?.mapLink && maps.some(m => m.id === pin.mapLink) ) {
       this.#activeMapId = pin.mapLink;

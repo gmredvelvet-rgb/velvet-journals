@@ -272,7 +272,8 @@ export function editMapDialog(map = {}, maps = []) {
     ${group("VJ.Atlas.MapName", `<input type="text" name="name" value="${esc(map.name)}" autofocus>`)}
     ${pickerGroup("VJ.Atlas.MapImage", "image", map.image, "image", "VJ.Atlas.MapImageHint")}
     ${group("VJ.Atlas.MapParent", mapSelect("parent", maps, map.parent ?? "", map.id), "VJ.Atlas.MapParentHint")}
-    ${group("VJ.Atlas.MapDescription", `<textarea name="description" rows="3">${esc(map.description)}</textarea>`)}`;
+    ${group("VJ.Atlas.MapDescription", `<textarea name="description" rows="3">${esc(map.description)}</textarea>`)}
+    ${group("VJ.Atlas.MapHidden", `<input type="checkbox" name="hidden" ${map.hidden ? "checked" : ""}>`, "VJ.Atlas.MapHiddenHint")}`;
   const title = map.id ? "VJ.Atlas.EditMap" : "VJ.Atlas.NewMap";
   return formDialog(L(title), "fa-solid fa-map", content);
 }
