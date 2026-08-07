@@ -156,6 +156,36 @@
   resize: vertical;
 }
 
+/* A dialog must never lose its own Save button.
+   Core already caps the window at the viewport height and clips the overflow
+   (.application max-height + .window-content overflow: hidden), so a form long
+   enough to hit that cap — the pin editor, once it grew a travel section — gets
+   its tail cut off, footer included. Nothing inside was set up to scroll: the
+   flex chain needs min-height: 0 to be allowed to shrink at all, and then the
+   fields take the scrollbar while the footer stays pinned below them. */
+.application.velvet-config.velvet-dialog .window-content {
+  min-height: 0;
+}
+
+.application.velvet-config.velvet-dialog .dialog-form {
+  flex: 1;
+  min-height: 0;
+}
+
+.application.velvet-config.velvet-dialog .dialog-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  /* Keeps the scrollbar off the file-picker browse buttons at the right edge. */
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(211, 176, 106, 0.45) transparent;
+}
+
+.application.velvet-config.velvet-dialog .form-footer {
+  flex: 0 0 auto;
+}
+
 .application.velvet-config .osj-config-footer {
   display: flex;
   justify-content: flex-end;

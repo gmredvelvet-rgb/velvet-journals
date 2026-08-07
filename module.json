@@ -2,7 +2,7 @@
   "id": "velvet-journals",
   "title": "Velvet Journals",
   "description": "A game-menu Journal experience with the Velvet AAA visual identity: interactive tab bar, media dashboard with video cards, draggable NPC portrait gallery, quest tracker (active/completed/failed), atlas with map pins, Markdown-aware editors, cinematic hero headers, animated backgrounds, glass panels and a rich content block library. 100% native Foundry Journal functionality.",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "compatibility": {
     "minimum": "13",
     "verified": "14"

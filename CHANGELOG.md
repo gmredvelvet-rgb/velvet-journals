@@ -3,6 +3,17 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.1.1] — 2026-08-07
+
+### Fixed
+
+- The point-of-interest editor lost its Save and Cancel buttons. Core caps a
+  window at the viewport height and clips whatever overflows, and nothing inside
+  a dialog was set up to scroll — so once the travel section made the pin form
+  tall enough to hit that cap, its footer was cut off. Dialog fields now take the
+  scrollbar and the buttons stay put, however long the form gets. Every Velvet
+  dialog benefits, not just the pin editor.
+
 ## [3.1.0] — 2026-08-07
 
 ### Added
