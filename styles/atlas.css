@@ -560,16 +560,19 @@
 
 .application.velvet-journal .osj-modal-media {
   position: relative;
-  flex: 0 0 auto;
-  /* Tied to the screen, not a fixed 380px: on a laptop that header used to eat most of
-     the card and leave the description, travel bar and actions fighting over the rest. */
-  height: clamp(150px, 34vh, 380px);
+  /* A preferred size the header is allowed to give up, not a height it insists on.
+     Fixed at 0 0 auto it refused to shrink, so on a short window it swallowed the whole
+     card and the body — description, travel bar, actions and its scrollbar — was
+     squeezed out of existence. Flex now shrinks the picture first and floors it here,
+     and the body's own min-height (below) guarantees a scrollable area at any size. */
+  flex: 0 1 clamp(150px, 34vh, 380px);
+  min-height: 84px;
   overflow: hidden;
   isolation: isolate;
 }
 
 .application.velvet-journal .osj-modal-media.no-image {
-  height: 84px;
+  flex-basis: 84px;
   background:
     radial-gradient(120% 160% at 50% 0%, color-mix(in srgb, var(--osj-accent) 12%, transparent), transparent 70%),
     var(--osj-deep-2);
@@ -661,8 +664,12 @@
 
 .application.velvet-journal .osj-modal-body {
   flex: 1;
-  min-height: 0;
+  /* The card must always keep a readable, scrollable body. Flex resolves this as a
+     minimum violation: the body is frozen at this height and the picture above gives
+     up whatever is needed, instead of the body collapsing to nothing. */
+  min-height: 108px;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 16px 20px 18px;
   display: flex;
   flex-direction: column;
@@ -1088,6 +1095,6 @@
   }
 
   .application.velvet-journal .osj-modal-media {
-    height: 140px;
+    flex-basis: 140px;
   }
 }

@@ -3,6 +3,19 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.4.2] — 2026-08-07
+
+### Fixed
+
+- **Dossier and point-of-interest cards lost their scrollbar at some window sizes**,
+  taking the text with it: a card could end up showing nothing but its picture,
+  with the description, the travel controls and the action buttons unreachable.
+  The image header was a fixed height that refused to give ground, so as the card
+  got shorter the body was squeezed out of existence rather than the picture
+  shrinking. The header is now a preferred size that yields, floored so it never
+  disappears, and the body holds a minimum height of its own — so there is always
+  a readable, scrollable area no matter how small the window gets.
+
 ## [3.4.1] — 2026-08-07
 
 ### Fixed
