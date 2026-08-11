@@ -206,7 +206,7 @@ export function editCardDialog(card = {}, categories = []) {
  * @param {object} [quest]
  * @returns {Promise<object|null>}
  */
-export function editQuestDialog(quest = {}) {
+export function editQuestDialog(quest = {}, maps = []) {
   const statuses = ["active", "done", "failed"]
     .map(s => `<option value="${s}" ${(quest.status ?? "active") === s ? "selected" : ""}>${L(`VJ.Quests.Status.${s.capitalize()}`)}</option>`)
     .join("");
@@ -215,6 +215,7 @@ export function editQuestDialog(quest = {}) {
     ${group("VJ.Quests.Name", `<input type="text" name="name" value="${esc(quest.name)}" autofocus>`)}
     ${pickerGroup("VJ.Quests.Image", "img", quest.img, "image")}
     ${group("VJ.Quests.Summary", mdEditor("summary", quest.summary, 6), "VJ.Quests.SummaryHint")}
+    ${group("VJ.Quests.Region", mapSelect("mapId", maps, quest.mapId ?? ""), maps.length ? "VJ.Quests.RegionHint" : "VJ.Npcs.NoLocationsHint")}
     ${group("VJ.Quests.StatusLabel", `<select name="status">${statuses}</select>`)}
     ${group("VJ.Quests.Hidden", `<input type="checkbox" name="hidden" ${quest.hidden ? "checked" : ""}>`, "VJ.Quests.HiddenHint")}
     ${group("VJ.Quests.RewardCurrency", `<input type="text" name="rewards.currency" value="${esc(rewards.currency)}" placeholder="${L("VJ.Quests.RewardCurrencyPlaceholder")}">`, "VJ.Quests.RewardCurrencyHint")}

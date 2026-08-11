@@ -293,6 +293,13 @@
       "Edit": "Edit",
       "Delete": "Delete",
       "ShowPlayers": "Show Players",
+      "Region": "Region",
+      "RegionHint": "File this quest under one of your Atlas maps and the log groups by place, so a long campaign reads as Barovia / Vallaki / … instead of one endless list.",
+      "NoRegion": "No region",
+      "SearchPlaceholder": "Search quests...",
+      "RegionFilter": "Filter by region",
+      "AllRegions": "All Regions",
+      "NoMatch": "No quests match your search.",
       "EmptyActive": "No active quests",
       "EmptyDone": "No quests completed yet",
       "EmptyFailed": "No failed quests. For now."

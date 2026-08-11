@@ -99,6 +99,8 @@ export function createQuest(data = {}) {
     summary: "",
     status: "active",
     hidden: false,
+    // The Atlas map this quest belongs to, so the log groups by region.
+    mapId: "",
     objectives: [],
     rewards: createRewards(),
     ...data

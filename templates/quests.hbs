@@ -25,10 +25,67 @@
             {{/each}}
         </nav>
 
+        <div class="osj-quest-toolbar">
+            <search class="osj-npc-search osj-quest-search">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="search" class="osj-quest-search-input" value="{{ vjQuests.search }}" autocomplete="off"
+                       placeholder="{{ localize "VJ.Quests.SearchPlaceholder" }}"
+                       aria-label="{{ localize "VJ.Quests.SearchPlaceholder" }}">
+            </search>
+            {{#if vjQuests.locations.length}}
+            <select class="osj-npc-location-select osj-quest-region-select" aria-label="{{ localize "VJ.Quests.RegionFilter" }}">
+                <option value="all" {{#if (eq vjQuests.regionFilter "all")}}selected{{/if}}>{{ localize "VJ.Quests.AllRegions" }}</option>
+                {{#each vjQuests.locations}}
+                <option value="{{ id }}" {{#if (eq ../vjQuests.regionFilter id)}}selected{{/if}}>{{ name }} ({{ count }})</option>
+                {{/each}}
+            </select>
+            {{/if}}
+        </div>
+
         <div class="osj-quest-list">
+            {{#if vjQuests.grouped}}
+            {{#each vjQuests.regions}}
+            <details class="osj-quest-region" data-region-id="{{ id }}" {{#if open}}open{{/if}}>
+                <summary class="osj-quest-region-head">
+                    <i class="fa-solid fa-chevron-down osj-quest-region-caret" inert></i>
+                    <span class="osj-quest-region-name">{{ name }}</span>
+                    <span class="osj-quest-region-count">{{ count }}</span>
+                </summary>
+                <div class="osj-quest-region-body">
+                    {{#each quests}}
+                    {{> vjQuestCard }}
+                    {{/each}}
+                </div>
+            </details>
+            {{/each}}
+            {{else}}
             {{#each vjQuests.list}}
+            {{> vjQuestCard }}
+            {{/each}}
+            {{/if}}
+            <p class="osj-quest-no-match" hidden>{{ localize "VJ.Quests.NoMatch" }}</p>
+
+            <div class="osj-empty osj-quest-empty" data-for="active">
+                <i class="fa-solid fa-fire" inert></i>
+                <h3>{{ localize "VJ.Quests.EmptyActive" }}</h3>
+            </div>
+            <div class="osj-empty osj-quest-empty" data-for="done">
+                <i class="fa-solid fa-trophy" inert></i>
+                <h3>{{ localize "VJ.Quests.EmptyDone" }}</h3>
+            </div>
+            <div class="osj-empty osj-quest-empty" data-for="failed">
+                <i class="fa-solid fa-skull" inert></i>
+                <h3>{{ localize "VJ.Quests.EmptyFailed" }}</h3>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{{#*inline "vjQuestCard"}}
             <details class="osj-quest-card status-{{ status }} {{#if hidden}}is-hidden{{/if}}"
-                     data-status="{{ status }}" data-quest-id="{{ id }}" {{#if open}}open{{/if}} style="--i: {{ @index }}">
+                     data-status="{{ status }}" data-quest-id="{{ id }}" data-map-id="{{ mapId }}"
+                     {{#if open}}open{{/if}} style="--i: {{ @index }}">
                 <summary class="osj-quest-summary-row">
                     <img class="osj-quest-img" src="{{ img }}" alt="" loading="lazy" draggable="false">
                     <div class="osj-quest-headline">
@@ -53,12 +110,12 @@
                         <li class="osj-objective {{#if done}}done{{/if}}">
                             <button type="button" class="osj-obj-check" data-action="vjObjectiveToggle"
                                     data-quest-id="{{ ../id }}" data-obj-id="{{ id }}"
-                                    {{#unless ../../editable}}disabled{{/unless}}
+                                    {{#unless @root.editable}}disabled{{/unless}}
                                     aria-label="{{ localize "VJ.Quests.ToggleObjective" }}">
                                 <i class="fa-solid fa-check" inert></i>
                             </button>
                             <span class="osj-obj-text">{{ text }}</span>
-                            {{#if ../../editable}}
+                            {{#if @root.editable}}
                             <button type="button" class="osj-obj-del" data-action="vjObjectiveDelete"
                                     data-quest-id="{{ ../id }}" data-obj-id="{{ id }}" data-tooltip
                                     aria-label="{{ localize "VJ.Dialog.DeleteTitle" }}">
@@ -70,7 +127,7 @@
                     </ul>
                     {{/if}}
 
-                    {{#if ../editable}}
+                    {{#if @root.editable}}
                     <div class="osj-obj-add">
                         <input type="text" class="osj-obj-input" placeholder="{{ localize "VJ.Quests.ObjectivePlaceholder" }}">
                         <button type="button" class="osj-obj-add-btn" data-action="vjObjectiveAdd" data-quest-id="{{ id }}"
@@ -80,7 +137,7 @@
                     </div>
                     {{/if}}
 
-                    {{#if (or hasRewards ../editable)}}
+                    {{#if (or hasRewards @root.editable)}}
                     <div class="osj-quest-rewards" data-quest-id="{{ id }}">
                         <h4 class="osj-quest-section">{{ localize "VJ.Quests.RewardsTitle" }}</h4>
 
@@ -105,7 +162,7 @@
                                  data-ref-uuid="{{ uuid }}" data-action="vjRefOpen">
                                 <img src="{{ img }}" alt="" draggable="false">
                                 <span class="osj-reward-item-name">{{ name }}</span>
-                                {{#if ../../editable}}
+                                {{#if @root.editable}}
                                 <span class="osj-reward-qty">
                                     <button type="button" data-action="vjRewardQtyDec" data-quest-id="{{ ../id }}" data-item-uuid="{{ uuid }}"
                                             data-tooltip aria-label="{{ localize "VJ.Quests.RewardQtyDec" }}">
@@ -130,7 +187,7 @@
                         </div>
                         {{/if}}
 
-                        {{#if ../editable}}
+                        {{#if @root.editable}}
                         <p class="osj-reward-drop-hint">
                             <i class="fa-solid fa-hand-holding-dollar" inert></i>
                             {{ localize "VJ.Quests.RewardsDropHint" }}
@@ -139,7 +196,7 @@
                     </div>
                     {{/if}}
 
-                    {{#if ../editable}}
+                    {{#if @root.editable}}
                     <div class="osj-quest-actions">
                         {{#unless isActive}}
                         <button type="button" class="osj-quest-btn status-active" data-action="vjQuestStatus"
@@ -174,21 +231,4 @@
                     {{/if}}
                 </div>
             </details>
-            {{/each}}
-
-            <div class="osj-empty osj-quest-empty" data-for="active">
-                <i class="fa-solid fa-fire" inert></i>
-                <h3>{{ localize "VJ.Quests.EmptyActive" }}</h3>
-            </div>
-            <div class="osj-empty osj-quest-empty" data-for="done">
-                <i class="fa-solid fa-trophy" inert></i>
-                <h3>{{ localize "VJ.Quests.EmptyDone" }}</h3>
-            </div>
-            <div class="osj-empty osj-quest-empty" data-for="failed">
-                <i class="fa-solid fa-skull" inert></i>
-                <h3>{{ localize "VJ.Quests.EmptyFailed" }}</h3>
-            </div>
-        </div>
-
-    </div>
-</section>
+{{/inline}}

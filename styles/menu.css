@@ -1063,6 +1063,99 @@
   display: block;
 }
 
+/* Region groups ------------------------------------------------------------
+   Collapsible chapters over the quest list, so a long campaign reads as
+   "Barovia / Vallaki / ..." instead of one endless scroll. */
+
+.application.velvet-journal .osj-quest-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+  animation: osj-reveal 0.6s var(--osj-ease) both;
+}
+
+.application.velvet-journal .osj-quest-region {
+  margin-bottom: 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--osj-line) 70%, transparent);
+}
+
+.application.velvet-journal .osj-quest-region[hidden] {
+  display: none;
+}
+
+.application.velvet-journal .osj-quest-region-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px 9px;
+  cursor: var(--cursor-pointer, pointer);
+  list-style: none;
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--osj-accent);
+  transition: color 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal .osj-quest-region-head::-webkit-details-marker {
+  display: none;
+}
+
+.application.velvet-journal .osj-quest-region-head:hover {
+  color: var(--osj-ink-strong);
+}
+
+.application.velvet-journal .osj-quest-region-caret {
+  flex: 0 0 auto;
+  font-size: 0.6rem;
+  transition: rotate 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal .osj-quest-region:not([open]) .osj-quest-region-caret {
+  rotate: -90deg;
+}
+
+.application.velvet-journal .osj-quest-region-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.application.velvet-journal .osj-quest-region-count {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  min-width: 19px;
+  height: 19px;
+  padding-inline: 5px;
+  border: 1px solid color-mix(in srgb, var(--osj-accent) 40%, transparent);
+  font-size: 0.58rem;
+  letter-spacing: 0;
+}
+
+.application.velvet-journal .osj-quest-region-body {
+  padding-bottom: 8px;
+}
+
+/* Search and region filter, applied on top of the CSS-driven status filter. The
+   specificity here has to match the rule that reveals a card by status, or a
+   filtered-out quest would still show. */
+.application.velvet-journal[data-osj-tab] .osj-panel-quests[data-quest-filter] .osj-quest-card.is-filtered {
+  display: none;
+}
+
+.application.velvet-journal .osj-quest-no-match {
+  margin: 8px 0 0;
+  font-family: var(--osj-font-body);
+  font-style: italic;
+  color: var(--osj-muted);
+}
+
 .application.velvet-journal .osj-quest-card:hover {
   border-color: var(--osj-line-strong);
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);

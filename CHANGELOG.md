@@ -3,6 +3,34 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.4.0] — 2026-08-07
+
+### Fixed
+
+- **The window genuinely could not be resized**, and 3.3.0 did not fix it — the
+  remembered size landed on a window you still had no way to change. Core draws
+  the resize handle as a bare 11-pixel corner element with no stacking order of
+  its own, and this module gave the content area a `z-index`, which painted the
+  whole panel straight over it. The handle was there the entire time, invisible
+  and swallowing every click. It now sits above the content, has a larger grab
+  area, and is drawn as a gilded corner instead of core's bitmap so it can
+  actually be seen against a dark frame.
+
+### Added
+
+- **Quests group by region.** A quest can be filed under an Atlas map, and the
+  log then reads as collapsible chapters — Barovia, Vallaki, … — instead of one
+  endless scroll. Each chapter carries a live count of what it is currently
+  showing, and collapsing one is remembered. With no maps in the atlas there is
+  nothing to group by, so the list stays flat rather than growing a pointless
+  single wrapper.
+- **Search and region filter for quests**, mirroring the NPC gallery's toolbar:
+  type to match a quest's name or summary, or narrow to one region. This layers
+  on top of the active/done/failed tabs rather than replacing them, and empty
+  chapters fold away as you type.
+- A quest filed under a map a player cannot see reads as unassigned for them,
+  rather than naming a region they are not meant to know about yet.
+
 ## [3.3.0] — 2026-08-07
 
 A pass driven by player feedback: the sheet was swallowing small screens, and the

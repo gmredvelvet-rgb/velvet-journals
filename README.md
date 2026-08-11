@@ -34,7 +34,8 @@ Then set a Journal Entry's sheet to **Velvet Journals** (right-click the entry
   a dossier modal for each character. Adding one asks for their role, location
   and the quests they are mixed up in; the dossier links straight to those quests.
 - **Quest tracker** — active, completed and failed quests with objectives,
-  progress bars and structured rewards.
+  progress bars and structured rewards, grouped into collapsible regions and
+  filterable by name or place.
 - **Atlas** — nested maps with coloured pins, each linking to NPCs, items or
   another map. Maps and pins can be hidden from players while you prep them.
 - **Atlas travel** — link a Scene to a pin, then preview it, activate it, mark

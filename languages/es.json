@@ -293,6 +293,13 @@
       "Edit": "Editar",
       "Delete": "Eliminar",
       "ShowPlayers": "Mostrar a jugadores",
+      "Region": "Región",
+      "RegionHint": "Archiva esta misión bajo uno de tus mapas del Atlas y el registro se agrupará por lugar, de modo que una campaña larga se lea como Barovia / Vallaki / … en vez de una lista interminable.",
+      "NoRegion": "Sin región",
+      "SearchPlaceholder": "Buscar misiones...",
+      "RegionFilter": "Filtrar por región",
+      "AllRegions": "Todas las regiones",
+      "NoMatch": "Ninguna misión coincide con tu búsqueda.",
       "EmptyActive": "No hay misiones activas",
       "EmptyDone": "Todavía no se completó ninguna misión",
       "EmptyFailed": "Ninguna misión fallada. De momento."

@@ -295,6 +295,25 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
   #npcSearch = "";
 
   /**
+   * The active quest region filter: "all", "unassigned", or a map id.
+   * @type {string}
+   */
+  #questRegionFilter = "all";
+
+  /**
+   * The current quest quick-search text.
+   * @type {string}
+   */
+  #questSearch = "";
+
+  /**
+   * Region groups the user has collapsed. Tracked as the closed set rather than the open
+   * one so a newly created region arrives expanded.
+   * @type {Set<string>}
+   */
+  #closedQuestRegions = new Set();
+
+  /**
    * Quest cards the user has expanded, preserved across re-renders.
    * @type {Set<string>}
    */
@@ -683,6 +702,8 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     const isOwner = this.entry.isOwner;
     const TextEditor = foundry.applications.ux.TextEditor.implementation;
     const quests = this.#visibleQuests();
+    const maps = this.#visibleMaps();
+    const untitled = game.i18n.localize("VJ.Atlas.Untitled");
     const list = [];
     for ( const quest of quests ) {
       const objectives = Array.isArray(quest.objectives) ? quest.objectives : [];
@@ -705,8 +726,13 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       };
       const hasRewards = !!(rewards.currency || rewards.xp || rewards.other || rewardItems.length);
 
+      const map = maps.find(m => m.id === quest.mapId);
       list.push({
         ...quest,
+        // A quest filed under a map this viewer cannot see reads as unassigned rather
+        // than naming a region they are not supposed to know about yet.
+        mapId: map ? quest.mapId : "",
+        mapName: map ? (map.name || untitled) : "",
         img: quest.img || "icons/svg/book.svg",
         objectives,
         doneCount,
@@ -725,9 +751,50 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       });
     }
     const count = status => list.filter(q => q.status === status).length;
+
+    // Group the log by region so a long campaign reads as "Barovia / Vallaki / ..."
+    // instead of one endless scroll. Regions keep map order, and the leftovers land in
+    // a trailing unassigned group. With no maps in the atlas there is nothing to group
+    // by, so the list stays flat rather than growing a pointless single wrapper.
+    const inRegion = mapId => list.filter(q => (mapId === "" ? !q.mapId : q.mapId === mapId));
+    const regions = [];
+    for ( const map of maps ) {
+      const quests = inRegion(map.id);
+      if ( quests.length ) {
+        regions.push({
+          id: map.id,
+          name: map.name || untitled,
+          quests,
+          count: quests.length,
+          open: !this.#closedQuestRegions.has(map.id)
+        });
+      }
+    }
+    const unassigned = inRegion("");
+    if ( unassigned.length ) {
+      regions.push({
+        id: "unassigned",
+        name: game.i18n.localize("VJ.Quests.NoRegion"),
+        quests: unassigned,
+        count: unassigned.length,
+        open: !this.#closedQuestRegions.has("unassigned")
+      });
+    }
+    const grouped = maps.length > 0;
+    const filterCount = mapId => list.filter(q => (mapId === "unassigned" ? !q.mapId : q.mapId === mapId)).length;
+    const locations = maps.filter(m => filterCount(m.id)).map(m => ({ id: m.id, name: m.name || untitled, count: filterCount(m.id) }));
+    if ( unassigned.length && locations.length ) {
+      locations.push({ id: "unassigned", name: game.i18n.localize("VJ.Quests.NoRegion"), count: unassigned.length });
+    }
+
     context.vjQuests = {
       filter: this.#questFilter,
       list,
+      regions,
+      grouped,
+      locations,
+      regionFilter: this.#questRegionFilter,
+      search: this.#questSearch,
       tabs: [
         { id: "active", icon: "fa-solid fa-fire", label: "VJ.Quests.Active", count: count("active"), active: this.#questFilter === "active" },
         { id: "done", icon: "fa-solid fa-trophy", label: "VJ.Quests.Done", count: count("done"), active: this.#questFilter === "done" },
@@ -886,6 +953,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     this.#applyAtlasView();
     this.#hardenImages();
     this.#applyNpcFilter();
+    this.#applyQuestFilter();
   }
 
   /* -------------------------------------------- */
@@ -955,6 +1023,49 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     }
     const noMatch = panel.querySelector(".osj-npc-no-match");
     if ( noMatch ) noMatch.hidden = visible > 0;
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Apply the quest quick-search and region filter, and fold away any region group left
+   * with nothing to show.
+   *
+   * Status filtering stays in CSS (see styles/menu.css) so switching the active/done/failed
+   * tab is instant and needs no re-render; this only adds the two dimensions CSS cannot
+   * express, and reads the status back off the cards to keep the region counts honest —
+   * a group must not claim six quests while showing two.
+   */
+  #applyQuestFilter() {
+    const panel = this.element.querySelector(".osj-panel-quests");
+    if ( !panel ) return;
+    const search = this.#questSearch.trim().toLowerCase();
+    const region = this.#questRegionFilter;
+    let visibleTotal = 0;
+
+    for ( const card of panel.querySelectorAll(".osj-quest-card") ) {
+      const name = card.querySelector(".osj-quest-name")?.textContent.toLowerCase() ?? "";
+      const text = card.querySelector(".osj-quest-text")?.textContent.toLowerCase() ?? "";
+      const mapId = card.dataset.mapId || "";
+      const matchesSearch = !search || name.includes(search) || text.includes(search);
+      const matchesRegion = (region === "all")
+        || (region === "unassigned" ? !mapId : mapId === region);
+      const matches = matchesSearch && matchesRegion;
+      card.classList.toggle("is-filtered", !matches);
+      if ( matches && (card.dataset.status === this.#questFilter) ) visibleTotal++;
+    }
+
+    for ( const group of panel.querySelectorAll(".osj-quest-region") ) {
+      const shown = [...group.querySelectorAll(".osj-quest-card")]
+        .filter(c => !c.classList.contains("is-filtered") && (c.dataset.status === this.#questFilter))
+        .length;
+      group.hidden = shown === 0;
+      const badge = group.querySelector(".osj-quest-region-count");
+      if ( badge ) badge.textContent = String(shown);
+    }
+
+    const noMatch = panel.querySelector(".osj-quest-no-match");
+    if ( noMatch ) noMatch.hidden = (visibleTotal > 0) || !(search || (region !== "all"));
   }
 
   /* -------------------------------------------- */
@@ -1154,10 +1265,25 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       quests.dataset.vjBound = "1";
       quests.addEventListener("toggle", ev => {
         const details = ev.target;
-        if ( !details.classList?.contains("osj-quest-card") ) return;
-        if ( details.open ) this.#openQuests.add(details.dataset.questId);
-        else this.#openQuests.delete(details.dataset.questId);
+        if ( details.classList?.contains("osj-quest-card") ) {
+          if ( details.open ) this.#openQuests.add(details.dataset.questId);
+          else this.#openQuests.delete(details.dataset.questId);
+        }
+        else if ( details.classList?.contains("osj-quest-region") ) {
+          if ( details.open ) this.#closedQuestRegions.delete(details.dataset.regionId);
+          else this.#closedQuestRegions.add(details.dataset.regionId);
+        }
       }, true);
+      const questSearch = quests.querySelector(".osj-quest-search-input");
+      questSearch?.addEventListener("input", () => {
+        this.#questSearch = questSearch.value;
+        this.#applyQuestFilter();
+      });
+      const questRegion = quests.querySelector(".osj-quest-region-select");
+      questRegion?.addEventListener("change", () => {
+        this.#questRegionFilter = questRegion.value;
+        this.#applyQuestFilter();
+      });
       quests.addEventListener("keydown", ev => {
         if ( ev.key !== "Enter" ) return;
         const input = ev.target.closest?.(".osj-obj-input");
@@ -1780,7 +1906,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
    */
   static async #onQuestAdd() {
     if ( !this.isEditable ) return;
-    const data = await editQuestDialog();
+    const data = await editQuestDialog({}, getMaps(this.entry));
     if ( !data ) return;
     data.rewards = createRewards(data.rewards);
     const quests = getQuests(this.entry);
@@ -1802,7 +1928,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     const quests = getQuests(this.entry);
     const quest = quests.find(q => q.id === target.dataset.questId);
     if ( !quest ) return;
-    const data = await editQuestDialog(quest);
+    const data = await editQuestDialog(quest, getMaps(this.entry));
     if ( !data ) return;
     // The dialog only edits currency/xp/other — preserve reward items dropped onto the card.
     if ( data.rewards ) data.rewards = createRewards({ ...quest.rewards, ...data.rewards, items: quest.rewards?.items ?? [] });
@@ -1863,6 +1989,9 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     for ( const button of panel.querySelectorAll(".osj-quest-tab") ) {
       button.classList.toggle("active", button.dataset.filter === this.#questFilter);
     }
+    // CSS reveals the quests of the new status; the region groups and their counts
+    // have to be recomputed against it or they would still describe the old one.
+    this.#applyQuestFilter();
   }
 
   /* -------------------------------------------- */

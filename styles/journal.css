@@ -146,6 +146,35 @@
   z-index: 1;
 }
 
+/* The window could not be resized at all, and the reason was here: core's resize
+   handle is a bare 11px corner element with z-index auto, so the z-index above put
+   the whole content area on top of it — swallowing both the glyph and the pointer.
+   Lifted clear of the content and the hairline frame, given a larger grab area, and
+   drawn as a gilded corner instead of core's bitmap so it reads on a dark frame. */
+.application.velvet-journal > .window-resize-handle {
+  z-index: 5;
+  inset: auto 2px 2px auto;
+  width: 20px;
+  height: 20px;
+  background: none;
+  opacity: 0.65;
+  transition: opacity 0.2s var(--osj-ease);
+}
+
+.application.velvet-journal > .window-resize-handle::before {
+  content: "";
+  position: absolute;
+  inset: auto 4px 4px auto;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--osj-accent);
+  border-bottom: 2px solid var(--osj-accent);
+}
+
+.application.velvet-journal > .window-resize-handle:hover {
+  opacity: 1;
+}
+
 .application.velvet-journal > .window-header {
   background: linear-gradient(180deg, rgba(4, 3, 7, 0.7), rgba(4, 3, 7, 0));
   border-bottom: none;
