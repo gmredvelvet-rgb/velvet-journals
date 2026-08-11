@@ -80,10 +80,30 @@
             </header>
 
             <div class="osj-modal-body">
+                {{#if vjNpcs.openNpc.mapName}}
+                <p class="osj-npc-modal-location">
+                    <i class="fa-solid fa-location-dot" inert></i>{{ vjNpcs.openNpc.mapName }}
+                </p>
+                {{/if}}
+
                 {{#if vjNpcs.openNpc.bioHTML}}
                 <div class="osj-modal-text">{{{ vjNpcs.openNpc.bioHTML }}}</div>
                 {{else if editable}}
                 <p class="osj-modal-hint">{{ localize "VJ.Npcs.NoBioHint" }}</p>
+                {{/if}}
+
+                {{#if vjNpcs.openNpc.quests.length}}
+                <h4 class="osj-modal-section">{{ localize "VJ.Npcs.Quests" }}</h4>
+                <div class="osj-npc-quest-links">
+                    {{#each vjNpcs.openNpc.quests}}
+                    <button type="button" class="osj-npc-quest-link status-{{ status }}"
+                            data-action="vjNpcQuestOpen" data-quest-id="{{ id }}">
+                        <i class="fa-solid fa-scroll" inert></i>
+                        <span class="osj-npc-quest-link-name">{{ name }}</span>
+                        <span class="osj-npc-quest-link-status">{{ localize statusLabel }}</span>
+                    </button>
+                    {{/each}}
+                </div>
                 {{/if}}
 
                 <footer class="osj-modal-actions">

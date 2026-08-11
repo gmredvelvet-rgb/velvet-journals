@@ -1776,6 +1776,96 @@
    Responsive (container queries per panel)
    -------------------------------------------------------------------------- */
 
+/* NPC dossier: where they are, and what they have dragged the party into ------ */
+
+.application.velvet-journal .osj-npc-modal-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--osj-font-body);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--osj-muted);
+}
+
+.application.velvet-journal .osj-npc-modal-location i {
+  font-style: normal;
+  font-size: 0.66rem;
+  color: color-mix(in srgb, var(--osj-accent) 75%, transparent);
+}
+
+.application.velvet-journal .osj-npc-quest-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.application.velvet-journal .osj-npc-quest-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 12px;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--osj-line);
+  border-left: 2px solid var(--osj-muted);
+  color: var(--osj-ink);
+  text-align: left;
+  cursor: var(--cursor-pointer, pointer);
+  transition: background-color 0.25s var(--osj-ease), border-color 0.25s var(--osj-ease);
+}
+
+.application.velvet-journal .osj-npc-quest-link:hover {
+  background: color-mix(in srgb, var(--osj-accent) 8%, transparent);
+  border-color: color-mix(in srgb, var(--osj-accent) 50%, transparent);
+  box-shadow: none;
+}
+
+.application.velvet-journal .osj-npc-quest-link.status-active { border-left-color: var(--osj-accent); }
+.application.velvet-journal .osj-npc-quest-link.status-done { border-left-color: var(--osj-ok); }
+.application.velvet-journal .osj-npc-quest-link.status-failed { border-left-color: var(--osj-bad); }
+
+.application.velvet-journal .osj-npc-quest-link > i {
+  flex: 0 0 auto;
+  font-size: 0.7rem;
+  color: var(--osj-muted);
+}
+
+.application.velvet-journal .osj-npc-quest-link-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--osj-font-body);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.application.velvet-journal .osj-npc-quest-link-status {
+  flex: 0 0 auto;
+  font-family: var(--osj-font-display);
+  font-weight: 600;
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--osj-muted);
+}
+
+/* Intermediate tier: the sheet windowed on a laptop, not yet a phone-narrow panel. */
+@container osjp (max-width: 900px) {
+  .application.velvet-journal .osj-npc-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 14px;
+  }
+
+  .application.velvet-journal .osj-panel-scroll {
+    padding-inline: clamp(12px, 2cqw, 24px);
+  }
+}
+
 @container osjp (max-width: 640px) {
   .application.velvet-journal .osj-card-grid {
     grid-template-columns: 1fr;

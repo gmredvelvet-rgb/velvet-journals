@@ -16,6 +16,15 @@ Hooks.once("init", () => {
 
   // Written by the GM's client once Patreon verifies the subscription, and
   // read by every other client so players never contact the licence server.
+  // Per-client window geometry, so the sheet opens the way each player left it rather
+  // than at a size chosen for somebody else's monitor.
+  game.settings.register(MODULE_ID, "sheetPosition", {
+    scope: "client",
+    config: false,
+    type: Object,
+    default: {}
+  });
+
   game.settings.register(MODULE_ID, "worldLicensed", {
     scope: "world",
     config: false,

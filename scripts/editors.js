@@ -232,13 +232,35 @@ export function editQuestDialog(quest = {}) {
  * @param {string} name  The resolved actor name, shown in the dialog title.
  * @returns {Promise<object|null>}
  */
-export function editNpcDialog(npc, name, maps = []) {
+export async function editNpcDialog(npc, name, maps = [], quests = [], { create = false } = {}) {
+  const linked = new Set(npc.quests ?? []);
+  // One checkbox per quest, each with its own name, so the result expands into a
+  // {questId: boolean} map. A shared name would collapse to a single value.
+  const questList = quests.length
+    ? `<div class="vj-npc-quests">${quests.map(q => `
+        <label class="vj-npc-quest">
+          <input type="checkbox" name="quests.${q.id}" ${linked.has(q.id) ? "checked" : ""}>
+          <span class="vj-npc-quest-name">${esc(q.name || L("VJ.Atlas.Untitled"))}</span>
+          <span class="vj-npc-quest-status status-${esc(q.status)}">${esc(L(`VJ.Quests.Status.${q.status.capitalize()}`))}</span>
+        </label>`).join("")}</div>`
+    : `<p class="hint">${L("VJ.Npcs.NoQuestsHint")}</p>`;
+
   const content = `
     ${group("VJ.Npcs.Role", `<input type="text" name="role" value="${esc(npc.role)}" placeholder="${L("VJ.Npcs.RolePlaceholder")}" autofocus>`)}
-    ${group("VJ.Npcs.Location", mapSelect("mapId", maps, npc.mapId ?? ""), "VJ.Npcs.LocationHint")}
+    ${group("VJ.Npcs.Location", mapSelect("mapId", maps, npc.mapId ?? ""), maps.length ? "VJ.Npcs.LocationHint" : "VJ.Npcs.NoLocationsHint")}
     ${pickerGroup("VJ.Npcs.Portrait", "portrait", npc.portrait, "image", "VJ.Npcs.PortraitHint")}
-    ${group("VJ.Npcs.Bio", mdEditor("bio", npc.bio, 8), "VJ.Npcs.BioHint")}`;
-  return formDialog(`${L("VJ.Npcs.EditTitle")}: ${name}`, "fa-solid fa-user-pen", content);
+    ${group("VJ.Npcs.Bio", mdEditor("bio", npc.bio, 8), "VJ.Npcs.BioHint")}
+    <fieldset class="vj-npc-quests-field">
+      <legend>${L("VJ.Npcs.Quests")}</legend>
+      ${questList}
+    </fieldset>`;
+
+  const title = create ? L("VJ.Npcs.CreateTitle", { name }) : `${L("VJ.Npcs.EditTitle")}: ${name}`;
+  const result = await formDialog(title, "fa-solid fa-user-pen", content);
+  if ( !result ) return null;
+  // Flatten the checkbox map back into the list of quest ids the entry stores.
+  result.quests = Object.entries(result.quests ?? {}).filter(([, on]) => on).map(([id]) => id);
+  return result;
 }
 
 /* -------------------------------------------- */

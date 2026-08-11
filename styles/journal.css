@@ -109,6 +109,20 @@
   font-family: var(--osj-font-body);
   color: var(--osj-ink);
   overflow: hidden;
+  /* The resize floor. ApplicationV2 reads these off the computed style to clamp a drag
+     of the resize handle, so this — not an option — is what stops the window being
+     dragged down to a size the tab bar and panels cannot lay out in. */
+  min-width: 560px;
+  min-height: 420px;
+}
+
+/* A window narrower than the floor can still happen on a very small display, where
+   ApplicationV2 clamps the width to the viewport. Let the frame scroll rather than
+   clip its own tab bar. */
+@media (max-width: 580px) {
+  .application.velvet-journal {
+    min-width: 0;
+  }
 }
 
 /* Hairline inner frame, offset from the window edge like a mounted canvas */
@@ -560,7 +574,9 @@
 
 .application.velvet-journal .osj-hero {
   position: relative;
-  min-height: clamp(250px, 48cqw, 440px);
+  /* Scales with the width of the pages column, but never takes more than half the
+     screen's height — on a short laptop display the hero used to be the whole page. */
+  min-height: min(clamp(250px, 48cqw, 440px), 52vh);
   display: flex;
   align-items: flex-end;
   overflow: hidden;

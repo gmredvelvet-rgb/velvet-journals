@@ -72,6 +72,8 @@ export function createNpc(uuid, data = {}) {
     bio: "",
     mapId: "",
     hidden: false,
+    // Ids of the quests this character is mixed up in.
+    quests: [],
     ...data
   };
 }

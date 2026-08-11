@@ -3,6 +3,45 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.3.0] — 2026-08-07
+
+A pass driven by player feedback: the sheet was swallowing small screens, and the
+NPC gallery's location filter had no visible way to fill it.
+
+### Fixed
+
+- **The sheet no longer takes over the screen.** It was already resizable, but the
+  hub re-imposed a near-fullscreen window (86% × 88% of the display) on every
+  single open, so any size you dragged it to was thrown away the next time you
+  pressed the hub key. Your size and position are now remembered per client and
+  restored on open, clamped to the screen actually in front of you — a size saved
+  on a desktop monitor will not open off the edge of a laptop. First-ever open
+  picks a fraction of the screen rather than a fixed pixel size.
+- **A resize floor**, so the window cannot be dragged down to a width the tab bar
+  and panels cannot lay out in.
+
+### Added
+
+- **Adding an NPC now asks for their details.** Dropping an actor used to file it
+  away silently, leaving role, location and quests buried behind an edit button
+  most people never found — which is why the location filter looked like a feature
+  with no way to feed it. The editor now opens on the drop, prefilled.
+- **Quests on NPCs.** A character can be tied to any number of quests from their
+  editor, and their dossier lists them; clicking one switches to the quest
+  tracker, moves to the right filter, expands that quest and scrolls it into view.
+- **A clearer answer when there are no locations yet**, explaining that they are
+  Atlas maps and where to make one, instead of an empty dropdown.
+- The dossier now shows the character's location, not just the gallery card.
+
+### Changed
+
+- **Responsive pass for smaller windows.** Dossier and point-of-interest cards cap
+  their image header against the screen height instead of a fixed 380px, which on
+  a laptop left almost no room for the text under it; the page hero is capped the
+  same way. A new intermediate layout tier trims the atlas index rail, panel
+  padding and the NPC grid well before the existing narrow breakpoint, so a
+  windowed sheet stops wasting space on gutters.
+
 ## [3.2.0] — 2026-08-07
 
 ### Added

@@ -31,7 +31,8 @@ Then set a Journal Entry's sheet to **Velvet Journals** (right-click the entry
   tables, playlists or external URLs. Cards group into named sections and
   support video.
 - **NPC gallery** — a draggable portrait wall with search, location filters and
-  a dossier modal for each character.
+  a dossier modal for each character. Adding one asks for their role, location
+  and the quests they are mixed up in; the dossier links straight to those quests.
 - **Quest tracker** — active, completed and failed quests with objectives,
   progress bars and structured rewards.
 - **Atlas** — nested maps with coloured pins, each linking to NPCs, items or

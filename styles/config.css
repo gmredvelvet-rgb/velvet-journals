@@ -186,6 +186,56 @@
   flex: 0 0 auto;
 }
 
+/* Quest links in the NPC editor: a checklist, kept short enough that the fields
+   under it stay reachable however many quests the campaign has accumulated. */
+.application.velvet-config .vj-npc-quests {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 190px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(211, 176, 106, 0.45) transparent;
+}
+
+.application.velvet-config .vj-npc-quest {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+  cursor: var(--cursor-pointer, pointer);
+  transition: background-color 0.2s ease;
+}
+
+.application.velvet-config .vj-npc-quest:hover {
+  background: color-mix(in srgb, var(--osj-accent) 8%, transparent);
+}
+
+.application.velvet-config .vj-npc-quest input {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.application.velvet-config .vj-npc-quest-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.application.velvet-config .vj-npc-quest-status {
+  flex: 0 0 auto;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.application.velvet-config .vj-npc-quest-status.status-active { color: var(--osj-accent); }
+.application.velvet-config .vj-npc-quest-status.status-done { color: #a8c39a; }
+.application.velvet-config .vj-npc-quest-status.status-failed { color: #b0505a; }
+
 .application.velvet-config .osj-config-footer {
   display: flex;
   justify-content: flex-end;

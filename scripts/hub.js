@@ -81,19 +81,11 @@ export async function openHub() {
     return ui.notifications.warn(L("VJ.Hub.NoPermission"));
   }
 
-  const sheet = entry.sheet;
-  const { innerWidth: vw, innerHeight: vh } = window;
-  const width = Math.min(1360, Math.round(vw * 0.86));
-  const height = Math.min(920, Math.round(vh * 0.88));
-  await sheet.render({
-    force: true,
-    position: {
-      width,
-      height,
-      left: Math.round((vw - width) / 2),
-      top: Math.round((vh - height) / 2)
-    }
-  });
+  // No position is imposed here on purpose. The sheet restores whatever size this client
+  // last left it at (see VelvetJournalSheet#_initializeApplicationOptions); forcing a
+  // near-fullscreen window on every press of the hub key threw that away each time, which
+  // made the sheet impossible to keep small on a laptop.
+  await entry.sheet.render({ force: true });
 }
 
 /* -------------------------------------------- */

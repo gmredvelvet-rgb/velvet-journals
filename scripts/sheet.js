@@ -104,6 +104,47 @@ function cardCategories(cards) {
 }
 
 /**
+ * The window size and position this client last left a Velvet sheet at, clamped to the
+ * screen actually in front of the user — a size saved on a desktop monitor must not open
+ * off the edge of a laptop, and the whole point of remembering it is to stop the sheet
+ * from swallowing a small screen.
+ * @returns {object|null}
+ */
+function storedSheetPosition() {
+  let stored;
+  try {
+    stored = game.settings?.get(MODULE_ID, "sheetPosition");
+  }
+  catch ( err ) { /* Setting not registered yet (very early boot) */ }
+  if ( !Number.isFinite(stored?.width) || !Number.isFinite(stored?.height) ) return null;
+  const { innerWidth: vw, innerHeight: vh } = window;
+  const width = Math.min(stored.width, vw);
+  const height = Math.min(stored.height, vh);
+  const position = { width, height };
+  // Only carry the corner over when it still lands on screen; otherwise let the
+  // application centre itself rather than opening somewhere the user cannot reach.
+  if ( Number.isFinite(stored.left) && Number.isFinite(stored.top) ) {
+    position.left = Math.max(0, Math.min(stored.left, vw - width));
+    position.top = Math.max(0, Math.min(stored.top, vh - height));
+  }
+  return position;
+}
+
+/**
+ * The size a Velvet sheet opens at when this client has never resized one: a comfortable
+ * fraction of the screen rather than a fixed pixel size, so a 1366×768 laptop is not
+ * handed a window taller than its own display.
+ * @returns {{width: number, height: number}}
+ */
+function defaultSheetPosition() {
+  const { innerWidth: vw, innerHeight: vh } = window;
+  return {
+    width: Math.max(640, Math.min(1180, Math.round(vw * 0.78))),
+    height: Math.max(480, Math.min(820, Math.round(vh * 0.8)))
+  };
+}
+
+/**
  * The Velvet Journals sheet. Extends the core v13 JournalEntrySheet, preserving all native
  * behavior (pages, permissions, search, drag & drop, editors) while adding a game-menu layer:
  * a tab bar, a dashboard of media cards, a draggable NPC gallery and a quest tracker.
@@ -113,6 +154,10 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
   /** @override */
   static DEFAULT_OPTIONS = {
     classes: ["velvet-journal"],
+    // Stated rather than inherited, because the whole resize story below depends on it.
+    // The resize floor is CSS (see styles/journal.css): ApplicationV2 reads min-width and
+    // min-height off the computed style, not from options.
+    window: { resizable: true },
     actions: {
       osjThemeConfig: VelvetJournalSheet.#onThemeConfig,
       vjTab: VelvetJournalSheet.#onTab,
@@ -122,6 +167,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       vjCardOpen: VelvetJournalSheet.#onCardOpen,
       vjCardMute: VelvetJournalSheet.#onCardMute,
       vjNpcOpen: VelvetJournalSheet.#onNpcOpen,
+      vjNpcQuestOpen: VelvetJournalSheet.#onNpcQuestOpen,
       vjNpcEdit: VelvetJournalSheet.#onNpcEdit,
       vjNpcDelete: VelvetJournalSheet.#onNpcDelete,
       vjNpcHide: VelvetJournalSheet.#onNpcHide,
@@ -595,8 +641,21 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       };
       list.push(entry);
       if ( ref.id === this.#openNpcId ) {
+        // Quests deleted since they were linked, and quests hidden from this viewer,
+        // simply drop out of the dossier rather than showing as broken chips.
+        const byId = new Map(this.#visibleQuests().map(q => [q.id, q]));
+        const quests = (ref.quests ?? [])
+          .map(id => byId.get(id))
+          .filter(Boolean)
+          .map(q => ({
+            id: q.id,
+            name: q.name || game.i18n.localize("VJ.Atlas.Untitled"),
+            status: q.status,
+            statusLabel: `VJ.Quests.Status.${q.status.capitalize()}`
+          }));
         openNpc = {
           ...entry,
+          quests,
           bioHTML: ref.bio
             ? await TextEditor.enrichHTML(markdownToHTML(ref.bio), { relativeTo: this.entry, secrets: isOwner })
             : ""
@@ -848,7 +907,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       ".osj-atlas-controls button", ".osj-modal-close", ".osj-pin",
       ".osj-dcard-tools button[data-action='vjCardMute']",
       "button[data-action='vjRefOpen']",
-      ".osj-npc-search-input", ".osj-npc-location-select"
+      ".osj-npc-search-input", ".osj-npc-location-select", ".osj-npc-quest-link"
     ];
     for ( const el of this.element.querySelectorAll(viewOnly.join(", ")) ) el.disabled = false;
   }
@@ -900,10 +959,47 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
 
   /* -------------------------------------------- */
 
+  /**
+   * Open at whatever size this client last left a Velvet sheet at, falling back to a
+   * fraction of the screen rather than a fixed pixel size.
+   *
+   * The size has to be injected here rather than in DEFAULT_OPTIONS, which is evaluated
+   * once at class-definition time — long before settings exist and without knowing the
+   * screen it will be shown on.
+   * @inheritDoc
+   */
+  _initializeApplicationOptions(options) {
+    const initialized = super._initializeApplicationOptions(options);
+    const preferred = storedSheetPosition() ?? defaultSheetPosition();
+    // A position the caller asked for explicitly still wins over the remembered one.
+    for ( const [key, value] of Object.entries(preferred) ) {
+      if ( options.position?.[key] === undefined ) initialized.position[key] = value;
+    }
+    return initialized;
+  }
+
+  /* -------------------------------------------- */
+
   /** @inheritDoc */
   _onClose(options) {
     super._onClose(options);
     this.#themeConfig?.close();
+    this.#rememberPosition();
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Save the window geometry so the next Velvet sheet opens the way this one was left.
+   * Nonsense values are dropped rather than stored: a minimized or mid-animation frame
+   * would otherwise be remembered as the user's preferred size.
+   */
+  #rememberPosition() {
+    const { width, height, left, top } = this.position ?? {};
+    if ( !Number.isFinite(width) || !Number.isFinite(height) ) return;
+    if ( (width < 400) || (height < 300) ) return;
+    game.settings.set(MODULE_ID, "sheetPosition", { width, height, left, top })
+      .catch(err => console.warn(`${MODULE_TITLE} | Could not save the window position`, err));
   }
 
   /* -------------------------------------------- */
@@ -1440,8 +1536,19 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     }
     const actor = await fromUuid(data.uuid);
     if ( !actor ) return;
-    npcs.push(createNpc(data.uuid));
-    await setNpcs(this.entry, npcs);
+
+    // Ask for the details right away. Dropping an actor used to file it away silently,
+    // which left the role, the location and the quest links buried behind an edit button
+    // most people never found — and the location filter with nothing to filter by.
+    const npc = createNpc(data.uuid);
+    const details = await editNpcDialog(npc, actor.name, this.#visibleMaps(), this.#visibleQuests(), { create: true });
+    if ( details ) Object.assign(npc, details);
+
+    // Re-read: the dialog was open long enough for the gallery to have changed.
+    const current = getNpcs(this.entry);
+    if ( current.some(n => n.uuid === data.uuid) ) return;
+    current.push(npc);
+    await setNpcs(this.entry, current);
   }
 
   /* -------------------------------------------- */
@@ -1601,10 +1708,37 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     const ref = npcs.find(n => n.id === target.dataset.npcId);
     if ( !ref ) return;
     const actor = await fromUuid(ref.uuid);
-    const data = await editNpcDialog(ref, actor?.name ?? game.i18n.localize("VJ.Npcs.Missing"), getMaps(this.entry));
+    const data = await editNpcDialog(
+      ref,
+      actor?.name ?? game.i18n.localize("VJ.Npcs.Missing"),
+      getMaps(this.entry),
+      getQuests(this.entry)
+    );
     if ( !data ) return;
     Object.assign(ref, data);
     await setNpcs(this.entry, npcs);
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Jump from a character's dossier to one of the quests they are mixed up in: switch to
+   * the quest tracker, put it on the filter that quest lives under, expand it and bring
+   * it into view. Following a link should land on the thing, not near it.
+   * @this {VelvetJournalSheet}
+   */
+  static async #onNpcQuestOpen(event, target) {
+    const questId = target.dataset.questId;
+    const quest = this.#visibleQuests().find(q => q.id === questId);
+    if ( !quest ) return;
+    this.#openNpcId = null;
+    this.#questFilter = quest.status;
+    this.#openQuests.add(quest.id);
+    this.#activateTab("quests");
+    await this.render({ parts: ["npcs", "quests"] });
+    this.element
+      .querySelector(`.osj-quest-card[data-quest-id="${CSS.escape(quest.id)}"]`)
+      ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
   /* -------------------------------------------- */

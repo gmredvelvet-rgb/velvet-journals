@@ -561,7 +561,9 @@
 .application.velvet-journal .osj-modal-media {
   position: relative;
   flex: 0 0 auto;
-  height: 380px;
+  /* Tied to the screen, not a fixed 380px: on a laptop that header used to eat most of
+     the card and leave the description, travel bar and actions fighting over the rest. */
+  height: clamp(150px, 34vh, 380px);
   overflow: hidden;
   isolation: isolate;
 }
@@ -1049,6 +1051,23 @@
 }
 
 /* Responsive ---------------------------------------------------------------- */
+
+/* Intermediate tier: a windowed sheet on a laptop sits here, well above the 640px
+   cliff, where a 236px index rail is a lot of the width to give away. */
+@container osjp (max-width: 900px) {
+  .application.velvet-journal .osj-atlas-nav {
+    flex: 0 0 180px;
+  }
+
+  .application.velvet-journal .osj-atlas-body {
+    padding-inline: clamp(12px, 2cqw, 22px);
+  }
+
+  .application.velvet-journal .osj-travel-actions .osj-quest-btn {
+    padding-inline: 10px;
+    letter-spacing: 0.12em;
+  }
+}
 
 @container osjp (max-width: 640px) {
   .application.velvet-journal .osj-atlas-layout {
