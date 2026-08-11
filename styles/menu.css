@@ -12,6 +12,13 @@
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-columns: auto minmax(0, 1fr);
+  /* The window-width container. Without it the cqw units in this file had no
+     container to resolve against and silently fell back to the viewport, which is
+     why the brand name truncated on a wide window and the tab bar never adapted to
+     the window at all. Safe to contain here: the element already establishes both a
+     containing block and a stacking context via position/z-index. */
+  container-type: inline-size;
+  container-name: osjwin;
 }
 
 .application.velvet-journal .osj-menu {
@@ -97,6 +104,7 @@
   display: flex;
   align-items: center;
   padding-block: 8px;
+  flex: 0 0 auto;
 }
 
 .application.velvet-journal .osj-menu-logo {
@@ -127,6 +135,8 @@
   display: flex;
   align-items: stretch;
   gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
   counter-reset: vjtab;
@@ -224,6 +234,8 @@
 .application.velvet-journal .osj-menu-name {
   margin-left: auto;
   align-self: center;
+  flex: 0 1 auto;
+  min-width: 0;
   padding-left: 12px;
   font-family: var(--osj-font-script);
   font-size: 1.3rem;
@@ -235,6 +247,70 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 26cqw;
+}
+
+/* Responsive tab bar -------------------------------------------------------
+   The bar used to keep every tab at full size and hide the overflow behind a
+   scrollbar it also hid, so on a narrow window the last tabs simply vanished —
+   Atlas and Pages were unreachable. Nothing is allowed to overflow now: the bar
+   gives up its decoration in order, and only then its labels. */
+
+/* 1. The script brand name is pure decoration — it goes first. */
+@container osjwin (max-width: 980px) {
+  .application.velvet-journal .osj-menu-name {
+    display: none;
+  }
+}
+
+/* 2. Tighten the engraved spacing before anything has to disappear. */
+@container osjwin (max-width: 860px) {
+  .application.velvet-journal .osj-menu {
+    gap: 8px;
+    padding-inline: 12px;
+  }
+
+  .application.velvet-journal .osj-menu-tab {
+    padding-inline: 10px;
+    gap: 6px;
+    letter-spacing: 0.14em;
+  }
+}
+
+/* 3. Drop the chapter numerals; the labels still carry the meaning. */
+@container osjwin (max-width: 720px) {
+  .application.velvet-journal .osj-menu-tab::before {
+    display: none;
+  }
+
+  .application.velvet-journal .osj-menu-tab {
+    font-size: 0.7rem;
+    padding-inline: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .application.velvet-journal .osj-menu-badge {
+    min-width: 16px;
+    height: 16px;
+    font-size: 0.54rem;
+  }
+}
+
+/* 4. Last resort: icons instead of words, so all five tabs stay reachable. */
+@container osjwin (max-width: 600px) {
+  .application.velvet-journal .osj-menu-tab {
+    align-items: center;
+    gap: 5px;
+    padding: 13px 10px;
+  }
+
+  .application.velvet-journal .osj-menu-tab > i {
+    display: inline;
+    font-size: 0.85rem;
+  }
+
+  .application.velvet-journal .osj-menu-tab-label {
+    display: none;
+  }
 }
 
 /* --------------------------------------------------------------------------

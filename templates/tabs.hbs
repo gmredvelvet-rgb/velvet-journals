@@ -9,7 +9,8 @@
     <div class="osj-menu-tabs" role="tablist">
         {{#each vjMenu.tabs}}
         <button type="button" role="tab" class="osj-menu-tab {{#if active}}active{{/if}}"
-                data-action="vjTab" data-tab="{{ id }}" aria-selected="{{ active }}">
+                data-action="vjTab" data-tab="{{ id }}" aria-selected="{{ active }}"
+                data-tooltip aria-label="{{ localize label }}">
             <i class="{{ icon }}" inert></i>
             <span class="osj-menu-tab-label">{{ localize label }}</span>
             {{#if badge}}<span class="osj-menu-badge">{{ badge }}</span>{{/if}}

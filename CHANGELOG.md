@@ -3,6 +3,25 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.4.1] — 2026-08-07
+
+### Fixed
+
+- **The tab bar lost tabs on a narrow window.** It kept every tab at full size and
+  pushed the overflow behind a scrollbar it also hid, so once the window was small
+  enough, Atlas and Pages were simply gone — off the edge, with nothing to say so.
+  The bar now gives ground in order as the window narrows: the script brand name
+  first, then the engraved letter-spacing, then the chapter numerals, and only at
+  the very end the labels, which are replaced by the tabs' icons. All five tabs
+  stay reachable at any size the window can be dragged to.
+- **The window-width container was missing entirely.** Rules in this module already
+  sized against `cqw`, but no ancestor of the menu declared a container, so those
+  units silently fell back to the viewport — which is why the brand name truncated
+  to "Velve…" on a window that had plenty of room. Declared on the content area,
+  where it was always meant to be.
+- Icon-only tabs carry their name as a tooltip and an accessible label, since a
+  hidden label is also hidden from screen readers.
+
 ## [3.4.0] — 2026-08-07
 
 ### Fixed
