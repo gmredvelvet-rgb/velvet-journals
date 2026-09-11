@@ -3,6 +3,25 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.5.0] — 2026-09-11
+
+### Added
+
+- **Quest intake API.** Other modules can now file a quest into the Velvet quest
+  log with `game.modules.get("velvet-journals").api.addQuest(...)`, without
+  reaching into this module's flags. Objectives may be passed as plain strings.
+  Writing a quest needs ownership of the journal, so it is a GM-side call; a
+  module offering quests to players relays the request to a GM client.
+
+### Changed
+
+- **Requires Velvet License Hub.** One Patreon connection now licenses every
+  GM RedVelvet module, in every world. Foundry installs the hub together with
+  this module, and with the hub active Velvet Journals shows no licence card,
+  reminder or menu of its own.
+- Worlds that already activated Velvet Journals keep their licence: it stays
+  valid until the hub is connected once.
+
 ## [3.4.2] — 2026-08-07
 
 ### Fixed

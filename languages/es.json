@@ -409,6 +409,10 @@
       "Divider": {
         "Menu": "Separador"
       }
+    },
+    "Intake": {
+      "NoJournal": "No hay ningún diario Velvet configurado para recibir misiones. Abre el Velvet Hub una vez para crearlo.",
+      "NoPermission": "No tienes permiso para escribir en el registro de misiones de Velvet."
     }
   }
 }

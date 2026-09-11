@@ -409,6 +409,10 @@
       "Divider": {
         "Menu": "Divider"
       }
+    },
+    "Intake": {
+      "NoJournal": "No Velvet journal is configured to receive quests. Open the Velvet Hub once to create it.",
+      "NoPermission": "You do not have permission to write to the Velvet quest log."
     }
   }
 }

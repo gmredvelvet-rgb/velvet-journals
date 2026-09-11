@@ -2,9 +2,11 @@ import { MODULE_ID, MODULE_TITLE } from "./constants.js";
 import VelvetJournalSheet from "./sheet.js";
 import { registerBlocks } from "./blocks.js";
 import { initializeHub } from "./hub.js";
+import { registerQuestIntake } from "./quest-intake.js";
 import { registerTravelSocket } from "./travel.js";
 import LicenseClient from "./license.js";
 import LicenseUI, { licenseMenuClass, isWorldLicensed } from "./license-ui.js";
+import { hubActive, licenseHub } from "./license-hub.js";
 
 Hooks.once("init", () => {
   foundry.applications.apps.DocumentSheetConfig.registerSheet(
@@ -32,7 +34,8 @@ Hooks.once("init", () => {
     default: false
   });
 
-  game.settings.registerMenu(MODULE_ID, "licenseMenu", {
+  // With the hub active, its menu is the one place to manage the licence.
+  if ( !hubActive() ) game.settings.registerMenu(MODULE_ID, "licenseMenu", {
     name: "VJ.Settings.License.Name",
     label: "VJ.Settings.License.Label",
     hint: "VJ.Settings.License.Hint",
@@ -84,6 +87,9 @@ Hooks.once("init", () => {
 
   registerBlocks();
   initializeHub();
+  // After initializeHub, so its ready hook publishes module.api first and this
+  // only extends the object rather than racing to create it.
+  registerQuestIntake();
   registerTravelSocket();
 });
 
@@ -97,6 +103,10 @@ Hooks.once("ready", async () => {
   // Foundry loads modules on the join, setup and stream pages too, where
   // there is no world to license and nobody to prompt.
   if ( game.view !== "game" ) return;
+  // With the hub active the licence is the hub's: register and stay silent —
+  // no server call, no card, no reminder of this module's own.
+  const hub = licenseHub();
+  if ( hub ) return void hub.register(MODULE_ID);
   try {
     if ( game.user?.isGM ) {
       const client = LicenseClient.instance;
@@ -120,6 +130,7 @@ Hooks.once("ready", async () => {
 // client without anyone reloading; the flag arrives as a world-setting update.
 Hooks.on("updateSetting", setting => {
   if ( setting.key !== `${MODULE_ID}.worldLicensed` ) return;
+  if ( licenseHub() ) return;
   if ( isWorldLicensed() ) LicenseUI.stopReminder();
   else LicenseUI.startReminder();
 });
