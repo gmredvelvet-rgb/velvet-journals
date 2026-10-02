@@ -2,6 +2,7 @@
   "VJ": {
     "SheetName": "Velvet Journals",
     "Breadcrumb": "Ubicación",
+    "EntryTitle": "Título de la entrada",
     "UrlPlaceholder": "ruta/al/archivo.ext o https://ejemplo.com/imagen.jpg",
     "UrlHint": "También puedes pegar directamente la URL de una imagen o video (terminada en .jpg, .png, .webp, .gif, .webm, .mp4...) en lugar de buscar un archivo.",
     "MD": {
@@ -26,7 +27,8 @@
         "Hint": "Elige la identidad visual usada en todos los diarios Velvet: ventana, colores, tipografía y estilo del menú. Cambiar esto recarga Foundry.",
         "Classic": "Clásica — Belle Époque noir & dorado",
         "Survival": "Survival — equipo de campo industrial",
-        "Cyber": "Cyber — interfaz holográfica de neón"
+        "Cyber": "Cyber — interfaz holográfica de neón",
+        "Pirate": "Pirata — madera de bodega, pergamino y latón"
       },
       "License": {
         "Name": "Licencia de Patreon",

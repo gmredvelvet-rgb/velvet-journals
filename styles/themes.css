@@ -10,9 +10,10 @@
    - Classic  (default): untouched, defined in journal.css.
    - Survival: industrial field-gear look, carbon/olive/amber.
    - Cyber:    neon holographic terminal, cyan/purple on near-black.
+   - Pirate:   ship's hold by lantern light — tarred oak, hemp, brass, parchment.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&family=Pirata+One&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap');
 
 /* --------------------------------------------------------------------------
    Survival edition — carbon black, steel, military olive, amber
@@ -409,6 +410,792 @@
 }
 
 /* --------------------------------------------------------------------------
+   Pirate edition — a ship's hold by lantern light: tarred oak, hemp rope,
+   tarnished brass and chart parchment. Light mode is the treasure map itself.
+   -------------------------------------------------------------------------- */
+
+.application.velvet-journal[data-osj-edition="pirate"],
+.application.velvet-config[data-osj-edition="pirate"] {
+  --osj-deep: #0d0906;
+  --osj-deep-2: #1f150c;
+  --osj-ink: #dccba4;
+  --osj-ink-strong: #f6e9c8;
+  --osj-muted: #9a8563;
+  --osj-line: rgba(201, 160, 84, 0.22);
+  --osj-line-strong: rgba(201, 160, 84, 0.46);
+  --osj-glass: rgba(26, 17, 9, 0.74);
+  --osj-glass-strong: rgba(16, 10, 6, 0.92);
+  --osj-btn-ink: #24160a;
+  --osj-ok: #6fae8f;
+  --osj-bad: #b5352b;
+  --osj-font-display: "IM Fell English SC", "Cinzel", "Times New Roman", serif;
+  --osj-font-body: "IM Fell English", "Cormorant Garamond", Georgia, serif;
+  --osj-radius: 3px;
+  --osj-radius-sm: 2px;
+  --osj-shadow: 0 30px 80px rgba(0, 0, 0, 0.75);
+  --osjp-font-title: "Pirata One", "IM Fell English SC", "Cinzel", serif;
+  /* The journal's accent as picked, and the same hue steeped into a sepia ink
+     dark enough to write with on parchment (see the light mode rules below). */
+  --osjp-gold: var(--osj-accent);
+  --osjp-ink-accent: color-mix(in srgb, var(--osj-accent) 40%, #3a1f04);
+
+  /* Textures and emblems are inline SVG, so the edition ships no image files.
+     The turbulence filters rasterize once per tile and are cached after that;
+     the emblems are used as masks so they take the journal's own accent color. */
+  --osjp-wood: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='368'%3E%3Cfilter id='f0' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005 0.3' numOctaves='4' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.56 0 0 0 0 0.35 0 0 0 0 0.16 1.1 0 0 0 -0.43'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f0)'/%3E%3Cfilter id='f1' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.55' numOctaves='3' seed='21' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.5 0 0 -0.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f1)'/%3E%3C/svg%3E");
+  --osjp-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f0' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.022' numOctaves='4' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.88 0 0 0 0 0.68 0 0 0 0 0.4 0.38 0 0 0 -0.165'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f0)'/%3E%3Cfilter id='f1' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.84 0 0 0 0 0.62 0 0.4 0 0 -0.165'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f1)'/%3E%3C/svg%3E");
+  --osjp-stain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f0' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='5' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.24 0 0 0 0 0.07 1.3 0 0 0 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f0)'/%3E%3Cfilter id='f1' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.17 0 0 0 0 0.05 0 0.8 0 0 -0.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f1)'/%3E%3C/svg%3E");
+  --osjp-paper: var(--osjp-grain);
+  --osjp-skull: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 38'%3E%3Cg fill='%23000'%3E%3Cg transform='rotate(45 16 24)'%3E%3Crect x='1' y='22.5' width='30' height='3' rx='1.5'/%3E%3Ccircle cx='2.3' cy='22.1' r='2.3'/%3E%3Ccircle cx='2.3' cy='25.9' r='2.3'/%3E%3Ccircle cx='29.7' cy='22.1' r='2.3'/%3E%3Ccircle cx='29.7' cy='25.9' r='2.3'/%3E%3C/g%3E%3Cg transform='rotate(-45 16 24)'%3E%3Crect x='1' y='22.5' width='30' height='3' rx='1.5'/%3E%3Ccircle cx='2.3' cy='22.1' r='2.3'/%3E%3Ccircle cx='2.3' cy='25.9' r='2.3'/%3E%3Ccircle cx='29.7' cy='22.1' r='2.3'/%3E%3Ccircle cx='29.7' cy='25.9' r='2.3'/%3E%3C/g%3E%3Cpath fill-rule='evenodd' d='M16 3c-5 0-8.5 3.4-8.5 7.8 0 2.6 1.2 4.6 3 5.9V19c0 .8.7 1.5 1.5 1.5h8c.8 0 1.5-.7 1.5-1.5v-2.3c1.8-1.3 3-3.3 3-5.9C24.5 6.4 21 3 16 3zm-3.2 6.2a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.4 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zM16 14.2l1.2 2.2h-2.4z'/%3E%3C/g%3E%3C/svg%3E");
+  --osjp-compass: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23000'%3E%3Ccircle cx='100' cy='100' r='97' stroke-width='2'/%3E%3Ccircle cx='100' cy='100' r='91' stroke-width='5' stroke-dasharray='1.4 6.541'/%3E%3Ccircle cx='100' cy='100' r='85' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='56' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='52' stroke-width='3' stroke-dasharray='1 9.21'/%3E%3C/g%3E%3Cg fill='%23000'%3E%3Cg transform='rotate(22.5 100 100)'%3E%3Cpath d='M100 52L104 100H100z'/%3E%3Cpath d='M100 52L96 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(67.5 100 100)'%3E%3Cpath d='M100 52L104 100H100z'/%3E%3Cpath d='M100 52L96 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(112.5 100 100)'%3E%3Cpath d='M100 52L104 100H100z'/%3E%3Cpath d='M100 52L96 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(157.5 100 100)'%3E%3Cpath d='M100 52L104 100H100z'/%3E%3Cpath d='M100 52L96 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(202.5 100 100)'%3E%3Cpath d='M100 52L104 100H100z'/%3E%3Cpath d='M100 52L96 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(247.5 100 100)'%3E%3Cpath d='M100 52L104 100H100z'/%3E%3Cpath d='M100 52L96 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(292.5 100 100)'%3E%3Cpath d='M100 52L104 100H100z'/%3E%3Cpath d='M100 52L96 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(337.5 100 100)'%3E%3Cpath d='M100 52L104 100H100z'/%3E%3Cpath d='M100 52L96 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(45 100 100)'%3E%3Cpath d='M100 30L108 100H100z'/%3E%3Cpath d='M100 30L92 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(135 100 100)'%3E%3Cpath d='M100 30L108 100H100z'/%3E%3Cpath d='M100 30L92 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(225 100 100)'%3E%3Cpath d='M100 30L108 100H100z'/%3E%3Cpath d='M100 30L92 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(315 100 100)'%3E%3Cpath d='M100 30L108 100H100z'/%3E%3Cpath d='M100 30L92 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(0 100 100)'%3E%3Cpath d='M100 4L111 100H100z'/%3E%3Cpath d='M100 4L89 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(90 100 100)'%3E%3Cpath d='M100 4L111 100H100z'/%3E%3Cpath d='M100 4L89 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(180 100 100)'%3E%3Cpath d='M100 4L111 100H100z'/%3E%3Cpath d='M100 4L89 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='rotate(270 100 100)'%3E%3Cpath d='M100 4L111 100H100z'/%3E%3Cpath d='M100 4L89 100H100z' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/g%3E%3Ccircle cx='100' cy='100' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  --osjp-cross: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4.5 4.5c5 4.2 10 9.4 15 15M19.5 4c-4.6 5-9.8 10.300-15.200 15.800' fill='none' stroke='%23000' stroke-width='4.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  --osjp-seal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='.36' cy='.3' r='.8'%3E%3Cstop offset='0' stop-color='%23d0493c'/%3E%3Cstop offset='.45' stop-color='%2396211b'/%3E%3Cstop offset='1' stop-color='%234e0d0a'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='url(%23g)'%3E%3Ccircle cx='32' cy='32' r='25'/%3E%3Ccircle cx='11' cy='25' r='6.5'/%3E%3Ccircle cx='14' cy='47' r='7'/%3E%3Ccircle cx='33' cy='57' r='5.5'/%3E%3Ccircle cx='51' cy='46' r='7.5'/%3E%3Ccircle cx='55' cy='27' r='6'/%3E%3Ccircle cx='43' cy='10' r='6.5'/%3E%3Ccircle cx='23' cy='9' r='6'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%234e0d0a' stroke-width='1.6' opacity='.75'/%3E%3Ccircle cx='32' cy='32.800' r='20' fill='none' stroke='%23e8776a' stroke-width='.7' opacity='.5'/%3E%3Cg transform='translate(17.300 14.900) scale(.92)' opacity='.5'%3E%3Cg fill='%23f08a7c'%3E%3Cg transform='rotate(45 16 24)'%3E%3Crect x='1' y='22.5' width='30' height='3' rx='1.5'/%3E%3Ccircle cx='2.3' cy='22.1' r='2.3'/%3E%3Ccircle cx='2.3' cy='25.9' r='2.3'/%3E%3Ccircle cx='29.7' cy='22.1' r='2.3'/%3E%3Ccircle cx='29.7' cy='25.9' r='2.3'/%3E%3C/g%3E%3Cg transform='rotate(-45 16 24)'%3E%3Crect x='1' y='22.5' width='30' height='3' rx='1.5'/%3E%3Ccircle cx='2.3' cy='22.1' r='2.3'/%3E%3Ccircle cx='2.3' cy='25.9' r='2.3'/%3E%3Ccircle cx='29.7' cy='22.1' r='2.3'/%3E%3Ccircle cx='29.7' cy='25.9' r='2.3'/%3E%3C/g%3E%3Cpath fill-rule='evenodd' d='M16 3c-5 0-8.5 3.4-8.5 7.8 0 2.6 1.2 4.6 3 5.9V19c0 .8.7 1.5 1.5 1.5h8c.8 0 1.5-.7 1.5-1.5v-2.3c1.8-1.3 3-3.3 3-5.9C24.5 6.4 21 3 16 3zm-3.2 6.2a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.4 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zM16 14.2l1.2 2.2h-2.4z'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(17.300 14.200) scale(.92)'%3E%3Cg fill='%234a0c09'%3E%3Cg transform='rotate(45 16 24)'%3E%3Crect x='1' y='22.5' width='30' height='3' rx='1.5'/%3E%3Ccircle cx='2.3' cy='22.1' r='2.3'/%3E%3Ccircle cx='2.3' cy='25.9' r='2.3'/%3E%3Ccircle cx='29.7' cy='22.1' r='2.3'/%3E%3Ccircle cx='29.7' cy='25.9' r='2.3'/%3E%3C/g%3E%3Cg transform='rotate(-45 16 24)'%3E%3Crect x='1' y='22.5' width='30' height='3' rx='1.5'/%3E%3Ccircle cx='2.3' cy='22.1' r='2.3'/%3E%3Ccircle cx='2.3' cy='25.9' r='2.3'/%3E%3Ccircle cx='29.7' cy='22.1' r='2.3'/%3E%3Ccircle cx='29.7' cy='25.9' r='2.3'/%3E%3C/g%3E%3Cpath fill-rule='evenodd' d='M16 3c-5 0-8.5 3.4-8.5 7.8 0 2.6 1.2 4.6 3 5.9V19c0 .8.7 1.5 1.5 1.5h8c.8 0 1.5-.7 1.5-1.5v-2.3c1.8-1.3 3-3.3 3-5.9C24.5 6.4 21 3 16 3zm-3.2 6.2a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zm6.4 0a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4zM16 14.2l1.2 2.2h-2.4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+  /* Twisted hemp: three strands laid diagonally across a narrow band */
+  --osjp-rope: repeating-linear-gradient(-58deg,
+    color-mix(in srgb, var(--osj-accent) 50%, #ecd9ab) 0 2px,
+    color-mix(in srgb, var(--osj-accent) 55%, #54381a) 2px 4px,
+    #1e1208 4px 5.5px);
+  /* The dashed course a navigator inks between two landmarks */
+  --osjp-trail: repeating-linear-gradient(90deg, #000 0 7px, transparent 7px 12px);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light {
+  --osj-deep: #d6bd8c;
+  --osj-deep-2: #ead9b0;
+  --osj-ink: #3d2a14;
+  --osj-ink-strong: #24160a;
+  --osj-muted: #76603c;
+  --osj-line: rgba(92, 58, 22, 0.28);
+  --osj-line-strong: rgba(92, 58, 22, 0.52);
+  --osj-glass: rgba(240, 225, 186, 0.62);
+  --osj-glass-strong: rgba(240, 225, 186, 0.92);
+  --osj-shadow: 0 30px 80px rgba(40, 24, 6, 0.5);
+  --osjp-paper: var(--osjp-stain);
+}
+
+/* Window frame ----------------------------------------------------------- */
+
+.application.velvet-journal[data-osj-edition="pirate"] {
+  border-color: #050302;
+}
+
+/* A hemp rope lashed around the window instead of a hairline gilded inset */
+.application.velvet-journal[data-osj-edition="pirate"]::after {
+  inset: 4px;
+  border: 5px solid transparent;
+  border-image: var(--osjp-rope) 5;
+  border-radius: 0;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.65),
+    inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* The rope is thick enough to sit on top of the header buttons and the panel
+   scrollbars, so the header and the content step inside it. */
+.application.velvet-journal[data-osj-edition="pirate"] > .window-header {
+  padding-inline: 16px;
+  background:
+    var(--osjp-wood),
+    linear-gradient(180deg, rgba(46, 30, 15, 0.96), rgba(26, 16, 8, 0.72));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"]:not(.minimized) > .window-content {
+  padding: 0 11px 11px;
+}
+
+/* Gold leaf does not read on parchment. On the map the accent is used as ink,
+   so everything below the header takes the sepia version of it... */
+.application.velvet-journal[data-osj-edition="pirate"].osj-light > .window-content {
+  --osj-accent: var(--osjp-ink-accent);
+}
+
+/* ...except what is still dark underneath: the timber, and anything painted
+   over a picture. Those keep the gold, and the timber keeps its lantern-lit ink. */
+.application.velvet-journal[data-osj-edition="pirate"].osj-light :is(.osj-menu, .osj-cta, .osj-footer, .osj-dcard, .osj-npc-frame, .osj-atlas-stage, .osj-modal-media, .osj-objective.done .osj-obj-check) {
+  --osj-accent: var(--osjp-gold);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light > .window-header,
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .osj-menu,
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .osj-cta,
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .osj-footer {
+  --osj-ink: #dccba4;
+  --osj-ink-strong: #f6e9c8;
+  --osj-muted: #a8916a;
+  --osj-line: rgba(201, 160, 84, 0.22);
+  --osj-line-strong: rgba(201, 160, 84, 0.46);
+}
+
+/* Titles in a blackletter hand. It is drawn for mixed case and turns to a
+   picket fence in capitals, so the engraved uppercase tracking goes too. */
+.application.velvet-journal[data-osj-edition="pirate"] > .window-header .window-title,
+.application.velvet-journal[data-osj-edition="pirate"] input.title,
+.application.velvet-journal[data-osj-edition="pirate"] :is(.osj-panel-title, .osj-dcard-title, .osj-modal-name, .osj-empty h3, .osj-side-title),
+.application.velvet-journal[data-osj-edition="pirate"] .journal-entry-page :is(h1, h2),
+.application.velvet-config[data-osj-edition="pirate"] .window-header .window-title {
+  font-family: var(--osjp-font-title);
+  font-weight: 400;
+  letter-spacing: 0.035em;
+  text-transform: none;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] > .window-header .window-title,
+.application.velvet-config[data-osj-edition="pirate"] .window-header .window-title {
+  font-size: 1.08rem;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-panel-title {
+  font-size: clamp(1.9rem, 4.8cqw, 2.9rem);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.55), 0 6px 22px rgba(0, 0, 0, 0.6);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .osj-panel-title {
+  text-shadow: 0 1px 0 rgba(255, 240, 205, 0.6);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light :is(.osj-kicker, .osj-subtitle, .osj-meta-item, .osj-panel-head .osj-panel-sub) {
+  text-shadow: none;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .osj-hero input.title {
+  text-shadow: 0 1px 0 rgba(255, 240, 205, 0.6);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard-title {
+  font-size: 1.3rem;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard.size-hero .osj-dcard-title {
+  font-size: 1.9rem;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-modal-name {
+  font-size: 1.6rem;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-side-title {
+  font-size: 1.1rem;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .journal-entry-page h1 { font-size: 2.3rem; }
+.application.velvet-journal[data-osj-edition="pirate"] .journal-entry-page h2 { font-size: 1.8rem; }
+
+/* Backdrop --------------------------------------------------------------- */
+
+/* Deck planking: seams every plank, grain running along them */
+.application.velvet-journal[data-osj-edition="pirate"] > .osj-backdrop {
+  background:
+    repeating-linear-gradient(0deg,
+      rgba(0, 0, 0, 0.6) 0 2px,
+      rgba(255, 214, 150, 0.04) 2px 3px,
+      transparent 3px 92px),
+    var(--osjp-wood),
+    radial-gradient(130% 100% at 50% 0%, var(--osj-deep-2) 0%, var(--osj-deep) 62%),
+    var(--osj-deep);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light > .osj-backdrop {
+  background:
+    var(--osjp-stain),
+    radial-gradient(130% 100% at 50% 0%, var(--osj-deep-2) 0%, var(--osj-deep) 70%),
+    var(--osj-deep);
+}
+
+/* Paper grain over whatever image the journal uses as its background */
+.application.velvet-journal[data-osj-edition="pirate"] > .osj-backdrop > .osj-backdrop-overlay {
+  background-image:
+    var(--osjp-paper),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--osj-overlay, var(--osj-deep)) 55%, transparent) 0%,
+      color-mix(in srgb, var(--osj-overlay, var(--osj-deep)) 92%, transparent) 100%);
+}
+
+/* The overlay exists to tint a background picture. With no picture there is only
+   the bare map under it, and the default dark tint turns parchment to mud. */
+.application.velvet-journal[data-osj-edition="pirate"].osj-light > .osj-backdrop:not(:has(> .osj-backdrop-media)) > .osj-backdrop-overlay {
+  background-image: none;
+}
+
+/* A lantern swinging overhead and scorched edges instead of a painterly vignette */
+.application.velvet-journal[data-osj-edition="pirate"] > .osj-backdrop::before {
+  background:
+    radial-gradient(62% 46% at 50% 0%, rgba(255, 176, 74, 0.2), transparent 72%),
+    radial-gradient(120% 95% at 50% 45%, transparent 46%, rgba(8, 4, 1, 0.78) 100%);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"]:not(.osj-no-anim) > .osj-backdrop::before {
+  animation: osjp-lantern 7s ease-in-out infinite;
+}
+
+@keyframes osjp-lantern {
+  0%, 100% { opacity: 1; }
+  18% { opacity: 0.9; }
+  34% { opacity: 0.97; }
+  52% { opacity: 0.85; }
+  70% { opacity: 0.95; }
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light > .osj-backdrop::before {
+  background: radial-gradient(120% 95% at 50% 45%, transparent 52%, rgba(92, 52, 14, 0.46) 100%);
+  animation: none;
+}
+
+/* A compass rose turning slowly in the corner instead of drifting gold dust */
+.application.velvet-journal[data-osj-edition="pirate"] > .osj-backdrop::after {
+  inset: auto -150px -150px auto;
+  width: 540px;
+  height: 540px;
+  background: var(--osj-accent);
+  -webkit-mask: var(--osjp-compass) center / contain no-repeat;
+  mask: var(--osjp-compass) center / contain no-repeat;
+  opacity: 0.11;
+  animation: osjp-compass 260s linear infinite;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light > .osj-backdrop::after {
+  background: #4a2c0c;
+  opacity: 0.16;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-no-anim > .osj-backdrop::after {
+  inset: auto -150px -150px auto;
+  opacity: 0.11;
+}
+
+@keyframes osjp-compass {
+  to { transform: rotate(360deg); }
+}
+
+/* Menu ------------------------------------------------------------------- */
+
+/* A timber rail studded with brass nails instead of frosted glass */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-menu {
+  background:
+    var(--osjp-wood),
+    linear-gradient(180deg, #38240f, #1b1108);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-bottom: 2px solid #080402;
+  box-shadow: inset 0 1px 0 rgba(255, 214, 150, 0.14), 0 8px 16px rgba(0, 0, 0, 0.45);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-menu::before {
+  content: "";
+  position: absolute;
+  inset: 4px 0 auto 0;
+  height: 5px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle 2.5px at 50% 50%,
+      color-mix(in srgb, var(--osj-accent) 70%, #fff) 0 30%,
+      color-mix(in srgb, var(--osj-accent) 60%, #2a1806) 55% 88%,
+      transparent 100%) 0 0 / 38px 5px repeat-x;
+  opacity: 0.7;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-menu-tab {
+  font-size: 0.84rem;
+  letter-spacing: 0.16em;
+}
+
+/* Chapter numerals inked in blood red */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-menu-tab::before {
+  font-family: var(--osjp-font-title);
+  font-size: 0.86rem;
+  font-weight: 400;
+  color: color-mix(in srgb, var(--osj-bad) 75%, var(--osj-muted));
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-menu-tab.active::before {
+  color: color-mix(in srgb, var(--osj-bad) 80%, #ff9a7a);
+}
+
+/* X marks the spot: a dashed course closing on a red cross */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-menu-tab::after {
+  height: 12px;
+  bottom: 1px;
+  background: linear-gradient(90deg,
+    var(--osj-accent) calc(50% - 9px),
+    color-mix(in srgb, var(--osj-bad) 85%, #ff7a5a) calc(50% - 9px) calc(50% + 9px),
+    var(--osj-accent) calc(50% + 9px));
+  -webkit-mask:
+    var(--osjp-cross) center / 12px 12px no-repeat,
+    var(--osjp-trail) left center / calc(50% - 11px) 2px no-repeat,
+    var(--osjp-trail) right center / calc(50% - 11px) 2px no-repeat;
+  mask:
+    var(--osjp-cross) center / 12px 12px no-repeat,
+    var(--osjp-trail) left center / calc(50% - 11px) 2px no-repeat,
+    var(--osjp-trail) right center / calc(50% - 11px) 2px no-repeat;
+}
+
+/* A struck doubloon, not a rotated gold lozenge */
+.application.velvet-journal[data-osj-edition="pirate"] :is(.osj-menu-mark, .osj-side-mark) {
+  rotate: 0deg;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--osj-accent) 80%, #000);
+  background: radial-gradient(circle at 34% 28%,
+    color-mix(in srgb, var(--osj-accent) 55%, transparent),
+    color-mix(in srgb, var(--osj-accent) 12%, transparent) 70%);
+  box-shadow:
+    0 0 0 2px #1a1008,
+    0 0 0 3px color-mix(in srgb, var(--osj-accent) 55%, #000),
+    inset 0 0 6px rgba(0, 0, 0, 0.6);
+  color: color-mix(in srgb, var(--osj-accent) 80%, #fff);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] :is(.osj-menu-mark, .osj-side-mark) i {
+  rotate: 0deg;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-menu-badge {
+  border-radius: 50%;
+  border-color: color-mix(in srgb, var(--osj-accent) 70%, transparent);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-crumb + .osj-crumb::before {
+  content: "\2715";
+  color: var(--osj-bad);
+}
+
+/* Section rules: a Jolly Roger riding the dashed course */
+.application.velvet-journal[data-osj-edition="pirate"] :is(.osj-panel-head, .osj-hero-body, .osj-plain-header)::after {
+  height: 20px;
+  bottom: -6px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--osj-line-strong) 16%,
+    var(--osj-accent) 50%,
+    var(--osj-line-strong) 84%,
+    transparent);
+  -webkit-mask:
+    var(--osjp-skull) center / 17px 20px no-repeat,
+    var(--osjp-trail) left center / calc(50% - 18px) 2px no-repeat,
+    var(--osjp-trail) right center / calc(50% - 18px) 2px no-repeat;
+  mask:
+    var(--osjp-skull) center / 17px 20px no-repeat,
+    var(--osjp-trail) left center / calc(50% - 18px) 2px no-repeat,
+    var(--osjp-trail) right center / calc(50% - 18px) 2px no-repeat;
+}
+
+/* Timber plaque with a brass edge instead of a ghost gilded button */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-cta {
+  border: 1px solid color-mix(in srgb, var(--osj-accent) 65%, #000);
+  border-radius: 2px;
+  background:
+    linear-gradient(110deg, transparent 30%, color-mix(in srgb, var(--osj-accent) 26%, transparent) 50%, transparent 70%)
+    0 0 / 200% 100% no-repeat,
+    var(--osjp-wood),
+    linear-gradient(180deg, #3d2812, #21140a);
+  box-shadow: inset 0 1px 0 rgba(255, 220, 160, 0.2), 0 4px 10px rgba(0, 0, 0, 0.45);
+  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+}
+
+/* Sidebar & footer ------------------------------------------------------- */
+
+.application.velvet-journal[data-osj-edition="pirate"] .journal-sidebar {
+  background:
+    var(--osjp-wood),
+    linear-gradient(180deg, rgba(36, 23, 11, 0.94), rgba(20, 12, 6, 0.88));
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-right: 2px solid #080402;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .journal-sidebar {
+  background:
+    var(--osjp-stain),
+    linear-gradient(180deg, rgba(234, 217, 176, 0.95), rgba(214, 189, 140, 0.88));
+  border-right-color: rgba(92, 58, 22, 0.5);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-footer {
+  background:
+    var(--osjp-wood),
+    linear-gradient(180deg, #2c1c0d, #170e07);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-top: 2px solid #080402;
+}
+
+/* Pages ------------------------------------------------------------------ */
+
+/* Each page is a leaf of the log: grained, scorched toward the edges */
+.application.velvet-journal[data-osj-edition="pirate"] .journal-entry-page {
+  background: var(--osjp-paper), var(--osj-glass);
+  border-color: color-mix(in srgb, var(--osj-accent) 30%, #000);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), inset 0 0 70px rgba(14, 7, 1, 0.55);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .journal-entry-page {
+  border-color: rgba(92, 58, 22, 0.55);
+  box-shadow: 0 16px 40px rgba(50, 30, 8, 0.32), inset 0 0 80px rgba(120, 72, 20, 0.24);
+}
+
+/* A chart's neatline — the alternating scale bar that borders a sea chart —
+   shared by every framed surface: page leaves, cards, the atlas and its dossier */
+.application.velvet-journal[data-osj-edition="pirate"] :is(.journal-entry-page, .osj-empty)::before,
+.application.velvet-journal[data-osj-edition="pirate"] :is(.osj-dcard, .osj-atlas-stage, .osj-modal-card)::after {
+  --osjp-tick: color-mix(in srgb, var(--osj-accent) 62%, transparent);
+  border: 1px solid color-mix(in srgb, var(--osj-accent) 42%, transparent);
+  background:
+    repeating-linear-gradient(90deg, var(--osjp-tick) 0 14px, transparent 14px 28px) top / 100% 2px no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 14px, var(--osjp-tick) 14px 28px) bottom / 100% 2px no-repeat,
+    repeating-linear-gradient(0deg, var(--osjp-tick) 0 14px, transparent 14px 28px) left / 2px 100% no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 14px, var(--osjp-tick) 14px 28px) right / 2px 100% no-repeat;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] :is(.journal-entry-page, .osj-empty)::before {
+  opacity: 0.4;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-empty {
+  background: var(--osjp-paper), color-mix(in srgb, var(--osj-glass) 70%, transparent);
+}
+
+/* The course to the X instead of a gilded lozenge rule */
+.application.velvet-journal[data-osj-edition="pirate"] .journal-entry-page hr:not(.osj-divider) {
+  height: 14px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--osj-line-strong) 12% calc(50% - 10px),
+    var(--osj-bad) calc(50% - 10px) calc(50% + 10px),
+    var(--osj-line-strong) calc(50% + 10px) 88%,
+    transparent);
+  -webkit-mask:
+    var(--osjp-cross) center / 13px 13px no-repeat,
+    var(--osjp-trail) left center / calc(50% - 13px) 2px no-repeat,
+    var(--osjp-trail) right center / calc(50% - 13px) 2px no-repeat;
+  mask:
+    var(--osjp-cross) center / 13px 13px no-repeat,
+    var(--osjp-trail) left center / calc(50% - 13px) 2px no-repeat,
+    var(--osjp-trail) right center / calc(50% - 13px) 2px no-repeat;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .journal-entry-page blockquote:not(.osj-quote) {
+  border-left: 3px double var(--osj-accent);
+}
+
+/* Dashboard -------------------------------------------------------------- */
+
+/* Stitched leather tags instead of glass tiles */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dash-stat {
+  background: var(--osjp-paper), color-mix(in srgb, var(--osj-glass) 88%, transparent);
+  border-color: color-mix(in srgb, var(--osj-accent) 32%, #000);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 0 24px rgba(14, 7, 1, 0.45);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .osj-dash-stat {
+  box-shadow: 0 6px 16px rgba(50, 30, 8, 0.25), inset 0 0 26px rgba(120, 72, 20, 0.2);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dash-stat::before {
+  border: 1px dashed color-mix(in srgb, var(--osj-accent) 40%, transparent);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dash-stat-value {
+  font-family: var(--osjp-font-title);
+  font-weight: 400;
+  font-size: 2.1rem;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard {
+  border-color: color-mix(in srgb, var(--osj-accent) 34%, #000);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard::after {
+  opacity: 0.6;
+  transition: opacity 0.4s var(--osj-ease);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard:hover::after {
+  opacity: 1;
+}
+
+/* Sealed orders: a wax seal pressed into the corner of every card */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 46px;
+  height: 46px;
+  z-index: 2;
+  pointer-events: none;
+  background: var(--osjp-seal) center / contain no-repeat;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.65));
+  rotate: -14deg;
+  transition: rotate 0.5s var(--osj-ease), scale 0.5s var(--osj-ease);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard:hover::before {
+  rotate: -4deg;
+  scale: 1.1;
+}
+
+/* Faded like a painting kept below decks until you look at it */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard-media :is(img, video) {
+  filter: sepia(0.34) saturate(0.88) contrast(1.05);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard:hover .osj-dcard-media :is(img, video) {
+  filter: sepia(0) saturate(1.05) contrast(1.02);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard-fallback {
+  background:
+    var(--osjp-wood),
+    radial-gradient(90% 90% at 50% 15%, color-mix(in srgb, var(--osj-accent) 14%, transparent), transparent 70%),
+    #20140a;
+}
+
+/* Paper labels pasted on, not glass chips */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard-chip {
+  background: rgba(233, 213, 168, 0.92);
+  border-color: rgba(60, 36, 10, 0.7);
+  color: #3a2408;
+  letter-spacing: 0.18em;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard-go {
+  rotate: 0deg;
+  border-radius: 50%;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-dcard-go i {
+  rotate: 0deg;
+}
+
+/* NPC gallery — wanted posters nailed to the mast ---------------------------- */
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-card:nth-child(odd) {
+  rotate: -0.7deg;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-card:nth-child(even) {
+  rotate: 0.6deg;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-card:nth-child(3n) {
+  rotate: 0.2deg;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-card {
+  transition: rotate 0.4s var(--osj-ease);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-card:hover {
+  rotate: 0deg;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-frame {
+  border-color: color-mix(in srgb, var(--osj-accent) 40%, #000);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+}
+
+/* A scorched edge and the nail holding it up */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle 5px at 50% 11px, #f6dc98 0 16%, #b98a35 38%, #4f340d 76%, transparent 84%),
+    var(--osjp-grain);
+  box-shadow: inset 0 0 36px rgba(24, 11, 1, 0.85);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-frame img {
+  filter: sepia(0.5) saturate(0.8) contrast(1.06);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-card:hover .osj-npc-frame img {
+  filter: sepia(0) saturate(1.02);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-npc-frame::after {
+  border-style: dashed;
+}
+
+/* Quest tracker — the ship's ledger ----------------------------------------- */
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-card {
+  background: var(--osjp-paper), var(--osj-glass);
+  border-color: color-mix(in srgb, var(--osj-accent) 28%, #000);
+  box-shadow: inset 0 0 40px rgba(14, 7, 1, 0.4);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"].osj-light .osj-quest-card {
+  border-color: rgba(92, 58, 22, 0.5);
+  box-shadow: inset 0 0 44px rgba(120, 72, 20, 0.2);
+}
+
+/* A length of rope down the spine; finished and failed entries keep their own color */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-card::before {
+  top: 0;
+  bottom: 0;
+  width: 5px;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-card:not(.status-done, .status-failed)::before {
+  background: var(--osjp-rope);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-summary-row {
+  padding-left: 24px;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-name {
+  font-size: 1.02rem;
+  letter-spacing: 0.08em;
+}
+
+/* Progress is a course plotted across the chart, ending on the X */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-progress {
+  height: 3px;
+  background: repeating-linear-gradient(90deg,
+    color-mix(in srgb, var(--osj-muted) 50%, transparent) 0 6px,
+    transparent 6px 11px);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-bar {
+  background: repeating-linear-gradient(90deg, var(--osj-accent) 0 6px, transparent 6px 11px);
+  box-shadow: none;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-bar::after {
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  rotate: 0deg;
+  background: var(--osj-bad);
+  box-shadow: none;
+  -webkit-mask: var(--osjp-cross) center / contain no-repeat;
+  mask: var(--osjp-cross) center / contain no-repeat;
+}
+
+/* Objectives are paid off in doubloons */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-obj-check {
+  rotate: 0deg;
+  border-radius: 50%;
+  border-color: color-mix(in srgb, var(--osj-accent) 60%, #000);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-obj-check i {
+  rotate: 0deg;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-objective.done .osj-obj-check {
+  background: radial-gradient(circle at 34% 28%,
+    color-mix(in srgb, var(--osj-accent) 55%, #fff),
+    var(--osj-accent) 52%,
+    color-mix(in srgb, var(--osj-accent) 60%, #2a1806));
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.6), 0 0 10px color-mix(in srgb, var(--osj-accent) 40%, transparent);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-quest-img {
+  filter: sepia(0.3);
+}
+
+/* Atlas — the chart table ---------------------------------------------------- */
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-atlas-stage {
+  border-color: color-mix(in srgb, var(--osj-accent) 40%, #000);
+  background:
+    var(--osjp-paper),
+    radial-gradient(120% 100% at 50% 0%, var(--osj-deep-2), var(--osj-deep) 70%);
+  box-shadow: inset 0 0 60px rgba(14, 7, 1, 0.5);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-atlas-stage::after {
+  opacity: 0.7;
+}
+
+/* Compass rose in the corner of the chart */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-atlas-stage::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: clamp(64px, 12cqmin, 108px);
+  aspect-ratio: 1;
+  z-index: 2;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--osj-accent) 85%, #fff);
+  -webkit-mask: var(--osjp-compass) center / contain no-repeat;
+  mask: var(--osjp-compass) center / contain no-repeat;
+  opacity: 0.6;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+/* X marks the spot: plain pins are a painted cross, pins that lead to another
+   chart are a coin carrying the arrow */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-pin:not(.has-link) .osj-pin-dot {
+  width: 18px;
+  height: 18px;
+  rotate: 0deg;
+  border: none;
+  box-shadow: none;
+  background:
+    linear-gradient(45deg, transparent 39%, var(--osj-pin-color, var(--osj-bad)) 39% 61%, transparent 61%),
+    linear-gradient(-45deg, transparent 39%, var(--osj-pin-color, var(--osj-bad)) 39% 61%, transparent 61%);
+  filter:
+    drop-shadow(0 0 1.5px rgba(4, 3, 7, 0.95))
+    drop-shadow(0 0 6px color-mix(in srgb, var(--osj-pin-color, var(--osj-bad)) 70%, transparent));
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-pin.has-link .osj-pin-dot {
+  rotate: 0deg;
+  border-radius: 50%;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-pin.has-link .osj-pin-dot > i {
+  rotate: 0deg;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-pin-dot::after {
+  border-radius: 50%;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-modal-card {
+  background: var(--osjp-paper), var(--osj-glass-strong);
+  border-color: color-mix(in srgb, var(--osj-accent) 40%, #000);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-modal-card::after {
+  opacity: 0.6;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-modal-media img {
+  filter: sepia(0.25) contrast(1.04);
+}
+
+/* Travel bar: a mooring line down the edge */
+.application.velvet-journal[data-osj-edition="pirate"] .osj-travel-scene {
+  border-left: none;
+  padding-left: 14px;
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-travel-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--osjp-rope);
+}
+
+.application.velvet-journal[data-osj-edition="pirate"] .osj-travel-thumb {
+  filter: sepia(0.35) contrast(1.05);
+}
+
+/* --------------------------------------------------------------------------
    Atlas travel bar — the linked-scene strip inside a pin's card.
    Classic keeps the gilded rule atlas.css draws; the other two editions read
    it as equipment (survival) or as a routed data channel (cyber).
@@ -456,50 +1243,72 @@
 
 /* --------------------------------------------------------------------------
    Theme configuration dialog — reskin the chrome that styles/config.css
-   hardcodes outside the --osj-* tokens, for the two new editions only.
+   hardcodes outside the --osj-* tokens, for the non-classic editions only.
    Classic is left byte-for-byte as config.css defines it.
    -------------------------------------------------------------------------- */
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) {
   background: linear-gradient(180deg, var(--osj-deep-2), var(--osj-deep));
   border-color: var(--osj-line-strong);
   color: var(--osj-ink);
   font-family: var(--osj-font-body);
 }
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) .window-header {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) .window-header {
   border-bottom-color: var(--osj-line);
   --color-header-title: var(--osj-ink-strong);
 }
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) .window-header .window-title {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) .window-header .window-title {
   font-family: var(--osj-font-display);
 }
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) fieldset {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) fieldset {
   border-color: var(--osj-line);
   background: var(--osj-glass);
 }
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) legend {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) legend {
   font-family: var(--osj-font-display);
 }
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) .form-group label {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) .form-group label {
   color: var(--osj-ink);
 }
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) .form-group .hint {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) .form-group .hint {
   color: var(--osj-muted);
 }
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) :is(input[type="text"], textarea, select, file-picker input) {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) :is(input[type="text"], textarea, select, file-picker input) {
   background: var(--osj-glass);
   border-color: var(--osj-line);
   color: var(--osj-ink);
 }
 
-.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"]) select option {
+.application.velvet-config:is([data-osj-edition="survival"], [data-osj-edition="cyber"], [data-osj-edition="pirate"]) select option {
   background: var(--osj-deep-2);
   color: var(--osj-ink);
+}
+
+/* Pirate: timber and grain behind the dialog too. Placed after the shared rules
+   above, which are equally specific and would otherwise repaint it flat. */
+
+.application.velvet-config[data-osj-edition="pirate"] {
+  background:
+    var(--osjp-wood),
+    linear-gradient(180deg, var(--osj-deep-2), var(--osj-deep));
+}
+
+.application.velvet-config[data-osj-edition="pirate"] fieldset {
+  background: var(--osjp-grain), var(--osj-glass);
+}
+
+.application.velvet-config[data-osj-edition="pirate"] legend {
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+}
+
+.application.velvet-config[data-osj-edition="pirate"] .window-header .window-title {
+  font-family: var(--osjp-font-title);
 }

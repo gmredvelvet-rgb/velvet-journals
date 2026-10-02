@@ -61,12 +61,13 @@ export const THEME_DEFAULTS = Object.freeze({
 const EDITION_DEFAULTS = Object.freeze({
   classic: Object.freeze({ accent: "#d3b06a", accent2: "#8ea6bd", overlay: "#0c0a10" }),
   survival: Object.freeze({ accent: "#d9a441", accent2: "#7d8f63", overlay: "#07090a" }),
-  cyber: Object.freeze({ accent: "#00cfff", accent2: "#a100ff", overlay: "#000a14" })
+  cyber: Object.freeze({ accent: "#00cfff", accent2: "#a100ff", overlay: "#000a14" }),
+  pirate: Object.freeze({ accent: "#e2b24e", accent2: "#2f9e96", overlay: "#0d0906" })
 });
 
 /**
  * The module-wide theme edition selected in the module settings.
- * @returns {string} "classic", "survival" or "cyber"
+ * @returns {string} "classic", "survival", "cyber" or "pirate"
  */
 export function getModuleTheme() {
   let value;
@@ -75,6 +76,27 @@ export function getModuleTheme() {
   }
   catch ( err ) { /* Setting not registered yet (very early boot) */ }
   return EDITION_DEFAULTS[value] ? value : "classic";
+}
+
+/**
+ * The artwork a linked document can lend to a card: its thumbnail, its image or,
+ * for a Scene, its background.
+ *
+ * v14 moved a Scene's background onto its Levels and left `Scene#background`
+ * behind as a deprecated getter that warns on every read, while v13 has no
+ * Levels at all — so the Level is asked first and the old property is only
+ * touched on the generation where it is still the real one.
+ *
+ * @param {ClientDocument|null} doc
+ * @returns {string}
+ */
+export function documentArt(doc) {
+  if ( !doc ) return "";
+  if ( doc.thumb || doc.img ) return doc.thumb || doc.img;
+  if ( doc.documentName !== "Scene" ) return "";
+  const level = doc.initialLevel ?? doc.firstLevel;
+  if ( level ) return level.background?.src ?? "";
+  return doc.background?.src ?? "";
 }
 
 /**

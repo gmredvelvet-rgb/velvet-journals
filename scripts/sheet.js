@@ -1,4 +1,4 @@
-import { MODULE_ID, MODULE_TITLE, getTheme, getModuleTheme, localize } from "./constants.js";
+import { MODULE_ID, MODULE_TITLE, getTheme, getModuleTheme, localize, documentArt } from "./constants.js";
 import VelvetThemeConfig from "./theme-config.js";
 import {
   getCards, setCards, createCard,
@@ -583,7 +583,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
           ? localize("VJ.Dashboard.TargetTooltip", { type: game.i18n.localize(target.label), name: target.name })
           : game.i18n.localize(target.label);
       }
-      const media = card.media || doc?.thumb || doc?.img || doc?.background?.src || "";
+      const media = card.media || documentArt(doc);
       cards.push({
         ...card,
         size: card.size || "md",
@@ -910,7 +910,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
       scene = {
         uuid: pin.sceneUuid,
         name: doc?.name ?? game.i18n.localize("VJ.Travel.SceneMissing"),
-        thumb: doc?.thumb || doc?.background?.src || "",
+        thumb: documentArt(doc),
         active: !!doc?.active,
         missing: !usable,
         // Flagged on the card when nobody picked the landing spot, so a party is
@@ -1622,7 +1622,7 @@ export default class VelvetJournalSheet extends JournalEntrySheet {
     event.stopPropagation();
     const doc = await fromUuid(data.uuid);
     if ( !doc ) return;
-    const media = doc.thumb || doc.img || doc.background?.src || "";
+    const media = documentArt(doc);
     cards.push(createCard({ title: doc.name ?? "", media, uuid: data.uuid }));
     await setCards(this.entry, cards);
   }

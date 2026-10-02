@@ -67,7 +67,7 @@
 }
 
 .osj-callout::before {
-  font: var(--fa-font-solid, 900 1em / 1 "Font Awesome 6 Pro");
+  font: var(--fa-font-solid, 900 1em / 1 var(--font-awesome, "Font Awesome 6 Pro"));
   position: absolute;
   left: 16px;
   top: 17px;

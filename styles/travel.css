@@ -185,6 +185,43 @@
   text-shadow: 0 0 14px var(--vjc-accent), 0 0 34px color-mix(in srgb, var(--vjc-accent) 50%, transparent);
 }
 
+/* Pirate: a spyglass view — rope-bound mask, blackletter caption --------------- */
+
+.vj-cinematic[data-osj-edition="pirate"] {
+  --vjc-ink: #f6e9c8;
+  --vjc-accent: #e2b24e;
+  --vjc-void: #0d0906;
+  --vjc-font-display: "Pirata One", "IM Fell English SC", "Cinzel", serif;
+}
+
+.vj-cinematic[data-osj-edition="pirate"] :is(.vj-cinematic-bar.top, .vj-cinematic-bar.bottom) {
+  border-width: 5px;
+  border-image: repeating-linear-gradient(-58deg,
+    color-mix(in srgb, var(--vjc-accent) 50%, #ecd9ab) 0 2px,
+    color-mix(in srgb, var(--vjc-accent) 55%, #54381a) 2px 4px,
+    #1e1208 4px 5.5px) 5;
+}
+
+/* Blackletter is drawn for mixed case, so the engraved capitals and their wide
+   tracking are dropped — and the reveal, which animates that tracking, with them. */
+.vj-cinematic[data-osj-edition="pirate"] .vj-cinematic-title {
+  font-weight: 400;
+  font-size: clamp(1.2rem, 2.4vw, 1.9rem);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  animation-name: vjc-title-pirate;
+}
+
+@keyframes vjc-title-pirate {
+  from { opacity: 0; letter-spacing: 0.3em; }
+  to { opacity: 1; letter-spacing: 0.04em; }
+}
+
+.vj-cinematic[data-osj-edition="pirate"] .vj-cinematic-skip {
+  font-family: "IM Fell English SC", "Cinzel", serif;
+  font-size: 0.72rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .vj-cinematic,
   .vj-cinematic-bar,

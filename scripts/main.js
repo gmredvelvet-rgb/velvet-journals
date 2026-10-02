@@ -53,7 +53,8 @@ Hooks.once("init", () => {
     choices: {
       classic: "VJ.Settings.Theme.Classic",
       survival: "VJ.Settings.Theme.Survival",
-      cyber: "VJ.Settings.Theme.Cyber"
+      cyber: "VJ.Settings.Theme.Cyber",
+      pirate: "VJ.Settings.Theme.Pirate"
     },
     default: "classic",
     requiresReload: true

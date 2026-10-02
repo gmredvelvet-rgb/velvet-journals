@@ -354,6 +354,11 @@ export async function teleportParty({ scene, actorIds, arrival, formation = "gri
       // damage, effects and renames) travels with it inside the rest of the data.
       delete data._id;
       if ( data.delta ) delete data.delta._id;
+      // v14 files every token under one of its scene's Levels. An id carried over
+      // from the scene being left names a level that does not exist here, which
+      // leaves the token on no level at all: invisible and unable to move. Dropping
+      // it lets core assign the destination's initial level; v13 has no such field.
+      if ( ("level" in data) && !scene.levels?.has(data.level) ) delete data.level;
       creations.push({ ...data, x, y });
       if ( source ) scheduleRemoval(source);
     }

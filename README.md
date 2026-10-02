@@ -44,9 +44,10 @@ Then set a Journal Entry's sheet to **Velvet Journals** (right-click the entry
 - **Markdown editors** — bios, quest summaries and pin descriptions take
   Markdown, with a formatting toolbar. Existing HTML and `@UUID[…]` links keep
   working.
-- **Three editions** — Classic (Belle Époque noir & gold), Survival
-  (industrial field gear) and Cyber (neon holographic), plus per-journal theme
-  overrides.
+- **Four editions** — Classic (Belle Époque noir & gold), Survival
+  (industrial field gear), Cyber (neon holographic) and Pirate (ship's timber,
+  rope and brass — switch a journal to Light mode and it becomes a parchment
+  treasure map), plus per-journal theme overrides.
 
 ## Free trial and licensing
 

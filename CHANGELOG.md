@@ -3,6 +3,38 @@
 All notable changes to Velvet Journals are documented here.
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.6.0] — 2026-10-02
+
+### Added
+
+- **Pirate edition.** A fourth theme, chosen like the others under
+  *Module Settings → Theme*: a ship's hold by lantern light. Tarred oak
+  planking, a hemp rope lashed around the window, a brass-nailed timber rail for
+  the tab bar, wax seals on the dashboard cards, characters as wanted posters
+  nailed up at a slight tilt, quest progress plotted as a dashed course ending on
+  a red X, objectives paid off in doubloons, and an atlas framed like a sea chart
+  with a compass rose in its corner and X-marks for pins. Set a journal to Light
+  mode and the whole sheet turns into a parchment treasure map, with the accent
+  steeped into a sepia ink so it stays readable.
+- Every texture and emblem in the edition — wood grain, paper, rope, the Jolly
+  Roger, the compass rose, the wax seal — is drawn in CSS and inline SVG. It
+  ships no image files, and the emblems follow each journal's own accent color.
+
+### Fixed
+
+- **Foundry v14: party travel left tokens stranded.** v14 files every token
+  under one of its scene's Levels, and a token carried over from another scene
+  kept the level of the scene it had left — a level that does not exist on the
+  destination, so it arrived invisible and unable to move. Travelling tokens now
+  land on the destination's own level. v13 is unaffected and unchanged.
+- **Foundry v14: deprecation warnings from scene artwork.** Cards and pins that
+  borrow a Scene's background read it from the scene's Level on v14 instead of
+  the deprecated `Scene#background`, which v16 removes. v13 keeps using the
+  property it has.
+- **Foundry v14: the entry title field showed `JOURNAL.EntryTitle`** as its
+  placeholder. v14 renamed that core string; the sheet now carries its own.
+- Callout icons no longer assume Font Awesome 6 by name — v14 ships version 7.
+
 ## [3.5.0] — 2026-09-11
 
 ### Added
